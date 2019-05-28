@@ -21,6 +21,12 @@ function check_payments() {
         'post_status' => array('wc-partial', 'wc-placed')
     ) );
 
+    if (empty($orders)) {
+
+        return;
+    
+    }
+
     foreach( $orders as $order ) {
         $order = wc_get_order( $order->ID );
         $layup_order_id = get_post_meta( $order->get_order_number(), 'layup_order_id', true );
