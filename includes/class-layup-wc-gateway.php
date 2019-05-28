@@ -163,8 +163,29 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                 'link'=> get_permalink( $product->get_id() ),
                 'sku'=> $product->get_sku()
             );
+
+            if($i == 0){
+                
+                $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id($product->get_id()));
+
+                if($featured_image) {
+                    $order_image = $featured_image;
+                } else {
+                    $order_image[0] = get_site_url().'/wp-content/plugins/woocommerce/assets/images/placeholder.png';
+                }
+            }
+
             $i++;
 
+        }
+        // Check for shipping total
+        $order_shipping_total = $order->get_total_shipping();
+        if ($order_shipping_total != '') {
+            $products[$i] = array(
+                'amount'=> (int)$order_shipping_total * 100,
+                'link'=> get_site_url(),
+                'sku'=> 'Shipping'
+            );
         }
 
         // Build and send LayUp order request
@@ -174,9 +195,10 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             'endDateMin' => $min_date,
             'state' => 'CANCELLED',
             'depositPerc' => $this->layup_dep,
+            'absorbsFee' => true,
             'reference' => $ref,
             'name' => $blog_title.' #'.$order_id,
-            'imageUrl' => $this->logo_url,
+            'imageUrl' => $order_image[0],
   
         );
         $headers = array(

@@ -61,15 +61,17 @@ add_filter('woocommerce_available_payment_gateways','check_layup_disable_field',
  */
 function layup_display_icon() {
     global $post;
+    global $woocommerce;
     // Check for the Disable LayUp field value
     $product = wc_get_product( $post->ID );
     $layup_disable_meta = $product->get_meta( 'layup_disable' );
     if( $layup_disable_meta != 'yes' ) {
     // Only display LayUp icon if Disable LayUp field is checked
-    echo '<div disabled style="font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: #fff;box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: #2c3e50;border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
+    $checkout_url = $woocommerce->cart->get_checkout_url();
+    echo '<a href="'.$checkout_url.'?add-to-cart='.$post->ID.'"><div style="font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: #fff;box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: #2c3e50;border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
     PAY WITH
     <img style="width: 60px; vertical-align: middle; border-style: none" src="https://layup.co.za/img/logo-color.168d4abe.png">
-    </div>';
+    </div></a>';
     }
    }
    add_action( 'woocommerce_before_add_to_cart_button', 'layup_display_icon' );

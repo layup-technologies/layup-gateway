@@ -12,11 +12,23 @@
  /*
  *  register WP cron event on activation
  */
+
+add_filter( 'cron_schedules', 'ten_add_cron_interval' );
+ 
+function ten_add_cron_interval( $schedules ) {
+    $schedules['ten_mins'] = array(
+        'interval' => 600,
+        'display'  => esc_html__( 'Every Ten Minutes' ),
+    );
+ 
+    return $schedules;
+}
+
 register_activation_hook(__FILE__, 'layup_activation');
 
 function layup_activation() {
     if (! wp_next_scheduled ( 'layup_order_check' )) {
-	wp_schedule_event(time(), 'hourly', 'layup_order_check');
+	wp_schedule_event(time(), 'ten_mins', 'layup_order_check');
     }
 }
 
