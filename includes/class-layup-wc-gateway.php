@@ -148,7 +148,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
         $unid = md5(uniqid($order_id, true));
         $ref = substr($unid, 0, 10);
         $blog_title = get_bloginfo();
-        $order_items = $order->get_items( array('line_item', 'fee', 'shipping') );
+        $order_items = $order->get_items( array('line_item') );
 
         // Format and add min and max dates
         $curr_date = date('c');
