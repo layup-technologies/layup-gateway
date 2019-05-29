@@ -65,7 +65,11 @@ function layup_payment_plans_shortcode() {
 
             $layup_order_id = get_post_meta( $order_id, 'layup_order_id', true );
 
+            $gateway_id = 'layup';
 
+            $gateways = WC_Payment_Gateways::instance();
+
+            $gateway = $gateways->payment_gateways()[$gateway_id];
 
             $html .= '<article class="pp-entry">
 
@@ -75,7 +79,7 @@ function layup_payment_plans_shortcode() {
 
             <p class="pp-content"><strong>Payment Plan:</strong> R '.$monthly.' over '.$months.' months</p>
 
-            <a target="_blank" style="text-decoration: none;" href="'.$layupurl.'dashboard/purchases/'.$layup_order_id.'"><div style="font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: #fff;box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: #2c3e50;border-radius: 150px; width: 100%;text-align: center;" class="btn-layup">
+            <a target="_blank" style="text-decoration: none;" href="'.$layupurl.'dashboard/purchases/'.$layup_order_id.'"><div style="font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: '.$gateway->btn_bg_color.';box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: '.$gateway->btn_text_color.';border-radius: 150px; width: 100%;text-align: center;" class="btn-layup">
 
             PAY WITH
 

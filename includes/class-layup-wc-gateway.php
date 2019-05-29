@@ -33,7 +33,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
         $this->enabled = $this->get_option( 'enabled' );
         $this->max_end_date = $this->get_option( 'lu_max_end_date' ) + 1;
         $this->min_end_date = $this->get_option( 'lu_min_end_date' );
-        $this->logo_url = $this->get_option( 'lu_logo_url' );
+        $this->btn_bg_color = $this->get_option( 'btn_bg_color' );
+        $this->btn_text_color = $this->get_option( 'btn_text_color' );
         $this->testmode = 'yes' === $this->get_option( 'lu_testmode' );
         $this->layup_dep = (int)$this->get_option( 'layup_dep' );
         $this->api_key = $this->testmode ? "myApiKey" : $this->get_option( 'lu_api_key' );
@@ -100,11 +101,17 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                 'title'       => 'Live API Key',
                 'type'        => 'password'
             ),
-            'lu_logo_url' => array(
-                'title'       => 'Your website logo',
-                'type'        => 'url',
-                'description' => 'The logo of your website that will appear on an order on the LayUp website (recommended dimentions: 320px x 200px )',
-                'default'     => ''
+            'btn_bg_color' => array(
+                'title'       => 'LayUp Button Colour',
+                'type'        => 'color',
+                'description' => 'Changes the background color of the buttons on a single product page',
+                'default'     => '#ffffff'
+            ),
+            'btn_text_color' => array(
+                'title'       => 'LayUp Button text Colour',
+                'type'        => 'color',
+                'description' => 'Changes the text colour of the buttons on a single product page',
+                'default'     => '#000000'
             ),
         );
 
