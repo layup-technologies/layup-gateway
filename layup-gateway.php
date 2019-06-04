@@ -8,7 +8,7 @@
  * Version: 0.0.1
  *
 */
-
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  /*
  *  register WP cron event on activation
  */

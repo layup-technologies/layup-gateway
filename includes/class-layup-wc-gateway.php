@@ -42,6 +42,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
     
         // This action hook saves the settings
         add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+        add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
      }
 
@@ -264,12 +265,12 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
      public function admin_notices() {
 		if ( 'yes' !== $this->get_option( 'enabled' )
-			|| ! empty( $this->logo_url) ) {
+			|| 'yes' !== $this->get_option( 'lu_testmode' ) ) {
 			return;
 		}
 
 		echo '<div class="error"><p>'
-			. __( 'LayUp requires additional configuration to function correctly.', 'layup-gateway' )
+			. __( 'LayUp is currently in test mode and requires additional configuration to function correctly.', 'layup-gateway' )
 			. '</p></div>';
 	}
  }

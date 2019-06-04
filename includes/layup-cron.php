@@ -46,8 +46,6 @@ function check_payments() {
         if( !is_wp_error( $order_response ) ) {
 
             $body = json_decode( $order_response['body'], true );
-
-            file_put_contents('filename.txt', print_r($body, true));
             
             // Check payments 
             if ( $body['state'] == 'PLACED' ) {
