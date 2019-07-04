@@ -8,24 +8,9 @@ add_action( 'wp_enqueue_scripts', 'register_layup_style' );
 
 function register_layup_style() {
 
-    wp_register_style("layup_css", plugins_url( '../css/payment-plans.css', __FILE__ ), array(), '1.0.0', 'all' );
+    wp_register_style("layup_css", plugins_url( '../css/payment-plans.css', __FILE__ ), array(), '1.0.1', 'all' );
 
 }
-
-
-
-//add_action('admin_enqueue_scripts', 'admin_enqueue_scripts_func');
-
- 
-
-//function admin_enqueue_scripts_func() {
-
-    //$name, $src, $dependencies, $version, $in_footer
-
-   // wp_enqueue_script( 'layup_script', plugins_url( '../js/dynamic-fields.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
-
-//}
-
 
 
 /**
@@ -550,13 +535,8 @@ function woo_add_layup_date_fields() {
 
     $lu_curr_date = date('Y-m-d');
 
-    //$lu_min_end_date = get_option( 'lu_min_end_date', true);
-
-    $testmode = get_option( 'lu_testmode' );
 
     $lu_min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($lu_curr_date)));
-
-    //$lu_max_end_date = get_option( 'lu_max_end_date', true) + 1;
 
     $lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
     
@@ -764,7 +744,6 @@ function layup_date_option(){
 
         echo '</select>';
 
-        echo $date2;
 
     }
 
@@ -1014,11 +993,21 @@ add_action( 'woocommerce_product_options_general_product_data', 'create_layup_di
 
 /**
 
- * Save the Disable LayUp field
+ * Save the LayUp product fields
 
  */
 
 function save_layup_disable_field( $post_id ) {
+
+    global $post;
+
+    global $woocommerce;
+
+    $gateway_id = 'layup';
+
+    $gateways = WC_Payment_Gateways::instance();
+
+    $gateway = $gateways->payment_gateways()[$gateway_id];
 
     $product = wc_get_product( $post_id );
 
@@ -1026,13 +1015,130 @@ function save_layup_disable_field( $post_id ) {
 
     $product->update_meta_data( 'layup_disable', sanitize_text_field( $title ) );
 
-
+    $price = $product->get_price() * 100;
 
     $dates = isset( $_POST['layup_date'] ) ? $_POST['layup_date'] : '';
 
     $product->update_meta_data( 'layup_date', $dates );
 
+    $lu_min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($lu_curr_date)));
 
+    if ($gateway->testmode == 'yes') {
+        $api_key = "myApiKey";
+        $preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
+    } else {
+        $api_key = $gateway->api_key;
+        $preview_api_url = "https://api.layup.co.za/v1/payment-plan/preview";
+    }
+
+    if ($dates == ''){
+
+        $lu_curr_date = date('c');
+
+        $lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
+
+        $preview_details = array(
+
+            'amountDue' => $price,
+
+            'depositPerc' => $gateway->layup_dep,
+
+            'endDateMax' => $lu_max_date,
+
+            'endDateMin' => $lu_min_date,
+
+            'absorbsFee' => false
+
+        );
+
+        $preview_headers = array(
+
+             'Content-Type' => 'application/json',
+
+             'apikey' => $api_key,
+
+        );
+
+        
+
+        $preview_details_json = json_encode( $preview_details , JSON_UNESCAPED_SLASHES );
+
+        $preview_args = array(
+
+            'headers' => $preview_headers,
+
+            'body' => $preview_details_json
+
+            );
+
+
+        $preview_response = wp_remote_post( $preview_api_url, $preview_args);
+
+        $preview_body = json_decode( $preview_response['body'], true );
+    
+        $max_payment_months = count($preview_body['paymentPlans']);
+    
+        $amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
+        $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ' ');
+    
+        $product->update_meta_data( 'layup_preview_months', $max_payment_months );
+        $product->update_meta_data( 'layup_preview_amount', $amount_monthly_form );
+
+    } else {
+
+        $max_date = max($dates);
+        $lu_max_date = date('c', strtotime($max_date));
+
+        $preview_details = array(
+
+            'amountDue' => $price,
+
+            'depositPerc' => $gateway->layup_dep,
+
+            'endDateMax' => $lu_max_date,
+
+            'endDateMin' => $lu_min_date,
+
+            'absorbsFee' => false
+
+        );
+
+        $preview_headers = array(
+
+             'Content-Type' => 'application/json',
+
+             'apikey' => $api_key,
+
+        );
+
+        
+
+        $preview_details_json = json_encode( $preview_details , JSON_UNESCAPED_SLASHES );
+
+        $preview_args = array(
+
+            'headers' => $preview_headers,
+
+            'body' => $preview_details_json
+
+            );
+
+           
+
+        $preview_response = wp_remote_post( $preview_api_url, $preview_args);
+
+        $preview_body = json_decode( $preview_response['body'], true );
+
+        $max_payment_months = count($preview_body['paymentPlans']);
+
+        $amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
+        $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ' ');
+
+        $product->update_meta_data( 'layup_preview_months', $max_payment_months );
+        $product->update_meta_data( 'layup_preview_amount', $amount_monthly_form );
+
+        
+    }
 
     $product->save();
 
@@ -1092,7 +1198,7 @@ add_filter('woocommerce_available_payment_gateways','check_layup_disable_field',
 
 /**
 
- * Display LayUp icon on single product page
+ * Display LayUp icon and estimate text on single product page
 
  */
 
@@ -1122,15 +1228,22 @@ function layup_display_icon() {
 
     // Only display LayUp icon if Disable LayUp field is not checked
 
-    $checkout_url = $woocommerce->cart->get_checkout_url();
+    $layup_preview_amount = $product->get_meta( 'layup_preview_amount' );
+    $layup_preview_months = $product->get_meta( 'layup_preview_months' );
 
-    echo '<div style="font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: '.$gateway->btn_bg_color.';box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: '.$gateway->btn_text_color.';border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
+    echo '<div class="clearfix"><div style="float:left; font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: '.$gateway->btn_bg_color.';box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: '.$gateway->btn_text_color.';border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
 
     PAY WITH
 
     <img style="width: 60px; vertical-align: middle; border-style: none" src="https://layup.co.za/img/logo-color.168d4abe.png">
+    
 
-    </div>';
+    </div>
+    <div style="float:left; font-size: 12px;margin-bottom: 15px;margin-left: 15px; max-width: 50%;" class="btn-layup">
+
+    From R'.$layup_preview_amount.'/month for '.$layup_preview_months.' Months
+
+    </div></div>';
 
     }
 
@@ -1139,8 +1252,52 @@ function layup_display_icon() {
    add_action( 'woocommerce_before_add_to_cart_button', 'layup_display_icon' );
 
 
+   /**
 
+   * Display LayUp extimate text on shop page
+  
+   */
+  
+  function layup_display_estimate() {
+  
+      global $post;
+  
+      global $woocommerce;
+  
+      $gateway_id = 'layup';
+  
+      $gateways = WC_Payment_Gateways::instance();
+  
+      $gateway = $gateways->payment_gateways()[$gateway_id];
+  
+  
+  
+      // Check for the Disable LayUp field value
+  
+      $product = wc_get_product( $post->ID );
+  
+      $layup_disable_meta = $product->get_meta( 'layup_disable' );
+  
+      if( $layup_disable_meta != 'yes' ) {
+  
+      // Only display LayUp icon if Disable LayUp field is not checked
+  
+      $layup_preview_amount = $product->get_meta( 'layup_preview_amount' );
+      $layup_preview_months = $product->get_meta( 'layup_preview_months' );
+  
+      
+  
+      echo '<div style="float:left; font-size: 12px;margin-bottom: 10px;" class="btn-layup">
+  
+      From R'.$layup_preview_amount.'/month for '.$layup_preview_months.' Months
+  
+      </div>';
+  
+      }
+  
+     }
 
+   add_action( 'woocommerce_after_shop_loop_item_title', 'layup_display_estimate' );
 
  // register WC Order status Partial and Placed
 

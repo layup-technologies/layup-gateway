@@ -345,7 +345,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
         // Format and add min and max dates
 
         $date_sel = get_post_meta( $order_id, 'layup_date_sel', true );
-        var_dump($date_sel);
+
         if (!empty($date_sel)) {
 
             $curr_date = date('c');
