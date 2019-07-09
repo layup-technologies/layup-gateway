@@ -384,7 +384,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                 } else {
 
-                    $order_image[0] = get_site_url().'/wp-content/plugins/woocommerce/assets/images/placeholder.png';
+                    $order_image[0] = wc_placeholder_img_src();
 
                 }
 

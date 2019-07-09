@@ -55,9 +55,9 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
                 add_filter( 'woocommerce_settings_tabs_array',        array( $this, 'add_settings_page' ), 20 );
 
-                add_action( 'woocommerce_settings_' . $this->id,      array( $this, 'output' ) );
+                add_action( 'woocommerce_settings_' . $this->id,      array( $this, 'layup_output' ) );
 
-                add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'save' ) );
+                add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'layup_save' ) );
 
                 
 
@@ -73,7 +73,7 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
              */
 
-            public function get_settings() {
+            public function layup_get_settings() {
 
             
 
@@ -213,7 +213,7 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
              */
 
-            public function output() {
+            public function layup_output() {
 
 
 
@@ -263,10 +263,6 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
                     $merch_response = wp_remote_get( $api_url.'v1/merchants/'.$merchant_id, $merchant_args);
 
-                    
-
-                    file_put_contents('test2.txt', print_r($dec_resp, true));
-
 
 
                     if( !is_wp_error( $merch_response ) ) {
@@ -308,12 +304,7 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
                             update_option( 'layup_merchant_domain', $domain );
 
                             update_option( 'layup_merchant_notifyurl', $notifyUrl );
-
-
-
-                            file_put_contents('test.txt', print_r($body, true));
-
-                            
+     
 
                         }
 
@@ -341,7 +332,7 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
-                $settings = $this->get_settings();
+                $settings = $this->layup_get_settings();
 
                 WC_Admin_Settings::output_fields( $settings );
 
@@ -355,93 +346,108 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
              */
 
-            public function save() {
+            public function layup_save() {
 
-                    
+                   
 
                 if (array_key_exists('layup_merchant_name',$_POST)) {
 
 
-
-                $save_merchant_id = get_option( 'layup_merchant_id' );
-
-
-
-                $save_api_key_check = get_option( 'lu_api_key' );
+                    if (esc_url_raw( $_POST['layup_merchant_domain'] ) === $_POST['layup_merchant_domain'] && esc_url_raw( $_POST['layup_merchant_notifyurl'] ) === $_POST['layup_merchant_notifyurl']) {
 
 
 
-                if ($save_merchant_id != '') {
+                        $save_merchant_id = get_option( 'layup_merchant_id' );
 
 
 
-                    if (get_option( 'lu_testmode', true ) == 'yes') {
-
-                        $save_api_key = "myApiKey";
-
-                        $save_api_url = "https://sandbox-api.layup.co.za/";
-
-                    } else {
-
-                        $save_api_key = get_option( 'lu_api_key' );
-
-                        $save_api_url = "https://api.layup.co.za/";
-
-                    }
+                        $save_api_key_check = get_option( 'lu_api_key' );
 
 
 
-                    $save_merchant_details = array(
-
-                        'name'=> $_POST['layup_merchant_name'],
-
-                        'domain' => $_POST['layup_merchant_domain'],
-
-                        'notifyUrl' => $_POST['layup_merchant_notifyurl']
-
-              
-
-                    );
+                        if ($save_merchant_id != '') {
 
 
 
-                    $save_merchant_details_json = json_encode( $save_merchant_details , JSON_UNESCAPED_SLASHES );
+                            if (get_option( 'lu_testmode', true ) == 'yes') {
+
+                                $save_api_key = "myApiKey";
+
+                                $save_api_url = "https://sandbox-api.layup.co.za/";
+
+                            } else {
+
+                                $save_api_key = get_option( 'lu_api_key' );
+
+                                $save_api_url = "https://api.layup.co.za/";
+
+                            }
 
 
 
-                    $save_headers = array(
+                            $save_merchant_details = array(
 
-                        'accept' => 'application/json',
+                                'name'=> sanitize_text_field($_POST['layup_merchant_name']),
 
-                        'Content-Type' => 'application/json',
+                                'domain' => sanitize_text_field($_POST['layup_merchant_domain']),
 
-                        'apikey' => $save_api_key,
-
-                    );
+                                'notifyUrl' => sanitize_text_field($_POST['layup_merchant_notifyurl'])
 
                     
 
-                    $save_merchant_args = array(
+                            );
 
-                        'method'    => 'PUT',
 
-                        'headers' => $save_headers,
 
-                        'body' => $save_merchant_details_json
+                            $save_merchant_details_json = json_encode( $save_merchant_details , JSON_UNESCAPED_SLASHES );
 
-                        );
 
-                    $save_merch_response = wp_remote_request( $save_api_url.'v1/merchants/'.$save_merchant_id, $save_merchant_args);
 
-                    if( !is_wp_error( $save_merch_response ) ) {
+                            $save_headers = array(
 
-                        if ($save_merch_response['body'] == 'Forbidden') {
+                                'accept' => 'application/json',
 
-                            echo '<div class="error"><p>'
+                                'Content-Type' => 'application/json',
 
-                            . __( 'The Merchant ID was invalid, please try again', 'layup-gateway' )
+                                'apikey' => $save_api_key,
 
-                            . '</p></div>';
+                            );
+
+                            
+
+                            $save_merchant_args = array(
+
+                                'method'    => 'PUT',
+
+                                'headers' => $save_headers,
+
+                                'body' => $save_merchant_details_json
+
+                                );
+
+                            $save_merch_response = wp_remote_request( $save_api_url.'v1/merchants/'.$save_merchant_id, $save_merchant_args);
+
+                            if( !is_wp_error( $save_merch_response ) ) {
+
+                                if ($save_merch_response['body'] == 'Forbidden') {
+
+                                    echo '<div class="error"><p>'
+
+                                    . __( 'The Merchant ID was invalid, please try again', 'layup-gateway' )
+
+                                    . '</p></div>';
+
+                                }
+
+                            } else {
+
+                                echo '<div class="error"><p>'
+
+                                . __( 'There was an error, please try again', 'layup-gateway' )
+
+                                . '</p></div>';
+
+                            }
 
                         }
 
@@ -457,9 +463,7 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
                 }
 
-            }
-
-                $settings = $this->get_settings();
+                $settings = $this->layup_get_settings();
 
                 WC_Admin_Settings::save_fields( $settings );
 
@@ -546,7 +550,7 @@ function woo_add_layup_date_fields() {
 
     <a class="add_field_button button-secondary">Add Field</a>
 
-    <span class="description"><?php _e( 'Add a date if this product needs to be paid off before a given time frame. Make sure its after your minimum and before your maximum dates set in layup settings', 'woocommerce' ); ?></span>
+    <span class="description"><?php esc_attr( _e( 'Add a date if this product needs to be paid off before a given time frame. Make sure its after your minimum and before your maximum dates set in layup settings', 'woocommerce' )); ?></span>
 
     <?php 
 
@@ -566,9 +570,9 @@ function woo_add_layup_date_fields() {
 
             <span class="wrap">
 
-                <label><?php echo __( 'Departure/Event Start Date', 'woocommerce' ) ?></label>	
+                <label><?php echo esc_attr( __( 'Departure/Event Start Date', 'woocommerce' )); ?></label>	
 
-                <input placeholder="<?php _e( 'Start Date', 'woocommerce' ); ?>" class="" type="date" max="<?php echo $lu_max_date; ?>" min="<?php echo $lu_min_date; ?>" name="layup_date[<?php echo $i; ?>]" format="" value="<?php echo $date; ?>"  style="width: 150px;" />
+                <input placeholder="<?php esc_attr( _e( 'Start Date', 'woocommerce' )); ?>" class="" type="date" max="<?php echo esc_attr($lu_max_date); ?>" min="<?php echo esc_attr($lu_min_date); ?>" name="layup_date[<?php echo esc_attr($i); ?>]" format="" value="<?php echo esc_attr($date); ?>"  style="width: 150px;" />
 
             </span><a href="#" class="remove_field">Remove</a>
 
@@ -598,11 +602,11 @@ function woo_add_layup_date_fields() {
 
 
 
-  add_action('admin_footer', 'my_admin_footer_script');
+  add_action('admin_footer', 'layup_admin_footer_script');
 
  
 
-function my_admin_footer_script() {
+function layup_admin_footer_script() {
 
     global $post;
 
@@ -658,7 +662,7 @@ jQuery(document).ready(function($) {
 
 var add_button      = $(".add_field_button"); //Add button ID
 
-var x = '.$x.'; //initlal text box count
+var x = '.esc_attr($x).'; //initlal text box count
 
 $(add_button).click(function(e){ //on add input button click
 
@@ -666,7 +670,7 @@ $(add_button).click(function(e){ //on add input button click
 
         x++;
 
-        $(wrapper).append(`<p class="form-field date_field_type"><span class="wrap"><label>Departure/Event Date</label><input placeholder="Date" max="'.$max_date.'" min="'.$min_date.'" class="" type="date" name="layup_date[`+ x +`]" value=""  style="width: 150px;" /></span><a href="#" class="remove_field">Remove</a></p>`);
+        $(wrapper).append(`<p class="form-field date_field_type"><span class="wrap"><label>Departure/Event Date</label><input placeholder="Date" max="'. esc_attr($max_date).'" min="'.esc_attr($min_date).'" class="" type="date" name="layup_date[`+ x +`]" value=""  style="width: 150px;" /></span><a href="#" class="remove_field">Remove</a></p>`);
 
     });
 
@@ -710,10 +714,6 @@ function layup_date_option(){
 
     $gateway = $gateways->payment_gateways()[$gateway_id];
 
-
-
-    $value = isset( $_POST['layup_date_sel'] ) ? sanitize_text_field( $_POST['layup_date_sel'] ) : '';
-
     $curr_date = date('Y-m-d');
 
     $dates = get_post_meta($post->ID, 'layup_date', true);
@@ -722,7 +722,7 @@ function layup_date_option(){
 
     if(is_array($dates)) {
 
-        echo '<label>'. __( 'Select a date', 'woocomerce' ).'</label><select name="layup_date_sel"/>';
+        echo '<label>'. esc_attr( __( 'Select a date', 'woocomerce' )).'</label><select name="layup_date_sel"/>';
 
         foreach($dates as $date){
 
@@ -732,7 +732,7 @@ function layup_date_option(){
 
 
 
-                echo '<option value="'.$date.'">'.$date.'</option>';
+                echo '<option value="'.esc_attr($date).'">'.esc_attr($date).'</option>';
 
 
 
@@ -863,7 +863,7 @@ function layup_get_item_date( $other_data, $cart_item ) {
 
             'name' => __( 'Date', 'woocommerce' ),
 
-            'value' => sanitize_text_field( $cart_item['layup_date_sel'] )
+            'value' => $cart_item['layup_date_sel']
 
         );
 
@@ -990,7 +990,6 @@ function create_layup_disable_field() {
 add_action( 'woocommerce_product_options_general_product_data', 'create_layup_disable_field' );
 
 
-
 /**
 
  * Save the LayUp product fields
@@ -1011,13 +1010,26 @@ function save_layup_disable_field( $post_id ) {
 
     $product = wc_get_product( $post_id );
 
-    $title = isset( $_POST['layup_disable'] ) ? $_POST['layup_disable'] : '';
+    $layup_disable = isset( $_POST['layup_disable'] ) ? sanitize_text_field( $_POST['layup_disable']) : '';
 
-    $product->update_meta_data( 'layup_disable', sanitize_text_field( $title ) );
+    $product->update_meta_data( 'layup_disable',  $layup_disable );
 
     $price = $product->get_price() * 100;
 
-    $dates = isset( $_POST['layup_date'] ) ? $_POST['layup_date'] : '';
+    foreach ($_POST['layup_date'] as $postdate) {
+
+        $d = DateTime::createFromFormat('Y-m-d', $postdate);
+    
+        $valid_date = $d && $d->format('Y-m-d') === $postdate;
+     
+        if ($valid_date == false){
+            unset($_POST['layup_date']);
+            
+            break;
+        }
+
+    }
+    $dates = isset( $_POST['layup_date'] ) ? preg_replace("([^0-9-])", "", $_POST['layup_date']) : '';
 
     $product->update_meta_data( 'layup_date', $dates );
 
@@ -1231,7 +1243,7 @@ function layup_display_icon() {
     $layup_preview_amount = $product->get_meta( 'layup_preview_amount' );
     $layup_preview_months = $product->get_meta( 'layup_preview_months' );
 
-    echo '<div class="clearfix"><div style="float:left; font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: '.$gateway->btn_bg_color.';box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: '.$gateway->btn_text_color.';border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
+    echo '<div class="clearfix"><div style="float:left; font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: '.esc_attr($gateway->btn_bg_color).';box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: '.esc_attr($gateway->btn_text_color).';border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
 
     PAY WITH
 
@@ -1241,7 +1253,7 @@ function layup_display_icon() {
     </div>
     <div style="float:left; font-size: 12px;margin-bottom: 15px;margin-left: 15px; max-width: 50%;" class="btn-layup">
 
-    From R'.$layup_preview_amount.'/month for '.$layup_preview_months.' Months
+    From R'.esc_attr($layup_preview_amount).'/month for '.esc_attr($layup_preview_months).' Months
 
     </div></div>';
 
@@ -1289,7 +1301,7 @@ function layup_display_icon() {
   
       echo '<div style="float:left; font-size: 12px;margin-bottom: 10px;" class="btn-layup">
   
-      From R'.$layup_preview_amount.'/month for '.$layup_preview_months.' Months
+      From R'.esc_attr($layup_preview_amount).'/month for '.esc_attr($layup_preview_months).' Months
   
       </div>';
   

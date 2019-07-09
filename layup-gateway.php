@@ -28,11 +28,11 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 
-add_filter( 'cron_schedules', 'ten_add_cron_interval' );
+add_filter( 'cron_schedules', 'layup_ten_add_cron_interval' );
 
  
 
-function ten_add_cron_interval( $schedules ) {
+function layup_ten_add_cron_interval( $schedules ) {
 
     $schedules['ten_mins'] = array(
 
