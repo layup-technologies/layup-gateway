@@ -10,7 +10,7 @@
 
  * Author: Cameron Morgan
 
- * Author URI: https://layup.co.za/
+ * Author URI: https://cameronstuartmorgan.co.za
 
  * Version: 1.0.0
 
