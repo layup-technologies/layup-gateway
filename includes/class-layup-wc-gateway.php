@@ -514,7 +514,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                    'result' => 'success',
 
-                   'redirect' => ($this->testmode) ? 'https://sandbox.layup.co.za/order/'. $body['_id'] : 'https://sandbox.layup.co.za/order/'. $body['_id'],
+                   'redirect' => ($this->testmode) ? 'https://sandbox.layup.co.za/order/'. $body['_id'] : 'https://layup.co.za/order/'. $body['_id'],
 
                );
 
