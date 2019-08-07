@@ -8,11 +8,11 @@
 
  * Description: Activate your payment plan with a small deposit and break down the total cost into more affordable monthly payments.
 
- * Author: Cameron Morgan
+ * Author: LayUp Dev Team
 
- * Author URI: https://cameronstuartmorgan.co.za
+ * Author URI: https://layup.co.za
 
- * Version: 1.0.0
+ * Version: 1.0.1
 
  *
 
