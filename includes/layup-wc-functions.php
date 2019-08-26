@@ -1175,7 +1175,7 @@ function check_layup_disable_field($gateways){
 
 
     $inarray = false;
-
+    wc_clear_notices();
     
 
     foreach ($woocommerce->cart->cart_contents as $key => $values ) { //enumerate over all cart contents
@@ -1197,7 +1197,9 @@ function check_layup_disable_field($gateways){
     if($inarray) { //product is in the cart
 
         unset($gateways['layup']);
-
+        if (is_checkout()) {
+			wc_add_notice( 'You currently have items in your cart that do not allow you to use LayUp as a payment method, please remove them if you wish to use the LayUp payment method.', 'error' );
+		}
     } 
 
     return $gateways;
@@ -1243,7 +1245,7 @@ function layup_display_icon() {
     $layup_preview_amount = $product->get_meta( 'layup_preview_amount' );
     $layup_preview_months = $product->get_meta( 'layup_preview_months' );
 
-    echo '<div class="clearfix"><div style="float:left; font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: '.esc_attr($gateway->btn_bg_color).';box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: '.esc_attr($gateway->btn_text_color).';border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
+    echo '<div class="clearfix"><div style="float:left; font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: '.esc_attr($gateway->btn_bg_color).';color: '.esc_attr($gateway->btn_text_color).';border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
 
     PAY WITH
 
@@ -1309,7 +1311,7 @@ function layup_display_icon() {
   
      }
 
-   add_action( 'woocommerce_after_shop_loop_item_title', 'layup_display_estimate' );
+   add_action( 'woocommerce_after_shop_loop_item', 'layup_display_estimate', 9 );
 
  // register WC Order status Partial and Placed
 

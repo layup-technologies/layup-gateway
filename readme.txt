@@ -1,13 +1,13 @@
 === LayUp payment gateway plugin for woocommerce ===
 
-Contributors: dylanweb980505
-Author URI: https://cameronstuartmorgan.co.za/
-Author: Cameron Morgan
+Contributors: dylanweb980505, zanderrootman
+Author URI: https://layup.co.za/
+Author: LayUp Dev Team
 Tags: woocommerce, payment gateway, South Africa, LayUp
 Requires at least: 4.6
 Tested up to: 5.2.2
-Stable tag: 1.0.0
-Version: 1.0.0
+Stable tag: 1.1.0
+Version: 1.1.0
 Requires PHP: 5.6.40
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -42,6 +42,7 @@ and lease with your client about delivery ect.
 1. Upload the plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Use the woocommerce->Settings->Payments->LayUp screen to configure the plugin
+4. ***Please make sure that all your products have SKUs set as the LayUp API requires it to make a purchase.
 
 
 == Screenshots ==
@@ -52,6 +53,16 @@ and lease with your client about delivery ect.
 4. LayUp product date settings, add multiple dates.
 
 == Changelog ==
+
+= 1.1.0 =
+
+* Added: Auto update products when plugin is activated.
+* Added: Checkout notice if products in cart have the disable layup option enabled.
+* Added: Notify URL
+* Fixed: UI Bug where estimated payment was in the wrong place in the product loop
+
+= 1.0.1 =
+* Fixed redirect
 
 = 1.0.0 =
 * Initial Release

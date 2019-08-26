@@ -8,11 +8,11 @@
 
  * Description: Activate your payment plan with a small deposit and break down the total cost into more affordable monthly payments.
 
- * Author: Cameron Morgan
+ * Author: LayUp Dev Team
 
- * Author URI: https://cameronstuartmorgan.co.za
+ * Author URI: https://layup.co.za
 
- * Version: 1.0.0
+ * Version: 1.1.0
 
  *
 
@@ -58,10 +58,79 @@ function layup_activation() {
 
     if (! wp_next_scheduled ( 'layup_order_check' )) {
 
-	wp_schedule_event(time(), 'ten_mins', 'layup_order_check');
-
-    }
-
+		wp_schedule_event(time(), 'ten_mins', 'layup_order_check');
+	
+		}
+		global $post;
+		$args = array(
+			'post_type' => 'product',
+			'posts_per_page' => -1,
+		);
+	
+		$products = get_posts($args);
+		
+		$lu_curr_date = date('c');
+		$lu_min_date = date('Y-m-d', strtotime("+" . 1 . " months", strtotime($lu_curr_date)));
+		$lu_max_date = date('Y-m-d', strtotime("+" . 13 . " months", strtotime($lu_curr_date)));
+		$api_key = "myApiKey";
+		$preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
+		
+		foreach($products as $prod) {
+		
+		$product = wc_get_product( $prod->ID );
+		
+		$price = $product->get_price() * 100;
+	
+		$preview_details = array(
+	
+			'amountDue' => $price,
+	
+			'depositPerc' => 20,
+	
+			'endDateMax' => $lu_max_date,
+	
+			'endDateMin' => $lu_min_date,
+	
+			'absorbsFee' => false
+	
+		);
+	
+		$preview_headers = array(
+	
+			'Content-Type' => 'application/json',
+	
+			'apikey' => $api_key,
+	
+		);
+	
+			
+	
+		$preview_details_json = json_encode( $preview_details , JSON_UNESCAPED_SLASHES );
+	
+		$preview_args = array(
+	
+			'headers' => $preview_headers,
+	
+			'body' => $preview_details_json
+	
+			);
+	
+	
+		$preview_response = wp_remote_post( $preview_api_url, $preview_args);
+	
+		$preview_body = json_decode( $preview_response['body'], true );
+		
+		$max_payment_months = count($preview_body['paymentPlans']);
+			
+		
+		$amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
+		$amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ' ');
+			
+		update_post_meta( $prod->ID, 'layup_preview_months', $max_payment_months );	
+		update_post_meta( $prod->ID, 'layup_preview_amount', $amount_monthly_form );	
+	
+		}
+	
 }
 
 

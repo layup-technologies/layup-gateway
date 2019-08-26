@@ -182,9 +182,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                 'description' => 'The minimum number of months a customer can choose to pay off an order',
 
-                'default'     => '6',
+                'default'     => '1',
                 'custom_attributes' => array(
-                    'min'	=> '4'
+                    'min'	=> '1'
                 )
 
             ),
@@ -321,6 +321,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
         $blog_title = get_bloginfo();
 
         $order_items = $order->get_items( array('line_item') );
+
+        $woo_thank_you = $order->get_checkout_order_received_url();
 
 
 
@@ -514,7 +516,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                    'result' => 'success',
 
-                   'redirect' => 'https://sandbox.layup.co.za/order/'. $body['_id']
+                   'redirect' => ($this->testmode) ? 'https://sandbox.layup.co.za/order/'. $body['_id'] . '?notifyUrl='. $woo_thank_you : 'https://layup.co.za/order/'. $body['_id'] . '?notifyUrl='. $woo_thank_you
 
                );
 
