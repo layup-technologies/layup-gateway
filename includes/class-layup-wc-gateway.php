@@ -18,7 +18,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $this->id = 'layup'; // payment gateway plugin ID
 
-        $this->icon = 'https://layup.co.za/img/logo-color.168d4abe.png'; // URL of the icon that will be displayed on checkout page near your gateway name
+        $this->icon = require_once( plugin_basename( 'img/logo-color.168d4abe.png' ) );; // URL of the icon that will be displayed on checkout page near your gateway name
 
         $this->has_fields = false; // in case of custom credit card form
 
@@ -516,7 +516,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                    'result' => 'success',
 
-                   'redirect' => ($this->testmode) ? 'https://sandbox.layup.co.za/order/'. $body['_id'] . '?notifyUrl='. $woo_thank_you : 'https://layup.co.za/order/'. $body['_id'] . '?notifyUrl='. $woo_thank_you
+                   'redirect' => ($this->testmode) ? 'https://sandbox.layup.co.za/order/'. $body['_id'] . '?notifyUrl='. $woo_thank_you : 'https://shopper.layup.co.za/order/'. $body['_id'] . '?notifyUrl='. $woo_thank_you
 
                );
 
