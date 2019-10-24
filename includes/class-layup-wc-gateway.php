@@ -18,7 +18,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $this->id = 'layup'; // payment gateway plugin ID
 
-        $this->icon = require_once( plugin_basename( 'img/logo-color.168d4abe.png' ) );; // URL of the icon that will be displayed on checkout page near your gateway name
+        $this->icon = plugin_dir_url( dirname( __FILE__ ) ) . 'img/logo-color.168d4abe.png';  // URL of the icon that will be displayed on checkout page near your gateway name
 
         $this->has_fields = false; // in case of custom credit card form
 

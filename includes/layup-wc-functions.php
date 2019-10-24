@@ -1249,7 +1249,7 @@ function layup_display_icon() {
 
     PAY WITH
 
-    <img style="width: 60px; vertical-align: middle; border-style: none" src="https://layup.co.za/img/logo-color.168d4abe.png">
+    <img style="width: 60px; vertical-align: middle; border-style: none" src="'.plugin_dir_url( dirname( __FILE__ )) . 'img/logo-color.168d4abe.png">
     
 
     </div>
