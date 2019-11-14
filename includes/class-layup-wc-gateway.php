@@ -120,6 +120,16 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             ),
 
+            'lu_api_key' => array(
+
+                'title'       => 'Live API Key',
+
+                'type'        => 'password',
+
+                'description' => 'The API Key for your Merchant Account provided by LayUp.'
+
+            ),
+
             'title' => array(
 
                 'title'       => 'Title',
@@ -128,9 +138,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                 'description' => 'This controls the title which the user sees during checkout.',
 
-                'default'     => 'LayUp',
-
-                'desc_tip'    => true,
+                'default'     => 'LayUp'
 
             ),
 
@@ -138,7 +146,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                 'title'       => 'Description',
 
-                'type'        => 'textarea',
+                'type'        => 'text',
 
                 'description' => 'This controls the description which the user sees during checkout.',
 
@@ -156,9 +164,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                 'description' => 'Place the payment gateway in test mode using test API keys.',
 
-                'default'     => 'yes',
-
-                'desc_tip'    => true,
+                'default'     => 'yes'
 
             ),
 
@@ -204,13 +210,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             ),
 
-            'lu_api_key' => array(
-
-                'title'       => 'Live API Key',
-
-                'type'        => 'password'
-
-            ),
 
             'btn_bg_color' => array(
 
@@ -564,15 +563,30 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 			return;
 
-		}
+        }
+        
+        $settings_url = add_query_arg(
 
+            array(
+    
+                'page' => 'wc-settings',
+    
+                'tab' => 'checkout',
+    
+                'section' => 'wc_layup_gateway',
+    
+            ),
+    
+            admin_url( 'admin.php' )
+    
+        );
 
 
 		echo '<div class="error"><p>'
 
-			. __( 'LayUp is currently in test mode and requires additional configuration to function correctly.', 'layup-gateway' )
-
-			. '</p></div>';
+			. __( 'LayUp is currently in test mode and requires additional configuration to function correctly. Complete setup ', 'layup-gateway' )
+            . '<a href="' . esc_url( $settings_url ) . '">'. __( 'here.', 'layup-gateway' ) . '</a>
+			</p></div>';
 
 	}
 
