@@ -6,8 +6,8 @@ Author: LayUp Dev Team
 Tags: woocommerce, payment gateway, South Africa, LayUp
 Requires at least: 4.6
 Tested up to: 5.3
-Stable tag: 1.2.2
-Version: 1.2.2
+Stable tag: 1.2.3
+Version: 1.2.3
 Requires PHP: 5.6.40
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
