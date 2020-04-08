@@ -6,7 +6,23 @@
 
 
 
+
+
+
+
+
+
+
+
 add_action( 'wp_enqueue_scripts', 'register_layup_style' );
+
+
+
+
+
+
+
+
 
 
 
@@ -18,7 +34,15 @@ function register_layup_style() {
 
 
 
+
+
+
+
     wp_register_style("layup_css", plugins_url( '../css/payment-plans.css', __FILE__ ), array(), '1.0.0', 'all' );
+
+
+
+
 
 
 
@@ -28,7 +52,17 @@ function register_layup_style() {
 
 
 
+
+
+
+
+
+
 /**
+
+
+
+
 
 
 
@@ -36,11 +70,27 @@ function register_layup_style() {
 
 
 
+
+
+
+
  */
 
 
 
+
+
+
+
 if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
+
+
+
+
+
+
+
+
 
 
 
@@ -56,7 +106,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
         /**
+
+
+
+
 
 
 
@@ -64,7 +126,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
          */
+
+
+
+
 
 
 
@@ -72,7 +142,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -80,7 +158,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
              * Setup settings class
+
+
+
+
 
 
 
@@ -88,7 +174,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
             public function __construct() {
+
+
+
+
 
 
 
@@ -96,7 +190,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                 $this->id    = 'layup-merchant';
+
+
+
+
 
 
 
@@ -104,7 +206,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -112,7 +222,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                 add_action( 'woocommerce_settings_' . $this->id,      array( $this, 'layup_output' ) );
+
+
+
+
 
 
 
@@ -120,11 +238,23 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                 
 
 
 
+
+
+
+
                 add_action( 'admin_notices', array( $this, 'layup_admin_notices' ) );
+
+
+
+
 
 
 
@@ -136,7 +266,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
             /**
+
+
+
+
 
 
 
@@ -144,7 +286,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
              */
+
+
+
+
 
 
 
@@ -152,7 +302,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -160,7 +318,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -168,11 +334,23 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                 $settings = apply_filters( 'layup_settings', array(
 
 
 
+
+
+
+
                     array(
+
+
+
+
 
 
 
@@ -180,7 +358,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         'type'     => 'title',
+
+
+
+
 
 
 
@@ -188,7 +374,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         'id'       => 'layup_merchant_settings_title'
+
+
+
+
 
 
 
@@ -196,7 +390,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                     array(
+
+
+
+
 
 
 
@@ -204,7 +406,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         'type' => 'text',
+
+
+
+
 
 
 
@@ -212,7 +422,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         'id'   => 'layup_merchant_id'
+
+
+
+
 
 
 
@@ -220,7 +438,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                     array(
+
+
+
+
 
 
 
@@ -228,7 +454,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         'id' => 'layup_merchant_section_end'
+
+
+
+
 
 
 
@@ -236,7 +470,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                 ));
+
+
+
+
 
 
 
@@ -248,11 +490,27 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
                         $settings = apply_filters( 'layup_settings', array(
 
 
 
+
+
+
+
                             array(
+
+
+
+
 
 
 
@@ -260,7 +518,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'type'     => 'title',
+
+
+
+
 
 
 
@@ -268,7 +534,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'id'       => 'layup_merchant_settings_title'
+
+
+
+
 
 
 
@@ -276,7 +550,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             array(
+
+
+
+
 
 
 
@@ -284,7 +566,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'type' => 'password',
+
+
+
+
 
 
 
@@ -292,7 +582,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'id'   => 'layup_merchant_id',
+
+
+
+
 
 
 
@@ -300,7 +598,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             array(
+
+
+
+
 
 
 
@@ -308,7 +614,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'type' => 'text',
+
+
+
+
 
 
 
@@ -316,7 +630,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'id'   => 'layup_merchant_name',
+
+
+
+
 
 
 
@@ -324,7 +646,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             array(
+
+
+
+
 
 
 
@@ -332,7 +662,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'type' => 'text',
+
+
+
+
 
 
 
@@ -340,7 +678,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'id'   => 'layup_merchant_domain',
+
+
+
+
 
 
 
@@ -348,7 +694,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             array(
+
+
+
+
 
 
 
@@ -356,7 +710,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'type' => 'text',
+
+
+
+
 
 
 
@@ -364,7 +726,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'id'   => 'layup_merchant_notifyurl',
+
+
+
+
 
 
 
@@ -372,7 +742,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             array(
+
+
+
+
 
 
 
@@ -380,7 +758,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'id' => 'layup_merchant_section_end'
+
+
+
+
 
 
 
@@ -388,7 +774,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         ));
+
+
+
+
 
 
 
@@ -396,7 +790,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -404,7 +806,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -416,7 +826,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
             /**
+
+
+
+
 
 
 
@@ -424,7 +846,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
              */
+
+
+
+
 
 
 
@@ -434,38 +864,83 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
                 global $woocommerce;
 
+
+
                 $gateway_id = 'layup';
+
             
+
                 $gateways = WC_Payment_Gateways::instance();
+
             
+
                 $gateway = $gateways->payment_gateways()[$gateway_id];
+
                 
+
+
 
                 $merchant_id = get_option( 'layup_merchant_id' );
 
+
+
                 $api_key_check = $gateway->api_key;
+
                 
+
+
+
 
 
                 if ($merchant_id !== '' || $api_key_check !== '') {
 
 
 
+
+
+
+
                     if ($gateway->testmode == 'yes') {
 
+
+
                         $api_key = "myApiKey";
+
                 
+
                         $api_url = "https://sandbox-api.layup.co.za/";
+
                 
+
                     } else {
+
                 
+
                         $api_key = $gateway->api_key;
+
                 
+
                         $api_url = "https://api.layup.co.za/";
+
                 
+
                     }
+
+
+
+
+
+
+
+
 
 
 
@@ -477,7 +952,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         'accept' => 'application/json',
+
+
+
+
 
 
 
@@ -485,7 +968,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                     );
+
+
+
+
 
 
 
@@ -493,7 +984,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                     $merchant_args = array(
+
+
+
+
 
 
 
@@ -501,7 +1000,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         );
+
+
+
+
+
+
+
+
 
 
 
@@ -517,7 +1028,23 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
                     if( !is_wp_error( $merch_response ) ) {
+
+
+
+
+
+
+
+
 
 
 
@@ -527,7 +1054,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
                         if ($merch_response['body'] == 'Forbidden') {
 
+
+
                             
+
+
+
+
+
+
 
 
 
@@ -537,7 +1072,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             . __( 'The Merchant ID was invalid, please try again', 'layup-gateway' )
+
+
+
+
 
 
 
@@ -545,7 +1088,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             
+
+
+
+
+
+
+
+
 
 
 
@@ -561,7 +1116,23 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
                             $body = json_decode( $merch_response['body'], true );
+
+
+
+
+
+
+
+
 
 
 
@@ -573,7 +1144,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             $domain = $body['domain'];
+
+
+
+
 
 
 
@@ -585,7 +1164,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
                             update_option( 'layup_merchant_name', $name );
+
+
+
+
 
 
 
@@ -593,9 +1184,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             update_option( 'layup_merchant_notifyurl', esc_url_raw($notifyUrl) );
 
+
+
      
+
+
+
+
 
 
 
@@ -603,7 +1204,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                     } else {
+
+
+
+
 
 
 
@@ -611,7 +1220,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         . __( 'There was an error, please try again', 'layup-gateway' )
+
+
+
+
 
 
 
@@ -619,7 +1236,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         
+
+
+
+
 
 
 
@@ -627,7 +1252,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                 } else {
+
+
+
+
 
 
 
@@ -635,11 +1268,23 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             . __( 'Please make sure you have entered your API key in the payment settings before you enter your Merchant ID', 'layup-gateway' )
 
 
 
+
+
+
+
                             . '</p></div>';
+
+
+
+
 
 
 
@@ -651,11 +1296,27 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
                 $settings = $this->layup_get_settings();
 
 
 
+
+
+
+
                 WC_Admin_Settings::output_fields( $settings );
+
+
+
+
 
 
 
@@ -667,7 +1328,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
             /**
+
+
+
+
 
 
 
@@ -675,7 +1348,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
              */
+
+
+
+
 
 
 
@@ -683,7 +1364,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                    
+
+
+
+
 
 
 
@@ -693,38 +1382,79 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
                     if (esc_url_raw( $_POST['layup_merchant_domain'] ) === $_POST['layup_merchant_domain'] && esc_url_raw( $_POST['layup_merchant_notifyurl'] ) === $_POST['layup_merchant_notifyurl']) {
+
+
+
+
 
 
 
                         global $woocommerce;
 
+
+
                         $gateway_id = 'layup';
+
                     
+
                         $gateways = WC_Payment_Gateways::instance();
+
                     
+
                         $gateway = $gateways->payment_gateways()[$gateway_id];
+
         
+
                         $save_api_key_check = $gateway->api_key;
 
+
+
                         $save_merchant_id = get_option( 'layup_merchant_id' );
+
+
 
                         if ($save_merchant_id !== '') {
 
 
+
+
+
                             if ($gateway->testmode == 'yes') {
 
+
+
                                 $save_api_key = "myApiKey";
+
                         
+
                                 $save_api_url = "https://sandbox-api.layup.co.za/";
+
                         
+
                             } else {
+
                         
+
                                 $save_api_key = $gateway->api_key;
+
                         
+
                                 $save_api_url = "https://api.layup.co.za/";
+
                         
+
                             }
+
+
+
+
 
 
 
@@ -732,7 +1462,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'name'=> sanitize_text_field($_POST['layup_merchant_name']),
+
+
+
+
 
 
 
@@ -740,7 +1478,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'notifyUrl' => sanitize_text_field($_POST['layup_merchant_notifyurl'])
+
+
+
+
 
 
 
@@ -748,7 +1494,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             );
+
+
+
+
+
+
+
+
 
 
 
@@ -764,7 +1522,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
                             $save_headers = array(
+
+
+
+
 
 
 
@@ -772,7 +1542,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'Content-Type' => 'application/json',
+
+
+
+
 
 
 
@@ -780,7 +1558,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             );
+
+
+
+
 
 
 
@@ -788,7 +1574,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             $save_merchant_args = array(
+
+
+
+
 
 
 
@@ -796,7 +1590,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 'headers' => $save_headers,
+
+
+
+
 
 
 
@@ -804,7 +1606,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 );
+
+
+
+
 
 
 
@@ -812,7 +1622,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             if( !is_wp_error( $save_merch_response ) ) {
+
+
+
+
 
 
 
@@ -820,7 +1638,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                     echo '<div class="error"><p>'
+
+
+
+
 
 
 
@@ -828,11 +1654,23 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                     . '</p></div>';
+
+
 
                                     
 
+
+
                                 }
+
+
+
+
 
 
 
@@ -840,7 +1678,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 echo '<div class="error"><p>'
+
+
+
+
 
 
 
@@ -848,11 +1694,23 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                                 . '</p></div>';
+
+
 
                                 
 
+
+
                             }
+
+
+
+
 
 
 
@@ -860,7 +1718,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                     } else {
+
+
+
+
 
 
 
@@ -868,14 +1734,29 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         . __( 'There was an error, please try again', 'layup-gateway' )
+
+
+
+
 
 
 
                         . '</p></div>';
 
 
+
+
+
                     }
+
+
+
+
 
 
 
@@ -883,11 +1764,23 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                 $settings = $this->layup_get_settings();
 
 
 
+
+
+
+
                 WC_Admin_Settings::save_fields( $settings );
+
+
+
+
 
 
 
@@ -899,7 +1792,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
             /**
+
+
+
+
 
 
 
@@ -907,7 +1812,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
             */
+
+
+
+
 
 
 
@@ -915,7 +1828,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                 if ($merch_response) {
+
+
+
+
 
 
 
@@ -923,7 +1844,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         echo '<div class="error"><p>'
+
+
+
+
 
 
 
@@ -931,7 +1860,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                             . '</p></div>';
+
+
+
+
 
 
 
@@ -939,7 +1876,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                         return;
+
+
+
+
 
 
 
@@ -947,15 +1892,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
                 }
 
 
 
-        }
 
-
-
-        
 
 
 
@@ -963,7 +1908,31 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
         
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+        
+
+
+
+
 
 
 
@@ -975,7 +1944,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -983,7 +1964,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -995,7 +1988,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
  * Create the date LayUp checkbox field on product admin page
+
+
+
+
 
 
 
@@ -1003,7 +2004,15 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
+
+
+
+
 function woo_add_layup_date_fields() {
+
+
+
+
 
 
 
@@ -1011,7 +2020,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
     global $woocommerce;
+
+
+
+
 
 
 
@@ -1019,7 +2036,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
     $gateways = WC_Payment_Gateways::instance();
+
+
+
+
 
 
 
@@ -1027,7 +2052,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
     $date_field_type = get_post_meta( $post->ID, 'layup_date', true ); 
+
+
+
+
 
 
 
@@ -1037,15 +2070,33 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
+
+
     $lu_min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($lu_curr_date)));
+
+
+
+
 
 
 
     $lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
 
+
+
     
 
+
+
     ?>
+
+
+
+
 
 
 
@@ -1053,7 +2104,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
     <a class="add_field_button button-secondary">Add Field</a>
+
+
+
+
 
 
 
@@ -1061,7 +2120,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
     <?php 
+
+
+
+
 
 
 
@@ -1069,7 +2136,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
         $i = 0;
+
+
+
+
 
 
 
@@ -1081,7 +2156,19 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
+
+
+
+
         
+
+
+
+
 
 
 
@@ -1089,7 +2176,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
         <p class="form-field date_field_type">
+
+
+
+
 
 
 
@@ -1097,7 +2192,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
                 <label><?php echo esc_attr( __( 'Departure/Event Start Date', 'woocommerce' )); ?></label>	
+
+
+
+
 
 
 
@@ -1105,7 +2208,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
             </span><a href="#" class="remove_field">Remove</a>
+
+
+
+
 
 
 
@@ -1113,7 +2224,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
     <?php 
+
+
+
+
 
 
 
@@ -1121,11 +2240,23 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
         } 
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1133,7 +2264,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -1141,7 +2280,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
     <?php
+
+
+
+
 
 
 
@@ -1149,7 +2296,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
       
+
+
+
+
 
 
 
@@ -1161,7 +2316,19 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
+
+
+
+
   add_action('admin_footer', 'layup_admin_footer_script');
+
+
+
+
 
 
 
@@ -1169,7 +2336,15 @@ function woo_add_layup_date_fields() {
 
 
 
+
+
+
+
 function layup_admin_footer_script() {
+
+
+
+
 
 
 
@@ -1177,7 +2352,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
     global $woocommerce;
+
+
+
+
 
 
 
@@ -1185,7 +2368,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
     $gateways = WC_Payment_Gateways::instance();
+
+
+
+
 
 
 
@@ -1193,7 +2384,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -1201,7 +2400,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
     $x = -1;
+
+
+
+
 
 
 
@@ -1209,7 +2416,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
         $x = -1;
+
+
+
+
 
 
 
@@ -1217,7 +2432,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
             $x++;
+
+
+
+
 
 
 
@@ -1225,7 +2448,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1233,7 +2464,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
         $curr_date = date('Y-m-d');
+
+
+
+
 
 
 
@@ -1241,7 +2480,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
         $min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($curr_date)));
+
+
+
+
 
 
 
@@ -1249,7 +2496,15 @@ function layup_admin_footer_script() {
 
 
 
+
+
+
+
 <script type="text/javascript">
+
+
+
+
 
 
 
@@ -1261,7 +2516,19 @@ jQuery(document).ready(function($) {
 
 
 
+
+
+
+
+
+
+
+
     var today = new Date();
+
+
+
+
 
 
 
@@ -1273,7 +2540,19 @@ jQuery(document).ready(function($) {
 
 
 
+
+
+
+
+
+
+
+
     var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+
+
+
+
 
 
 
@@ -1281,7 +2560,15 @@ var add_button      = $(".add_field_button"); //Add button ID
 
 
 
+
+
+
+
 var x = '.esc_attr($x).'; //initlal text box count
+
+
+
+
 
 
 
@@ -1289,7 +2576,15 @@ $(add_button).click(function(e){ //on add input button click
 
 
 
+
+
+
+
     e.preventDefault();
+
+
+
+
 
 
 
@@ -1297,7 +2592,15 @@ $(add_button).click(function(e){ //on add input button click
 
 
 
+
+
+
+
         $(wrapper).append(`<p class="form-field date_field_type"><span class="wrap"><label>Departure/Event Date</label><input placeholder="Date" max="'. esc_attr($max_date).'" min="'.esc_attr($min_date).'" class="" type="date" name="layup_date[`+ x +`]" value=""  style="width: 150px;" /></span><a href="#" class="remove_field">Remove</a></p>`);
+
+
+
+
 
 
 
@@ -1305,7 +2608,15 @@ $(add_button).click(function(e){ //on add input button click
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -1313,7 +2624,15 @@ $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
 
 
 
+
+
+
+
     e.preventDefault(); 
+
+
+
+
 
 
 
@@ -1321,7 +2640,15 @@ $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
 
 
 
+
+
+
+
 })
+
+
+
+
 
 
 
@@ -1329,11 +2656,23 @@ $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
 
 
 
+
+
+
+
     </script>';
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
@@ -1345,7 +2684,19 @@ $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
 
 
 
+
+
+
+
+
+
+
+
 /*
+
+
+
+
 
 
 
@@ -1353,7 +2704,15 @@ $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -1361,7 +2720,15 @@ function layup_date_option(){
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -1369,7 +2736,15 @@ function layup_date_option(){
 
 
 
+
+
+
+
     global $woocommerce;
+
+
+
+
 
 
 
@@ -1377,7 +2752,15 @@ function layup_date_option(){
 
 
 
+
+
+
+
     $gateways = WC_Payment_Gateways::instance();
+
+
+
+
 
 
 
@@ -1385,7 +2768,15 @@ function layup_date_option(){
 
 
 
+
+
+
+
     $curr_date = date('Y-m-d');
+
+
+
+
 
 
 
@@ -1393,7 +2784,15 @@ function layup_date_option(){
 
 
 
+
+
+
+
     $min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($curr_date)));
+
+
+
+
 
 
 
@@ -1401,11 +2800,27 @@ function layup_date_option(){
 
 
 
+
+
+
+
         echo '<label>'. esc_attr( __( 'Select a date', 'woocomerce' )).'</label><select name="layup_date_sel"/>';
 
 
 
+
+
+
+
         foreach($dates as $date){
+
+
+
+
+
+
+
+
 
 
 
@@ -1421,7 +2836,23 @@ function layup_date_option(){
 
 
 
+
+
+
+
+
+
+
+
                 echo '<option value="'.esc_attr($date).'">'.esc_attr($date).'</option>';
+
+
+
+
+
+
+
+
 
 
 
@@ -1433,11 +2864,23 @@ function layup_date_option(){
 
 
 
+
+
+
+
                 
 
 
 
+
+
+
+
         }
+
+
+
+
 
 
 
@@ -1447,19 +2890,41 @@ function layup_date_option(){
 
 
 
+
+
+
+
+
+
     }
 
 
 
+
+
+
+
     
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
 }
+
+
+
+
 
 
 
@@ -1471,7 +2936,19 @@ add_action( 'woocommerce_before_add_to_cart_button', 'layup_date_option', 9 );
 
 
 
+
+
+
+
+
+
+
+
 /* 
+
+
+
+
 
 
 
@@ -1479,7 +2956,15 @@ add_action( 'woocommerce_before_add_to_cart_button', 'layup_date_option', 9 );
 
 
 
+
+
+
+
 */
+
+
+
+
 
 
 
@@ -1491,7 +2976,19 @@ function layup_add_to_cart_validation($passed, $product_id, $qty){
 
 
 
+
+
+
+
+
+
+
+
    if( isset( $_POST['layup_date_sel'] ) && sanitize_text_field( $_POST['layup_date_sel'] ) == '' ){
+
+
+
+
 
 
 
@@ -1499,7 +2996,15 @@ function layup_add_to_cart_validation($passed, $product_id, $qty){
 
 
 
+
+
+
+
        wc_add_notice( sprintf( __( '%s cannot be added to the cart until you selet a date.', 'woocommerce' ), $product->get_title() ), 'error' );
+
+
+
+
 
 
 
@@ -1507,7 +3012,19 @@ function layup_add_to_cart_validation($passed, $product_id, $qty){
 
 
 
+
+
+
+
    }
+
+
+
+
+
+
+
+
 
 
 
@@ -1523,7 +3040,19 @@ function layup_add_to_cart_validation($passed, $product_id, $qty){
 
 
 
+
+
+
+
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -1535,7 +3064,19 @@ add_filter( 'woocommerce_add_to_cart_validation', 'layup_add_to_cart_validation'
 
 
 
+
+
+
+
+
+
+
+
 /*
+
+
+
+
 
 
 
@@ -1543,7 +3084,15 @@ add_filter( 'woocommerce_add_to_cart_validation', 'layup_add_to_cart_validation'
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -1551,7 +3100,15 @@ function layup_add_cart_item_date( $cart_item, $product_id ){
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1559,7 +3116,15 @@ function layup_add_cart_item_date( $cart_item, $product_id ){
 
 
 
+
+
+
+
         $cart_item['layup_date_sel'] = sanitize_text_field( $_POST['layup_date_sel'] );
+
+
+
+
 
 
 
@@ -1567,7 +3132,15 @@ function layup_add_cart_item_date( $cart_item, $product_id ){
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1575,11 +3148,23 @@ function layup_add_cart_item_date( $cart_item, $product_id ){
 
 
 
+
+
+
+
  
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -1591,7 +3176,19 @@ add_filter( 'woocommerce_add_cart_item_data', 'layup_add_cart_item_date', 10, 2 
 
 
 
+
+
+
+
+
+
+
+
 /*
+
+
+
+
 
 
 
@@ -1599,7 +3196,15 @@ add_filter( 'woocommerce_add_cart_item_data', 'layup_add_cart_item_date', 10, 2 
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -1607,7 +3212,15 @@ function layup_get_cart_item_from_session( $cart_item, $values ) {
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1615,7 +3228,15 @@ function layup_get_cart_item_from_session( $cart_item, $values ) {
 
 
 
+
+
+
+
         $cart_item['layup_date_sel'] = $values['layup_date_sel'];
+
+
+
+
 
 
 
@@ -1623,7 +3244,15 @@ function layup_get_cart_item_from_session( $cart_item, $values ) {
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1631,11 +3260,23 @@ function layup_get_cart_item_from_session( $cart_item, $values ) {
 
 
 
+
+
+
+
  
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -1647,7 +3288,19 @@ add_filter( 'woocommerce_get_cart_item_from_session', 'layup_get_cart_item_from_
 
 
 
+
+
+
+
+
+
+
+
 /*
+
+
+
+
 
 
 
@@ -1655,7 +3308,15 @@ add_filter( 'woocommerce_get_cart_item_from_session', 'layup_get_cart_item_from_
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -1663,7 +3324,15 @@ function layup_get_item_date( $other_data, $cart_item ) {
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1671,7 +3340,15 @@ function layup_get_item_date( $other_data, $cart_item ) {
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1679,7 +3356,15 @@ function layup_get_item_date( $other_data, $cart_item ) {
 
 
 
+
+
+
+
             'name' => __( 'Date', 'woocommerce' ),
+
+
+
+
 
 
 
@@ -1687,11 +3372,23 @@ function layup_get_item_date( $other_data, $cart_item ) {
 
 
 
+
+
+
+
         );
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1699,7 +3396,15 @@ function layup_get_item_date( $other_data, $cart_item ) {
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1707,11 +3412,23 @@ function layup_get_item_date( $other_data, $cart_item ) {
 
 
 
+
+
+
+
  
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -1723,7 +3440,19 @@ add_filter( 'woocommerce_get_item_data', 'layup_get_item_date', 10, 2 );
 
 
 
+
+
+
+
+
+
+
+
 /*
+
+
+
+
 
 
 
@@ -1731,7 +3460,15 @@ add_filter( 'woocommerce_get_item_data', 'layup_get_item_date', 10, 2 );
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -1739,7 +3476,15 @@ function layup_order_item_product( $cart_item, $order_item ){
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1747,7 +3492,15 @@ function layup_order_item_product( $cart_item, $order_item ){
 
 
 
+
+
+
+
         $cart_item_meta['layup_date_sel'] = $order_item['layup_date_sel'];
+
+
+
+
 
 
 
@@ -1755,7 +3508,15 @@ function layup_order_item_product( $cart_item, $order_item ){
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1763,11 +3524,23 @@ function layup_order_item_product( $cart_item, $order_item ){
 
 
 
+
+
+
+
  
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -1779,7 +3552,19 @@ add_filter( 'woocommerce_order_item_product', 'layup_order_item_product', 10, 2 
 
 
 
+
+
+
+
+
+
+
+
 /* 
+
+
+
+
 
 
 
@@ -1787,7 +3572,15 @@ add_filter( 'woocommerce_order_item_product', 'layup_order_item_product', 10, 2 
 
 
 
+
+
+
+
  */ 
+
+
+
+
 
 
 
@@ -1795,7 +3588,15 @@ function layup_email_order_meta_fields( $fields ) {
 
 
 
+
+
+
+
     $fields['layup_date_sel'] = __( 'Date', 'woocommerce' ); 
+
+
+
+
 
 
 
@@ -1803,7 +3604,15 @@ function layup_email_order_meta_fields( $fields ) {
 
 
 
+
+
+
+
 } 
+
+
+
+
 
 
 
@@ -1815,7 +3624,19 @@ add_filter('woocommerce_email_order_meta_fields', 'layup_email_order_meta_fields
 
 
 
+
+
+
+
+
+
+
+
 /**
+
+
+
+
 
 
 
@@ -1823,7 +3644,15 @@ add_filter('woocommerce_email_order_meta_fields', 'layup_email_order_meta_fields
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -1831,7 +3660,15 @@ function layup_save_date_to_order_items( $item, $cart_item_key, $values, $order 
 
 
 
+
+
+
+
     if ( empty( $values['layup_date_sel'] ) ) {
+
+
+
+
 
 
 
@@ -1839,7 +3676,19 @@ function layup_save_date_to_order_items( $item, $cart_item_key, $values, $order 
 
 
 
+
+
+
+
     }
+
+
+
+
+
+
+
+
 
 
 
@@ -1855,7 +3704,19 @@ function layup_save_date_to_order_items( $item, $cart_item_key, $values, $order 
 
 
 
+
+
+
+
+
+
+
+
     $item->add_meta_data( __( 'Date', 'woocommerce' ), $values['layup_date_sel'] );
+
+
+
+
 
 
 
@@ -1863,11 +3724,23 @@ function layup_save_date_to_order_items( $item, $cart_item_key, $values, $order 
 
 
 
+
+
+
+
 }
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -1879,7 +3752,19 @@ add_action( 'woocommerce_checkout_create_order_line_item', 'layup_save_date_to_o
 
 
 
+
+
+
+
+
+
+
+
 /**
+
+
+
+
 
 
 
@@ -1887,7 +3772,15 @@ add_action( 'woocommerce_checkout_create_order_line_item', 'layup_save_date_to_o
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -1895,7 +3788,15 @@ function create_layup_disable_field() {
 
 
 
+
+
+
+
     $args = array(
+
+
+
+
 
 
 
@@ -1903,7 +3804,15 @@ function create_layup_disable_field() {
 
 
 
+
+
+
+
     'label' => __( 'Disable LayUp checkout', 'layup-gateway' ),
+
+
+
+
 
 
 
@@ -1911,7 +3820,15 @@ function create_layup_disable_field() {
 
 
 
+
+
+
+
     'desc_tip' => true,
+
+
+
+
 
 
 
@@ -1919,7 +3836,15 @@ function create_layup_disable_field() {
 
 
 
+
+
+
+
     );
+
+
+
+
 
 
 
@@ -1927,7 +3852,15 @@ function create_layup_disable_field() {
 
 
 
+
+
+
+
    }
+
+
+
+
 
 
 
@@ -1937,7 +3870,17 @@ add_action( 'woocommerce_product_options_general_product_data', 'create_layup_di
 
 
 
+
+
+
+
+
+
 /**
+
+
+
+
 
 
 
@@ -1945,7 +3888,15 @@ add_action( 'woocommerce_product_options_general_product_data', 'create_layup_di
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -1953,7 +3904,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
     global $post;
+
+
+
+
 
 
 
@@ -1961,7 +3920,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
     $gateway_id = 'layup';
+
+
+
+
 
 
 
@@ -1969,7 +3936,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
     $gateway = $gateways->payment_gateways()[$gateway_id];
+
+
+
+
 
 
 
@@ -1977,7 +3952,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
     $layup_disable = isset( $_POST['layup_disable'] ) ? sanitize_text_field( $_POST['layup_disable']) : '';
+
+
+
+
 
 
 
@@ -1985,7 +3968,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
     $price = $product->get_price() * 100;
+
+
+
+
 
 
 
@@ -1993,29 +3984,59 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         $d = DateTime::createFromFormat('Y-m-d', $postdate);
+
+
 
     
 
+
+
         $valid_date = $d && $d->format('Y-m-d') === $postdate;
+
+
 
      
 
+
+
         if ($valid_date == false){
+
+
 
             unset($_POST['layup_date']);
 
+
+
             
 
+
+
             break;
+
+
 
         }
 
 
 
+
+
+
+
     }
 
+
+
     $dates = isset( $_POST['layup_date'] ) ? preg_replace("([^0-9-])", "", $_POST['layup_date']) : '';
+
+
+
+
 
 
 
@@ -2023,23 +4044,47 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
     $lu_min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($lu_curr_date)));
+
+
+
+
 
 
 
     if ($gateway->testmode == 'yes') {
 
+
+
         $api_key = "myApiKey";
+
+
 
         $preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
 
+
+
     } else {
+
+
 
         $api_key = $gateway->api_key;
 
+
+
         $preview_api_url = "https://api.layup.co.za/v1/payment-plan/preview";
 
+
+
     }
+
+
+
+
 
 
 
@@ -2047,7 +4092,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         $lu_curr_date = date('c');
+
+
+
+
 
 
 
@@ -2055,7 +4108,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         $preview_details = array(
+
+
+
+
 
 
 
@@ -2063,7 +4124,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
             'depositPerc' => $gateway->layup_dep,
+
+
+
+
 
 
 
@@ -2071,7 +4140,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
             'endDateMin' => $lu_min_date,
+
+
+
+
 
 
 
@@ -2079,7 +4156,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         );
+
+
+
+
 
 
 
@@ -2087,7 +4172,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
              'Content-Type' => 'application/json',
+
+
+
+
 
 
 
@@ -2095,7 +4188,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         );
+
+
+
+
 
 
 
@@ -2103,7 +4204,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         $preview_details_json = json_encode( $preview_details , JSON_UNESCAPED_SLASHES );
+
+
+
+
 
 
 
@@ -2111,11 +4220,23 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
             'headers' => $preview_headers,
 
 
 
+
+
+
+
             'body' => $preview_details_json
+
+
+
+
 
 
 
@@ -2125,27 +4246,57 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
+
+
         $preview_response = wp_remote_post( $preview_api_url, $preview_args);
+
+
+
+
 
 
 
         $preview_body = json_decode( $preview_response['body'], true );
 
+
+
     
+
+
 
         $max_payment_months = count($preview_body['paymentPlans']);
 
+
+
     
+
+
 
         $amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
 
+
+
         $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ' ');
+
+
 
     
 
+
+
         $product->update_meta_data( 'layup_preview_months', $max_payment_months );
 
+
+
         $product->update_meta_data( 'layup_preview_amount', $amount_monthly_form );
+
+
+
+
 
 
 
@@ -2153,9 +4304,19 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         $max_date = max($dates);
 
+
+
         $lu_max_date = date('c', strtotime($max_date));
+
+
+
+
 
 
 
@@ -2163,7 +4324,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
             'amountDue' => $price,
+
+
+
+
 
 
 
@@ -2171,7 +4340,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
             'endDateMax' => $lu_max_date,
+
+
+
+
 
 
 
@@ -2179,11 +4356,23 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
             'absorbsFee' => false
 
 
 
+
+
+
+
         );
+
+
+
+
 
 
 
@@ -2191,7 +4380,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
              'Content-Type' => 'application/json',
+
+
+
+
 
 
 
@@ -2199,11 +4396,23 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         );
 
 
 
+
+
+
+
         
+
+
+
+
 
 
 
@@ -2211,7 +4420,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         $preview_args = array(
+
+
+
+
 
 
 
@@ -2219,7 +4436,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
             'body' => $preview_details_json
+
+
+
+
 
 
 
@@ -2227,7 +4452,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
            
+
+
+
+
 
 
 
@@ -2235,7 +4468,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         $preview_body = json_decode( $preview_response['body'], true );
+
+
+
+
 
 
 
@@ -2243,21 +4484,43 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
         $amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
+
+
 
         $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ' ');
 
 
 
+
+
+
+
         $product->update_meta_data( 'layup_preview_months', $max_payment_months );
+
+
 
         $product->update_meta_data( 'layup_preview_amount', $amount_monthly_form );
 
 
 
+
+
+
+
         
 
+
+
     }
+
+
+
+
 
 
 
@@ -2265,7 +4528,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -2277,7 +4548,19 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
+
+
+
+
 /**
+
+
+
+
 
 
 
@@ -2285,7 +4568,15 @@ function save_layup_disable_field( $post_id ) {
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -2297,7 +4588,23 @@ function check_layup_disable_field($gateways){
 
 
 
+
+
+
+
+
+
+
+
     global $woocommerce;
+
+
+
+
+
+
+
+
 
 
 
@@ -2307,9 +4614,17 @@ function check_layup_disable_field($gateways){
 
     $inarray = false;
 
-    wc_clear_notices();
+
+
+    //wc_clear_notices();
+
+
 
     
+
+
+
+
 
 
 
@@ -2317,7 +4632,15 @@ function check_layup_disable_field($gateways){
 
 
 
+
+
+
+
         $layup_disable_meta = get_post_meta($values['product_id'], 'layup_disable', true);
+
+
+
+
 
 
 
@@ -2325,7 +4648,15 @@ function check_layup_disable_field($gateways){
 
 
 
+
+
+
+
             $inarray = true;//set inarray to true
+
+
+
+
 
 
 
@@ -2333,11 +4664,27 @@ function check_layup_disable_field($gateways){
 
 
 
+
+
+
+
         }
 
 
 
+
+
+
+
     }
+
+
+
+
+
+
+
+
 
 
 
@@ -2349,15 +4696,31 @@ function check_layup_disable_field($gateways){
 
 
 
+
+
+
+
         unset($gateways['layup']);
+
+
 
         if (is_checkout()) {
 
+
+
 			wc_add_notice( 'You currently have items in your cart that do not allow you to use LayUp as a payment method, please remove them if you wish to use the LayUp payment method.', 'error' );
+
+
 
 		}
 
+
+
     } 
+
+
+
+
 
 
 
@@ -2365,7 +4728,15 @@ function check_layup_disable_field($gateways){
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -2377,7 +4748,19 @@ add_filter('woocommerce_available_payment_gateways','check_layup_disable_field',
 
 
 
+
+
+
+
+
+
+
+
 /**
+
+
+
+
 
 
 
@@ -2385,7 +4768,15 @@ add_filter('woocommerce_available_payment_gateways','check_layup_disable_field',
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -2393,7 +4784,15 @@ function layup_display_icon() {
 
 
 
+
+
+
+
     global $post;
+
+
+
+
 
 
 
@@ -2401,7 +4800,15 @@ function layup_display_icon() {
 
 
 
+
+
+
+
     
+
+
+
+
 
 
 
@@ -2409,7 +4816,15 @@ function layup_display_icon() {
 
 
 
+
+
+
+
     $gateways = WC_Payment_Gateways::instance();
+
+
+
+
 
 
 
@@ -2421,7 +4836,19 @@ function layup_display_icon() {
 
 
 
+
+
+
+
+
+
+
+
     // Check for the Disable LayUp field value
+
+
+
+
 
 
 
@@ -2429,7 +4856,15 @@ function layup_display_icon() {
 
 
 
+
+
+
+
     $layup_disable_meta = $product->get_meta( 'layup_disable' );
+
+
+
+
 
 
 
@@ -2437,13 +4872,27 @@ function layup_display_icon() {
 
 
 
+
+
+
+
     // Only display LayUp icon if Disable LayUp field is not checked
+
+
+
+
 
 
 
     $layup_preview_amount = $product->get_meta( 'layup_preview_amount' );
 
+
+
     $layup_preview_months = $product->get_meta( 'layup_preview_months' );
+
+
+
+
 
 
 
@@ -2451,19 +4900,39 @@ function layup_display_icon() {
 
 
 
+
+
+
+
     PAY WITH
+
+
+
+
 
 
 
     <img style="width: 60px; vertical-align: middle; border-style: none" src="'.plugin_dir_url( dirname( __FILE__ )) . 'img/logo-color.168d4abe.png">
 
+
+
     
+
+
+
+
 
 
 
     </div>
 
+
+
     <div style="float:left; font-size: 12px;margin-bottom: 15px;margin-left: 15px; max-width: 50%;" class="btn-layup">
+
+
+
+
 
 
 
@@ -2471,7 +4940,15 @@ function layup_display_icon() {
 
 
 
+
+
+
+
     </div></div>';
+
+
+
+
 
 
 
@@ -2479,7 +4956,15 @@ function layup_display_icon() {
 
 
 
+
+
+
+
    }
+
+
+
+
 
 
 
@@ -2489,93 +4974,189 @@ function layup_display_icon() {
 
 
 
+
+
+
+
+
+
    /**
+
+
+
+
 
 
 
    * Display LayUp extimate text on shop page
 
+
+
   
+
+
 
    */
 
+
+
   
+
+
 
   function layup_display_estimate() {
 
+
+
   
+
+
 
       global $post;
 
+
+
   
+
+
 
       global $woocommerce;
 
+
+
   
+
+
 
       $gateway_id = 'layup';
 
+
+
   
+
+
 
       $gateways = WC_Payment_Gateways::instance();
 
+
+
   
+
+
 
       $gateway = $gateways->payment_gateways()[$gateway_id];
 
-  
+
 
   
 
+
+
   
+
+
+
+  
+
+
 
       // Check for the Disable LayUp field value
 
+
+
   
+
+
 
       $product = wc_get_product( $post->ID );
 
+
+
   
+
+
 
       $layup_disable_meta = $product->get_meta( 'layup_disable' );
 
+
+
   
+
+
 
       if( $layup_disable_meta != 'yes' ) {
 
+
+
   
+
+
 
       // Only display LayUp icon if Disable LayUp field is not checked
 
+
+
   
+
+
 
       $layup_preview_amount = $product->get_meta( 'layup_preview_amount' );
 
+
+
       $layup_preview_months = $product->get_meta( 'layup_preview_months' );
 
+
+
   
+
+
 
       
 
+
+
   
+
+
 
       echo '<div style="float:left; font-size: 12px;margin-bottom: 10px;" class="btn-layup">
 
+
+
   
+
+
 
       From R'.esc_attr($layup_preview_amount).'/month for '.esc_attr($layup_preview_months).' Months
 
+
+
   
+
+
 
       </div>';
 
+
+
   
+
+
 
       }
 
+
+
   
 
+
+
      }
+
+
+
+
 
 
 
@@ -2583,7 +5164,15 @@ function layup_display_icon() {
 
 
 
+
+
+
+
  // register WC Order status Partial and Placed
+
+
+
+
 
 
 
@@ -2591,39 +5180,11 @@ function register_layup_order_statuses() {
 
 
 
-    register_post_status( 'wc-partial', array(
-
-
-
-        'label'                     => _x( 'Partial', 'Order status', 'woocommerce' ),
-
-
-
-        'public'                    => true,
-
-
-
-        'exclude_from_search'       => false,
-
-
-
-        'show_in_admin_all_list'    => true,
-
-
-
-        'show_in_admin_status_list' => true,
-
-
-
-        'label_count'               => _n_noop( 'Partial <span class="count">(%s)</span>', 'Partial <span class="count">(%s)</span>' )
-
-
-
-    ) );
-
-
-
     register_post_status( 'wc-placed', array(
+
+
+
+
 
 
 
@@ -2631,7 +5192,15 @@ function register_layup_order_statuses() {
 
 
 
+
+
+
+
         'public'                    => true,
+
+
+
+
 
 
 
@@ -2639,7 +5208,15 @@ function register_layup_order_statuses() {
 
 
 
+
+
+
+
         'show_in_admin_all_list'    => true,
+
+
+
+
 
 
 
@@ -2647,7 +5224,15 @@ function register_layup_order_statuses() {
 
 
 
+
+
+
+
         'label_count'               => _n_noop( 'Placed <span class="count">(%s)</span>', 'Placed <span class="count">(%s)</span>' )
+
+
+
+
 
 
 
@@ -2655,7 +5240,19 @@ function register_layup_order_statuses() {
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -2667,7 +5264,15 @@ add_action( 'init', 'register_layup_order_statuses' );
 
 
 
+
+
+
+
 // Add to list of WC Order statuses
+
+
+
+
 
 
 
@@ -2675,224 +5280,54 @@ function add_layup_to_order_statuses( $order_statuses ) {
 
 
 
-    
+    $new_order_statuses = array();
 
+    foreach ( $order_statuses as $key => $status ) {
+        $new_order_statuses[ $key ] = $status;
+        if ( 'wc-pending' === $key ) {
+            $new_order_statuses['wc-placed']  = _x( 'Placed', 'Order status', 'woocommerce' );
+        }
 
+    }
 
-        // add new order statuses
-
-
-
-        $order_statuses['wc-partial'] = _x( 'Partial', 'Order status', 'woocommerce' );
-
-
-
-        $order_statuses['wc-placed'] = _x( 'Placed', 'Order status', 'woocommerce' );
-
-
-
-
-
-
-
-    return $order_statuses;
-
+    return $new_order_statuses;
 
 
 }
-
 
 
 add_filter( 'wc_order_statuses', 'add_layup_to_order_statuses' );
 
-
-
-
-
-
-
 /**
-
-
 
  *   Send Formatted Email @ WooCommerce "Placed" Order Status
 
-
-
  */
-
-
-
-
-
-
-
- // Adding action for 'Order Placed'
-
-
-
-add_filter( 'woocommerce_email_actions', 'placed_email_actions', 20, 1 );
-
-
-
-function placed_email_actions( $action ) {
-
-
-
-    $actions[] = 'woocommerce_order_status_wc-placed';
-
-
-
-    return $actions;
-
-
-
-}
-
-
-
-  
-
-
-
-add_action( 'woocommerce_order_status_changed', 'layup_status_custom_notification', 20, 4 );
-
-
-
-  
-
-
+ 
+ add_action( 'woocommerce_order_status_changed', 'layup_status_custom_notification', 20, 4 );
 
 function layup_status_custom_notification( $order_id, $old_status, $new_status, $order ) {
 
 
-
     if ( $new_status == 'placed' ) {
-
-
-
-        $heading = 'Order Placed';
-
-
-
-        $subject = 'Order Placed and payment waiting to be completed';
-
-
-
-    
-
-
 
         // Get WooCommerce email objects
 
-
-
         $mailer = WC()->mailer()->get_emails();
 
+        // Send the email 
 
-
-    
-
-
-
-        // Assign heading & subject to chosen object
-
-
-
-        $mailer['WC_Email_Customer_Processing_Order']->heading = $heading;
-
-
-
-        
-
-
-
-        $mailer['WC_Email_Customer_Processing_Order']->subject = $subject;
-
-
-
-        
-
-
-
-    
-
-
-
-        // Send the email with custom heading & subject
-
-
-
-        $mailer['WC_Email_Customer_Processing_Order']->trigger( $order_id );
-
-
-
-    
-
-
+        $mailer['WC_Customer_Placed_Order']->trigger( $order_id );
 
         }
 
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-/**
-
-
-
- *   Add Content to the Customer Processing Order Email - WooCommerce
-
-
-
- */
-
-
-
  
-
-
-
-add_action( 'woocommerce_email_before_order_table', 'layup_add_content_email', 20, 4 );
-
-
-
- 
-
-
-
-function layup_add_content_email( $order, $sent_to_admin, $plain_text, $email ) {
-
-
-
-   if ( $email->id == 'customer_processing_order' && $order->get_status() == "placed" ) {
-
-
-
-      echo '<h2 class="email-upsell-title">Awaiting Full Payment</h2><p class="email-upsell-p">Thank you for placing an order using LayUp, You order will be monitored and as soon as full payment has been recieved, your goods wll be shipped.</p>';
-
-
-
-   }
-
-
-
-}
-
 
 
 function my_error_notice() {
-
 
 
     $merchant_id = get_option( 'layup_merchant_id' );
@@ -2903,25 +5338,51 @@ function my_error_notice() {
 
 
 
+
+
+
+
     ?>
+
+
 
     <div class="error notice">
 
+
+
         <p><?php _e( 'Offering customers the option to pay with LayUp payment plans at checkout. ', 'woocommerce'); ?>
+
+
 
         <a target="_blank" href="https://layup.co.za/contact-us/"><?php _e('Register for a LayUp merchant account ', 'woocommerce');?></a><?php _e(' and start offering payment plans today. If you already have one please fill out your merchant details ', 'woocommerce');?>
 
+
+
         <a href="<?php echo admin_url('admin.php?page=wc-settings&tab=layup-merchant'); ?>"><?php _e( 'here.', 'woocommerce');?></a></p>
+
+
 
     </div>
 
+
+
     <?php
+
+
 
     }
 
+
+
 }
 
+
+
 add_action( 'admin_notices', 'my_error_notice' );
+
+
+
+
 
 
 

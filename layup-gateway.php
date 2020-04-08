@@ -2,7 +2,15 @@
 
 
 
+
+
+
+
 /*
+
+
+
+
 
 
 
@@ -10,7 +18,15 @@
 
 
 
+
+
+
+
  * Plugin URI: https://layup.co.za/how-it-works
+
+
+
+
 
 
 
@@ -18,7 +34,15 @@
 
 
 
+
+
+
+
  * Author: LayUp Dev Team
+
+
+
+
 
 
 
@@ -26,7 +50,15 @@
 
 
 
- * Version: 1.2.3
+
+
+
+
+ * Version: 1.3.0
+
+
+
+
 
 
 
@@ -34,7 +66,15 @@
 
 
 
+
+
+
+
 */
+
+
+
+
 
 
 
@@ -42,11 +82,23 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 
+
+
+
+
  /*
 
 
 
+
+
+
+
  *  register WP cron event on activation
+
+
+
+
 
 
 
@@ -58,11 +110,27 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 
+
+
+
+
+
+
+
+
 add_filter( 'cron_schedules', 'layup_ten_add_cron_interval' );
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -70,7 +138,15 @@ function layup_ten_add_cron_interval( $schedules ) {
 
 
 
+
+
+
+
     $schedules['ten_mins'] = array(
+
+
+
+
 
 
 
@@ -78,7 +154,15 @@ function layup_ten_add_cron_interval( $schedules ) {
 
 
 
+
+
+
+
         'display'  => esc_html__( 'Every Ten Minutes' ),
+
+
+
+
 
 
 
@@ -86,7 +170,15 @@ function layup_ten_add_cron_interval( $schedules ) {
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -94,7 +186,19 @@ function layup_ten_add_cron_interval( $schedules ) {
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -110,22 +214,53 @@ register_activation_hook(__FILE__, 'layup_activation');
 
 
 
+
+
+
+
+
+
+
+
 function layup_activation() {
+
+
+
+
 
 
 
     if (! wp_next_scheduled ( 'layup_order_check' )) {
 
+
+
 		wp_schedule_event(time(), 'ten_mins', 'layup_order_check');
+
 	
+
 	}
+
+
 
 	if (! wp_next_scheduled ( 'layup_prod_check' )) {
 
+
+
 		wp_schedule_event(time(), 'hourly', 'layup_prod_check');
+
 		
+
 	}
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -137,11 +272,23 @@ function layup_activation() {
 
 
 
+
+
+
+
  *  deregister WP cron event on deactivation
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -153,18 +300,45 @@ register_deactivation_hook(__FILE__, 'layup_deactivation');
 
 
 
+
+
+
+
+
+
+
+
 function layup_deactivation() {
 
+
+
 	wp_clear_scheduled_hook('layup_order_check');
+
 	wp_clear_scheduled_hook('layup_prod_check');
+
+
 
 }
 
 
 
+
+
+
+
 require_once( plugin_basename( 'includes/layup-cron.php' ) );
 
+
+
 require_once( plugin_basename( 'includes/layup-wc-functions.php' ) );
+
+
+
+
+
+
+
+
 
 
 
@@ -176,11 +350,23 @@ require_once( plugin_basename( 'includes/layup-wc-functions.php' ) );
 
 
 
+
+
+
+
  * This action hook registers our PHP class as a WooCommerce payment gateway
 
 
 
+
+
+
+
  */
+
+
+
+
 
 
 
@@ -188,7 +374,15 @@ add_filter( 'woocommerce_payment_gateways', 'layup_add_gateway_class' );
 
 
 
+
+
+
+
 function layup_add_gateway_class( $gateways ) {
+
+
+
+
 
 
 
@@ -196,7 +390,15 @@ function layup_add_gateway_class( $gateways ) {
 
 
 
+
+
+
+
 	return $gateways;
+
+
+
+
 
 
 
@@ -204,7 +406,15 @@ function layup_add_gateway_class( $gateways ) {
 
 
 
+
+
+
+
  
+
+
+
+
 
 
 
@@ -212,7 +422,15 @@ function layup_add_gateway_class( $gateways ) {
 
 
 
+
+
+
+
  * The class itself from class-layup-wc-gateway.php, it is inside plugins_loaded action hook
+
+
+
+
 
 
 
@@ -220,7 +438,15 @@ function layup_add_gateway_class( $gateways ) {
 
 
 
+
+
+
+
 add_action( 'plugins_loaded', 'layup_init_gateway_class' );
+
+
+
+
 
 
 
@@ -232,7 +458,19 @@ function layup_init_gateway_class() {
 
 
 
+
+
+
+
+
+
+
+
     if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
+
+
+
+
 
 
 
@@ -240,7 +478,19 @@ function layup_init_gateway_class() {
 
 
 
+
+
+
+
 	}
+
+
+
+
+
+
+
+
 
 
 
@@ -256,11 +506,27 @@ function layup_init_gateway_class() {
 
 
 
+
+
+
+
+
+
+
+
     require_once( plugin_basename( 'includes/layup-payment-plan-shortcode.php' ) );
 
 
 
+
+
+
+
     require_once( plugin_basename( 'includes/layup-payment-plan-tab.php' ) );
+
+
+
+
 
 
 
@@ -272,11 +538,31 @@ function layup_init_gateway_class() {
 
 
 
+
+
+
+
+
+
+
+
    
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -288,7 +574,15 @@ function layup_init_gateway_class() {
 
 
 
+
+
+
+
  * Plugin links on installed plugins page
+
+
+
+
 
 
 
@@ -296,7 +590,15 @@ function layup_init_gateway_class() {
 
 
 
+
+
+
+
 function woocommerce_layup_plugin_links( $links ) {
+
+
+
+
 
 
 
@@ -304,7 +606,15 @@ function woocommerce_layup_plugin_links( $links ) {
 
 
 
+
+
+
+
 		array(
+
+
+
+
 
 
 
@@ -312,7 +622,15 @@ function woocommerce_layup_plugin_links( $links ) {
 
 
 
+
+
+
+
 			'tab' => 'checkout',
+
+
+
+
 
 
 
@@ -320,7 +638,15 @@ function woocommerce_layup_plugin_links( $links ) {
 
 
 
+
+
+
+
 		),
+
+
+
+
 
 
 
@@ -328,7 +654,19 @@ function woocommerce_layup_plugin_links( $links ) {
 
 
 
+
+
+
+
 	);
+
+
+
+
+
+
+
+
 
 
 
@@ -340,7 +678,15 @@ function woocommerce_layup_plugin_links( $links ) {
 
 
 
+
+
+
+
 		'<a href="' . esc_url( $settings_url ) . '">' . __( 'Settings', 'layup-gateway' ) . '</a>',
+
+
+
+
 
 
 
@@ -348,7 +694,15 @@ function woocommerce_layup_plugin_links( $links ) {
 
 
 
+
+
+
+
 		
+
+
+
+
 
 
 
@@ -360,7 +714,19 @@ function woocommerce_layup_plugin_links( $links ) {
 
 
 
+
+
+
+
+
+
+
+
 	return array_merge( $plugin_links, $links );
+
+
+
+
 
 
 
@@ -368,5 +734,42 @@ function woocommerce_layup_plugin_links( $links ) {
 
 
 
+
+
+
+
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'woocommerce_layup_plugin_links' );
+
+
+/**
+ * Class Custom_WC_Email
+ */
+class Custom_WC_Email {
+
+	/**
+	 * Custom_WC_Email constructor.
+	 */
+	public function __construct() {
+    // Filtering the emails and adding our own email.
+		add_filter( 'woocommerce_email_classes', array( $this, 'register_email' ), 90, 1 );
+    // Absolute path to the plugin folder.
+		define( 'CUSTOM_WC_LAYUP_EMAIL_PATH', plugin_dir_path( __FILE__ ) );
+	}
+
+	/**
+	 * @param array $emails
+	 *
+	 * @return array
+	 */
+	public function register_email( $emails ) {
+		
+		require_once( plugin_basename('emails/class-wc-customer-placed-order.php'));
+
+		$emails['WC_Customer_Placed_Order'] = new WC_Customer_Placed_Order();
+
+		return $emails;
+	}
+}
+
+new Custom_WC_Email();
 

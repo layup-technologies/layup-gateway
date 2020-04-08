@@ -2,23 +2,47 @@
 
 
 
+
+
+
+
 /*
+
+
 
 *register and create shortcode for diplaying customer's active payment plans
 
+
+
 */
+
+
+
 
 
 add_shortcode( 'layup', 'layup_payment_plans_shortcode' );
 
 
+
+
+
 function layup_payment_plans_shortcode() {
+
+
+
 
 
     wp_enqueue_style("layup_css");
 
 
+
+
+
     if (get_option( 'lu_testmode', true ) == 'yes') {
+
+
+
+
 
 
 
@@ -26,7 +50,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
     } else {
+
+
+
+
 
 
 
@@ -34,10 +66,21 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
         }
 
 
+
+
+
     $orders = get_posts( array(
+
+
+
+
 
 
 
@@ -45,7 +88,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
         'post_type'   => wc_get_order_types(),
+
+
+
+
 
 
 
@@ -53,7 +104,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
     ) );
+
+
+
+
 
 
 
@@ -61,7 +120,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
     if (!empty($orders)) {
+
+
+
+
 
 
 
@@ -69,7 +136,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
             $order = wc_get_order( $order->ID );
+
+
+
+
 
 
 
@@ -77,7 +152,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
             $order_id = $order->get_order_number();
+
+
+
+
 
 
 
@@ -85,7 +168,18 @@ function layup_payment_plans_shortcode() {
 
 
 
-            $months = get_post_meta( $order_id, 'layup_pp_months_0', true );
+
+
+
+
+            $quant = get_post_meta( $order_id, 'layup_pp_quant_0', true );
+
+
+            $freq = get_post_meta( $order_id, 'layup_pp_freq_0', true );
+
+
+
+
 
 
 
@@ -93,7 +187,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
             $ref = get_post_meta( $order_id, 'layup_order_ref', true );
+
+
+
+
 
 
 
@@ -101,10 +203,21 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
             $gateway_id = 'layup';
 
 
+
+
+
             $gateways = WC_Payment_Gateways::instance();
+
+
+
+
 
 
 
@@ -112,7 +225,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
             $html .= '<article class="pp-entry">
+
+
+
+
 
 
 
@@ -120,11 +241,23 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
             <p class="pp-content"><strong>Outstanding:</strong> R '.esc_attr($outstanding).'</p>
 
 
 
-            <p class="pp-content"><strong>Payment Plan:</strong> R '.esc_attr($monthly).' over '.esc_attr($months).' months</p>
+
+
+
+
+            <p class="pp-content"><strong>Payment Plan:</strong> R '.esc_attr($monthly).' over '.esc_attr($quant).' '.esc_attr($freq).' payments</p>
+
+
+
+
 
 
 
@@ -132,7 +265,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
             PAY WITH
+
+
+
+
 
 
 
@@ -140,7 +281,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
             </div></a>
+
+
+
+
 
 
 
@@ -148,15 +297,31 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
             </article>';
+
+
+
+
 
 
 
         }
 
+
+
     
 
+
+
     } else {
+
+
+
+
 
 
 
@@ -164,7 +329,15 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
         <h3 class="pp-entry-title">You have no active payment plans.</h3>
+
+
+
+
 
 
 
@@ -172,13 +345,27 @@ function layup_payment_plans_shortcode() {
 
 
 
+
+
+
+
     }
+
+
+
+
 
 
 
     return $html;
 
+
+
  }
+
+
+
+
 
 
 
