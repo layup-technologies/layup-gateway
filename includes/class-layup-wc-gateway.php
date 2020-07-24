@@ -148,6 +148,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $this->testmode = 'yes' === $this->get_option( 'lu_testmode' );
 
+        $this->payplan_disp = 'yes' === $this->get_option( 'payplan_disp' );
+
 
 
         $this->layup_dep = (int)$this->get_option( 'layup_dep' );
@@ -412,9 +414,35 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                 'custom_attributes' => array(
 
-                    'min'	=> '6'
+                    'min'	=> '2'
 
                 )
+
+
+
+            ),
+
+
+
+
+
+            'payplan_disp' => array(
+
+
+
+                'title'       => 'Show payment plan example',
+
+
+
+                'type'        => 'checkbox',
+
+
+
+                'description' => 'Show payment plan example under each product and on single product page',
+
+
+
+                'default'     => 'yes'
 
 
 

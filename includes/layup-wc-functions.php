@@ -905,23 +905,6 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
-
-
-
-                    if ($gateway->testmode == 'yes') {
-
-
-
-                        $api_key = "myApiKey";
-
-                
-
-                        $api_url = "https://sandbox-api.layup.co.za/";
-
-                
-
-                    } else {
-
                 
 
                         $api_key = $gateway->api_key;
@@ -930,61 +913,19 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
                         $api_url = "https://api.layup.co.za/";
 
-                
-
-                    }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                     $headers = array(
 
 
 
-
-
-
-
                         'accept' => 'application/json',
-
-
-
-
-
 
 
                         'apikey' => $api_key,
 
 
-
-
-
-
-
                     );
-
-
-
-
-
-
-
-                    
-
-
-
-
 
 
 
@@ -992,47 +933,13 @@ if ( ! class_exists( 'WC_Settings_LayUp' ) ) {
 
 
 
-
-
-
-
                         'headers' => $headers,
-
-
-
-
-
 
 
                         );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                     $merch_response = wp_remote_get( $api_url.'v1/merchants/'.$merchant_id, $merchant_args);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -4861,10 +4768,11 @@ function layup_display_icon() {
 
 
     $layup_disable_meta = $product->get_meta( 'layup_disable' );
+    $layup_disable_meta = $product->get_meta( 'layup_disable' );
 
 
 
-
+    if( $gateway->payplan_disp == 'yes' ) {
 
 
 
@@ -4928,7 +4836,7 @@ function layup_display_icon() {
 
 
 
-    <div style="float:left; font-size: 12px;margin-bottom: 15px;margin-left: 15px; max-width: 50%;" class="btn-layup">
+    <div style="font-size: 12px;margin-bottom: 15px;margin-left: 15px; max-width: 50%;" class="btn-layup">
 
 
 
@@ -4954,6 +4862,8 @@ function layup_display_icon() {
 
     }
 
+}
+
 
 
 
@@ -4968,7 +4878,7 @@ function layup_display_icon() {
 
 
 
-   add_action( 'woocommerce_before_add_to_cart_button', 'layup_display_icon' );
+   add_action( 'woocommerce_before_add_to_cart_form', 'layup_display_icon' );
 
 
 
@@ -5016,71 +4926,29 @@ function layup_display_icon() {
 
 
 
-  
-
-
-
       global $woocommerce;
-
-
-
   
-
-
 
       $gateway_id = 'layup';
 
 
-
-  
-
-
-
       $gateways = WC_Payment_Gateways::instance();
-
-
-
-  
-
 
 
       $gateway = $gateways->payment_gateways()[$gateway_id];
 
 
 
-  
-
-
-
-  
-
-
-
-  
-
-
-
       // Check for the Disable LayUp field value
 
-
-
-  
-
-
-
       $product = wc_get_product( $post->ID );
-
-
-
-  
-
 
 
       $layup_disable_meta = $product->get_meta( 'layup_disable' );
 
 
 
-  
+      if( $gateway->payplan_disp == 'yes' ) {
 
 
 
@@ -5120,7 +4988,7 @@ function layup_display_icon() {
 
 
 
-      echo '<div style="float:left; font-size: 12px;margin-bottom: 10px;" class="btn-layup">
+      echo '<div style="font-size: 12px;margin-bottom: 10px;" class="btn-layup">
 
 
 
@@ -5147,7 +5015,7 @@ function layup_display_icon() {
       }
 
 
-
+    }
   
 
 

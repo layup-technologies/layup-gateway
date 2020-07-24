@@ -617,8 +617,8 @@ function layup_check_prod() {
         $args = array(
 
 
-
             'post_type' => 'product',
+            'status' => 'publish',
 
 
 
