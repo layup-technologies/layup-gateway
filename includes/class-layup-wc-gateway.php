@@ -858,10 +858,45 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             );
 
-
+            $i++;
 
         }
 
+
+
+// Check for tax total
+
+
+
+        $order_tax_total = $order->get_total_tax();
+
+
+
+        if ($order_tax_total != '') {
+
+
+
+            $products[$i] = array(
+
+
+
+                'amount'=> (int)$order_tax_total * 100,
+
+
+
+                'link'=> get_site_url(),
+
+
+
+                'sku'=> 'VAT'
+
+
+
+            );
+
+
+
+        }
 
 
 
@@ -1025,7 +1060,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
                 $order->update_status('wc-pending', __('Order created with LayUp', 'layup-gateway'));
-
+                
 
 
     
@@ -1036,7 +1071,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                wc_reduce_stock_levels($order_id);
+                //wc_reduce_stock_levels($order_id);
 
 
 

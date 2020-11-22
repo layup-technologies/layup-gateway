@@ -54,7 +54,7 @@
 
 
 
- * Version: 1.3.1
+ * Version: 1.5.0
 
 
 
@@ -741,35 +741,4 @@ function woocommerce_layup_plugin_links( $links ) {
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'woocommerce_layup_plugin_links' );
 
 
-/**
- * Class Custom_WC_Email
- */
-class Custom_WC_Email {
-
-	/**
-	 * Custom_WC_Email constructor.
-	 */
-	public function __construct() {
-    // Filtering the emails and adding our own email.
-		add_filter( 'woocommerce_email_classes', array( $this, 'register_email' ), 90, 1 );
-    // Absolute path to the plugin folder.
-		define( 'CUSTOM_WC_LAYUP_EMAIL_PATH', plugin_dir_path( __FILE__ ) );
-	}
-
-	/**
-	 * @param array $emails
-	 *
-	 * @return array
-	 */
-	public function register_email( $emails ) {
-		
-		require_once( plugin_basename('emails/class-wc-customer-placed-order.php'));
-
-		$emails['WC_Customer_Placed_Order'] = new WC_Customer_Placed_Order();
-
-		return $emails;
-	}
-}
-
-new Custom_WC_Email();
 

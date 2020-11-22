@@ -4399,7 +4399,7 @@ function save_layup_disable_field( $post_id ) {
 
 
 
-        $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ' ');
+        $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
 
 
 
@@ -4804,7 +4804,7 @@ function layup_display_icon() {
 
 
 
-    echo '<div class="clearfix"><div style="float:left; font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: '.esc_attr($gateway->btn_bg_color).';color: '.esc_attr($gateway->btn_text_color).';border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
+    echo '<div class="clearfix"><div style="float:left; font-size: 10px;padding: 10px 20px;margin-top: 15px;margin-right: 15px;margin-bottom: 15px;background-color: '.esc_attr($gateway->btn_bg_color).';color: '.esc_attr($gateway->btn_text_color).';border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
 
 
 
@@ -4812,7 +4812,7 @@ function layup_display_icon() {
 
 
 
-    PAY WITH
+    PAY IT OFF WITH
 
 
 
@@ -4820,7 +4820,7 @@ function layup_display_icon() {
 
 
 
-    <img style="width: 60px; vertical-align: middle; border-style: none" src="'.plugin_dir_url( dirname( __FILE__ )) . 'img/logo-color.168d4abe.png">
+    <img style="width: 60px !important; top: 0 !important; vertical-align: middle; border-style: none" src="'.plugin_dir_url( dirname( __FILE__ )) . 'img/logo-color.168d4abe.png">
 
 
 
@@ -4836,7 +4836,7 @@ function layup_display_icon() {
 
 
 
-    <div style="font-size: 12px;margin-bottom: 15px;margin-left: 15px; max-width: 50%;" class="btn-layup">
+    <div style="font-size: 12px;padding: 10px;margin-top: 15px;margin-bottom: 15px;margin-left: 15px; max-width: 80%;" class="btn-layup">
 
 
 
@@ -4844,12 +4844,154 @@ function layup_display_icon() {
 
 
 
-    From R'.esc_attr($layup_preview_amount).'/month for '.esc_attr($layup_preview_months).' Months
+    From R'.esc_attr($layup_preview_amount).'/month for '.esc_attr($layup_preview_months).' Months. Interest-free. '.esc_attr($gateway->layup_dep).'% deposit.<br>
+    <span id="lumodallink" style="color:#1295a5;">Learn More</span>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+    <style>
 
 
+/* The Modal (background) */
+.lumodal {
+  font-family: "Quicksand", serif !important;
+  display: none ; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 99999; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
+/* Modal Content */
+.lumodal-content {
+  background-color: #f7f9fc;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  text-align:center;
+  overflow:auto;
+}
+.lumodal-content .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
 
+.lumodal-content .lu-modal-col {
+    float:left; width:31.33%; margin:1%; margin-bottom:1em; padding: 2%;
+  
+}
 
+@media (max-width: 600px) {
+  /* CSS that should be displayed if width is equal to or less than 600px goes here */
+  .lumodal-content {
+  width: 80%;
+}
+  .lumodal-content .lu-modal-col {
+    width:80%;
+    margin: 0 auto;
+    display: table;
+    float:none;
+}
+.lumodal {
+    padding-top: 0px;
+}
+}
+
+.lumodal-content .lu-modal-col:nth-of-type(3n+4) {clear:left;}
+
+/* The Close Button */
+.luclose {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  border-radius: 5px;
+  border:#808080 solid 1px;
+  line-height: 0;
+  padding: 10px 10px 14px 10px;
+}
+
+.luclose:hover,
+.luclose:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#lumodallink:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+</style>
+
+<!-- The Modal -->
+<div id="lumyModal" class="lumodal">
+
+  <!-- Modal content -->
+  <div class="lumodal-content">
+    <span class="luclose">&times;</span>
+    <img alt="Layup Logo" class="center" style="width:250px !important;height:auto !important;" src="'.plugin_dir_url( dirname( __FILE__ )) . 'img/layup-logo-color.png">
+    <p style="color:#0c4152;font-weight: 700;">Simple, Smart, Instalments</p>
+    <h2 style="font-family: Quicksand !important; color:#0c4152;font-weight: 700;font-size: 2em;">How it <span style="color:#1295a5;">works?</span></h2>
+    <p style="color:#151a30;font-weight: 700;">No credit checks | Interest free payments | No ID required</p>
+    <div style="margin: 0 auto;display: table;width: 90%;">
+    <div class="lu-modal-col">
+        <img alt="activate" style="width:131px !important;height:auto !important;" class="center" src="'.plugin_dir_url( dirname( __FILE__ )) . 'img/modal-imageAsset 2.png">
+        <h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Activate</h3>
+        <p style="color:#151a30;font-weight: 500;font-size: 1em;">Select to <strong>pay it off with LayUp,</strong> using your debit/credit card or instant EFT</p>
+    </div>
+    <div class="lu-modal-col">
+        <img alt="activate" style="width:131px !important;height:auto !important;" class="center" src="'.plugin_dir_url( dirname( __FILE__ )) . 'img/modal-imageAsset 4.png">
+        <h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Payment Plan</h3>
+        <p style="color:#151a30;font-weight: 500;font-size: 1em;">Pay over time, on your terms, <strong>interest free</strong></p>
+    </div>
+    <div class="lu-modal-col">
+        <img alt="activate" style="width:131px !important;height:auto !important;" class="center" src="'.plugin_dir_url( dirname( __FILE__ )) . 'img/modal-imageAsset 3.png">
+        <h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Complete</h3>
+        <p style="color:#151a30;font-weight: 500;font-size: 1em;">Receive the purchase once <strong>paid in full</strong></p>
+    </div>
+</div>
+<hr style="color:#aaaaaa;background-color: #d0d0d0;height: 1px;border: none;">
+<p style="color:#151a30;font-weight: 500;font-size: 1em;">To see LayUp complete terms visit:</p>
+<p style="color:#151a30;font-weight: 700;font-size: 1em;"><a target="_blank" href="https://layup.co.za/terms-and-conditions/">https://layup.co.za/terms-and-conditions/</a></p>
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById("lumyModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("lumodallink");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("luclose")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
 
 
     </div></div>';
@@ -4878,7 +5020,7 @@ function layup_display_icon() {
 
 
 
-   add_action( 'woocommerce_before_add_to_cart_form', 'layup_display_icon' );
+   add_action( 'woocommerce_single_product_summary', 'layup_display_icon', 30 );
 
 
 
@@ -5030,169 +5172,6 @@ function layup_display_icon() {
 
    add_action( 'woocommerce_after_shop_loop_item', 'layup_display_estimate', 9 );
 
-
-
-
-
-
-
- // register WC Order status Partial and Placed
-
-
-
-
-
-
-
-function register_layup_order_statuses() {
-
-
-
-    register_post_status( 'wc-placed', array(
-
-
-
-
-
-
-
-        'label'                     => _x( 'Placed', 'Order status', 'woocommerce' ),
-
-
-
-
-
-
-
-        'public'                    => true,
-
-
-
-
-
-
-
-        'exclude_from_search'       => false,
-
-
-
-
-
-
-
-        'show_in_admin_all_list'    => true,
-
-
-
-
-
-
-
-        'show_in_admin_status_list' => true,
-
-
-
-
-
-
-
-        'label_count'               => _n_noop( 'Placed <span class="count">(%s)</span>', 'Placed <span class="count">(%s)</span>' )
-
-
-
-
-
-
-
-    ) );
-
-
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-add_action( 'init', 'register_layup_order_statuses' );
-
-
-
-
-
-
-
-// Add to list of WC Order statuses
-
-
-
-
-
-
-
-function add_layup_to_order_statuses( $order_statuses ) {
-
-
-
-    $new_order_statuses = array();
-
-    foreach ( $order_statuses as $key => $status ) {
-        $new_order_statuses[ $key ] = $status;
-        if ( 'wc-pending' === $key ) {
-            $new_order_statuses['wc-placed']  = _x( 'Placed', 'Order status', 'woocommerce' );
-        }
-
-    }
-
-    return $new_order_statuses;
-
-
-}
-
-
-add_filter( 'wc_order_statuses', 'add_layup_to_order_statuses' );
-
-/**
-
- *   Send Formatted Email @ WooCommerce "Placed" Order Status
-
- */
- 
- add_action( 'woocommerce_order_status_changed', 'layup_status_custom_notification', 20, 4 );
-
-function layup_status_custom_notification( $order_id, $old_status, $new_status, $order ) {
-
-
-    if ( $new_status == 'placed' ) {
-
-        // Get WooCommerce email objects
-
-        $mailer = WC()->mailer()->get_emails();
-
-        // Send the email 
-
-        $mailer['WC_Customer_Placed_Order']->trigger( $order_id );
-
-        }
-
-
-
-    }
- 
 
 
 function my_error_notice() {

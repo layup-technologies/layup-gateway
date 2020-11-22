@@ -101,7 +101,7 @@ function layup_check_payments() {
 
 
 
-        'post_status' => array('wc-pending')
+        'post_status' => array('wc-pending', 'wc-on-hold')
 
 
 
@@ -234,10 +234,6 @@ function layup_check_payments() {
 
 
             // Check payments 
-
-
-
-
 
 
 
@@ -423,8 +419,7 @@ function layup_check_payments() {
 
 
 
-
-                $order->update_status('wc-placed', __('Deposit paid to LayUp', 'layup-gateway'), true);
+                $order->update_status('wc-on-hold', __('Deposit paid to LayUp', 'layup-gateway'));
 
 
 
@@ -448,8 +443,9 @@ function layup_check_payments() {
 
 
 
-               $order->update_status('wc-processing', __('Order paid in full', 'layup-gateway'), true);
-
+               //$order->update_status('wc-processing', __('Order paid in full', 'layup-gateway'), true);
+               $order->payment_complete();
+               $order->add_order_note( __('LayUp order paid in full', 'layup-gateway') );
 
 
 
@@ -506,51 +502,7 @@ function layup_check_payments() {
 
 
 
-           } elseif ( $body['state'] == 'CANCELLED' ) { // Check if cancelled and restore stock
-
-
-
-
-
-
-
-            foreach ($order->get_items() as $item_id => $item) {
-
-
-
-
-
-
-
-                // Get an instance of corresponding the WC_Product object
-
-
-
-
-
-
-
-                $product = $item->get_product();
-
-
-
-
-
-
-
-                $qty = $item->get_quantity(); // Get the item quantity
-
-
-
-
-
-
-
-                wc_update_product_stock($product, $qty, 'increase');
-
-
-
-            }
+           } elseif ( $body['state'] == 'CANCELLED' ) { // Check if cancelled
 
 
 
@@ -608,7 +560,16 @@ function layup_check_prod() {
 
 
 
+    global $woocommerce;
 
+    $gateway_id = 'layup';
+
+
+    $gateways = WC_Payment_Gateways::instance();
+
+
+    $gateway = $gateways->payment_gateways()[$gateway_id];
+    
 
     global $post;
 
@@ -631,6 +592,7 @@ function layup_check_prod() {
 
 
             'meta_query' => array(
+                'relation' => 'OR',
 
                 array(
 
@@ -638,7 +600,16 @@ function layup_check_prod() {
 
                 'compare' => 'NOT EXISTS'
 
-            )
+                ),
+                array(
+
+                    'key' => 'layup_preview_months',
+
+                    'value'   => $gateway->lu_max_end_date - 1,
+
+                    'compare' => '!=',
+    
+                )
 
 )
 
@@ -657,11 +628,7 @@ function layup_check_prod() {
 if (empty($products)){
 
 
-
-    wp_clear_scheduled_hook('layup_prod_check');
-
     return;
-
 
 
 } else {
@@ -676,7 +643,7 @@ $lu_min_date = date('Y-m-d', strtotime("+" . 1 . " months", strtotime($lu_curr_d
 
 
 
-$lu_max_date = date('Y-m-d', strtotime("+" . 13 . " months", strtotime($lu_curr_date)));
+$lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
 
 
 
@@ -712,7 +679,7 @@ $preview_details = array(
 
 
 
-    'depositPerc' => 20,
+    'depositPerc' => $gateway->layup_dep,
 
 
 
@@ -834,7 +801,7 @@ $amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['paymen
 
 
 
-$amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ' ');
+$amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
 
 
 
