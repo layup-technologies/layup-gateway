@@ -100,7 +100,7 @@ function layup_payment_plans_shortcode() {
 
 
 
-        'post_status' => 'wc-placed'
+        'post_status' => 'wc-on-hold'
 
 
 

@@ -18,7 +18,19 @@ function layup_check_payments() {
 
 
 
-    if (get_option( 'lu_testmode', true ) == 'yes') {
+    global $woocommerce;
+
+    $gateway_id = 'layup';
+
+
+    $gateways = WC_Payment_Gateways::instance();
+
+
+    $gateway = $gateways->payment_gateways()[$gateway_id];
+
+
+
+    if ($gateway->testmode == 'yes') {
 
 
 
@@ -50,7 +62,7 @@ function layup_check_payments() {
 
 
 
-        $api_key = get_option( 'lu_api_key' );
+        $api_key = $gateway->api_key;
 
 
 
@@ -82,7 +94,7 @@ function layup_check_payments() {
 
 
 
-        'numberposts' => -1,
+        'numberposts' => 10,
 
 
 
@@ -508,7 +520,7 @@ function layup_check_payments() {
 
 
 
-            $order->update_status('wc-cancelled', __('Order cancelled: '.$body['cancelledBy'], 'layup-gateway'), true);
+            $order->update_status('wc-cancelled', __('Order cancelled by LayUp', 'layup-gateway'));
 
 
 
