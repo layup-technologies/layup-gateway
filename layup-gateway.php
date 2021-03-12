@@ -12,7 +12,7 @@
 
  * Author URI: https://layup.co.za
 
- * Version: 1.5.4
+ * Version: 1.5.5
  *
 */
 
@@ -103,7 +103,7 @@ function layup_init_gateway_class() {
 
 	}
 
-    define( 'WC_GATEWAY_LAYUP_VERSION', '1.5.4' );
+    define( 'WC_GATEWAY_LAYUP_VERSION', '1.5.5' );
 
     require_once( plugin_basename( 'includes/layup-payment-plan-shortcode.php' ) );
 

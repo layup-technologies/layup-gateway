@@ -1076,7 +1076,7 @@ function layup_display_icon()
 
 			$layup_preview_months = $product->get_meta('layup_preview_months');
 
-			echo '<div class="clearfix"><div style="float:left; font-size: 10px;padding: 10px 20px;margin-top: 15px;margin-right: 15px;margin-bottom: 15px;background-color: ' . esc_attr($gateway->btn_bg_color) . ';color: ' . esc_attr($gateway->btn_text_color) . ';border-radius: 150px; max-width: 50%;text-align: center;" class="btn-layup">
+			echo '<div class="clearfix"><div style="font-size: 10px;padding: 10px 20px;margin-top: 15px;margin-right: 15px;margin-bottom: 15px;background-color: ' . esc_attr($gateway->btn_bg_color) . ';color: ' . esc_attr($gateway->btn_text_color) . ';border-radius: 150px;text-align: center;" class="btn-layup">
 
     PAY IT OFF WITH
 
@@ -1084,7 +1084,7 @@ function layup_display_icon()
 
     </div>
 
-    <div style="font-size: 12px;padding: 10px;margin-top: 15px;margin-bottom: 15px;margin-left: 15px; max-width: 80%;" class="btn-layup">
+    <div style="font-size: 12px;padding: 10px;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
 
     From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months. Interest-free. ' . esc_attr($gateway->layup_dep) . '% deposit.<br>
     <span id="lumodallink" style="color:#1295a5;">Learn More</span>
@@ -1093,6 +1093,31 @@ function layup_display_icon()
 
 
 /* The Modal (background) */
+
+.btn-layup {
+	float:left; 
+	max-width: 50%;
+}
+.btn-est-layup {
+	margin-left: 15px;
+}
+
+@media screen and (max-width: 1040px) {
+    .btn-layup {
+        float:none;
+		max-width: 80%;
+    }
+	.btn-est-layup {
+	margin-left: 0px;
+	}
+  }
+  
+  @media screen and (max-width: 600px) {
+  .btn-layup {
+		max-width: 100%;
+    }
+}
+
 .lumodal {
   font-family: "Quicksand", serif !important;
   display: none ; /* Hidden by default */
