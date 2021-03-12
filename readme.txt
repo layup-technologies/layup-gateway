@@ -5,9 +5,9 @@ Author URI: https://layup.co.za/
 Author: LayUp Dev Team
 Tags: woocommerce, payment gateway, South Africa, LayUp
 Requires at least: 4.6
-Tested up to: 5.5
-Stable tag: 1.5.2
-Version: 1.5.2
+Tested up to: 5.6
+Stable tag: 1.5.4
+Version: 1.5.4
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -101,7 +101,7 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 6. LayUp estimate payment plan on single product page.
 7. LayUp estimate payment plan on product archive/category pages.
 
-== Changelog === 1.4.0 =*Added learn more modal to single product page= 1.3.2 =*Changed payment plan example to use the date given in settings= 1.3.1 =* Changed hook for single page product payment plan example it should be compatible with more themes.* CSS fixed for payment plan example in the product loop and single page* Added the option to not display the payment plan example from the website
+== Changelog === v1.5.3 =* fixed payment plans= v1.5.2 =* fixed order updates when not in testing mode= v1.5.1 =* Changed logo size= v1.5.0 =* changed the way the plugin processes orders* fixed the stock not being increased if the order is cancelled* removed custom email and templates= 1.4.0 =* Added learn more modal to single product page= 1.3.2 =* Changed payment plan example to use the date given in settings= 1.3.1 =* Changed hook for single page product payment plan example it should be compatible with more themes.* CSS fixed for payment plan example in the product loop and single page* Added the option to not display the payment plan example from the website
 = 1.3.0 =* Added custom woocommerce email for when a Layup order status changes to "Placed".* Fixed woocommerce emails not working.* Added support for Woocommerce 4.0
 = 1.2.2 =
 
