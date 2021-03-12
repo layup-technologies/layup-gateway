@@ -28,19 +28,25 @@ function layup_payment_plans_shortcode() {
 
         }
 
-    $orders = get_posts( array(
+        $orders = get_posts( array(
 
-        'numberposts' => -1,
-
-        'meta_key'    => '_customer_user',
-
-        'meta_value'  => get_current_user_id(),
-
-        'post_type'   => wc_get_order_types(),
-
-        'post_status' => 'wc-on-hold'
-
-    ) );
+            'numberposts' => -1,
+            
+            'meta_query' => array(
+                array(
+                    'key'     => '_customer_user',
+                    'value'   => get_current_user_id()
+                ),
+                array(
+                    'key' => '_payment_method',
+                    'value'   => 'layup'
+                )),
+    
+            'post_type'   => wc_get_order_types(),
+    
+            'post_status' => 'wc-on-hold'
+    
+        ) );
 
     $html = '';
 
