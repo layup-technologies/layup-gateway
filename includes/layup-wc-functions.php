@@ -1290,7 +1290,9 @@ function layup_display_estimate()
 
 	// Check for the Disable LayUp field value
 	$product = wc_get_product($post->ID);
-
+	
+	if (is_object($product)) {
+		
 	$layup_disable_meta = $product->get_meta('layup_disable');
 
 	if ($gateway->payplan_disp == 'yes')
@@ -1315,6 +1317,7 @@ function layup_display_estimate()
 		}
 
 	}
+}
 
 }
 
