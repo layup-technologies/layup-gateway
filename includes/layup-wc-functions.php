@@ -1308,7 +1308,7 @@ function layup_display_estimate()
 
 			$layup_preview_months = $product->get_meta('layup_preview_months');
 
-			echo '<div style="font-size: 12px;margin-bottom: 10px;" class="btn-layup">
+			echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">
 
       From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months
 
