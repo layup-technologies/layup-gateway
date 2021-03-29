@@ -208,8 +208,20 @@ if (!class_exists('WC_Settings_LayUp'))
 				{
 
 					$api_key = $gateway->api_key;
+					
+				if ($gateway->testmode == 'yes')
+						{
 
-					$api_url = "https://api.layup.co.za/";
+							$api_url = "https://sandbox-api.layup.co.za/";
+
+						}
+						else
+						{
+
+							$api_url = "https://api.layup.co.za/";
+
+						}
+					
 
 					$headers = array(
 
@@ -254,7 +266,7 @@ if (!class_exists('WC_Settings_LayUp'))
 							update_option('layup_merchant_domain', esc_url_raw($domain));
 
 							update_option('layup_merchant_notifyurl', esc_url_raw($notifyUrl));
-
+				
 						}
 
 					}
@@ -266,7 +278,7 @@ if (!class_exists('WC_Settings_LayUp'))
  . '</p></div>';
 
 					}
-
+				
 				}
 				else
 				{
@@ -297,7 +309,7 @@ if (!class_exists('WC_Settings_LayUp'))
 					{
 
 						global $woocommerce;
-
+						echo 'layup';
 						$gateway_id = 'layup';
 
 						$gateways = WC_Payment_Gateways::instance();
@@ -305,8 +317,10 @@ if (!class_exists('WC_Settings_LayUp'))
 						$gateway = $gateways->payment_gateways() [$gateway_id];
 
 						$save_api_key_check = $gateway->api_key;
+						
+						$save_api_key = $gateway->api_key;
 
-						$save_merchant_id = get_option('layup_merchant_id');
+						$save_merchant_id = $_POST['layup_merchant_id'];
 
 						if ($save_merchant_id !== '')
 						{
@@ -314,15 +328,11 @@ if (!class_exists('WC_Settings_LayUp'))
 							if ($gateway->testmode == 'yes')
 							{
 
-								$save_api_key = "myApiKey";
-
 								$save_api_url = "https://sandbox-api.layup.co.za/";
 
 							}
 							else
 							{
-
-								$save_api_key = $gateway->api_key;
 
 								$save_api_url = "https://api.layup.co.za/";
 
@@ -361,6 +371,8 @@ if (!class_exists('WC_Settings_LayUp'))
 							);
 
 							$save_merch_response = wp_remote_request($save_api_url . 'v1/merchants/' . $save_merchant_id, $save_merchant_args);
+							
+							
 
 							if (!is_wp_error($save_merch_response))
 							{
@@ -381,6 +393,7 @@ if (!class_exists('WC_Settings_LayUp'))
 								echo '<div class="error"><p>'
  . __('There was an error, please try again', 'layup-gateway')
  . '</p></div>';
+								
 
 							}
 
@@ -393,6 +406,7 @@ if (!class_exists('WC_Settings_LayUp'))
 						echo '<div class="error"><p>'
  . __('There was an error, please try again', 'layup-gateway')
  . '</p></div>';
+						
 
 					}
 
@@ -851,19 +865,17 @@ function save_layup_disable_field($post_id)
 	$product->update_meta_data('layup_date', $dates);
 
 	$lu_min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($lu_curr_date)));
+	
+	$api_key = $gateway->api_key;
 
 	if ($gateway->testmode == 'yes')
 	{
-
-		$api_key = "myApiKey";
 
 		$preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
 
 	}
 	else
 	{
-
-		$api_key = $gateway->api_key;
 
 		$preview_api_url = "https://api.layup.co.za/v1/payment-plan/preview";
 
@@ -998,8 +1010,7 @@ function check_layup_disable_field($gateways)
 	//wc_clear_notices();
 	
 
-	foreach ($woocommerce
-		->cart->cart_contents as $key => $values)
+	foreach ($woocommerce->cart->cart_contents as $key => $values)
 	{ //enumerate over all cart contents
 		
 
@@ -1269,7 +1280,7 @@ window.onclick = function(event) {
 
 }
 
-add_action('woocommerce_single_product_summary', 'layup_display_icon', 30);
+add_action('woocommerce_before_add_to_cart_form', 'layup_display_icon', 30);
 
 /**
  * Display LayUp extimate text on shop page
@@ -1308,11 +1319,11 @@ function layup_display_estimate()
 
 			$layup_preview_months = $product->get_meta('layup_preview_months');
 
-			echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">
+			echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup"><p>
 
       From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months
 
-      </div>';
+      </p></div>';
 
 		}
 
@@ -1321,7 +1332,7 @@ function layup_display_estimate()
 
 }
 
-add_action('woocommerce_after_shop_loop_item', 'layup_display_estimate', 9);
+add_action('woocommerce_after_shop_loop_item_title', 'layup_display_estimate', 20);
 
 function my_error_notice()
 {

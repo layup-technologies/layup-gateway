@@ -5,7 +5,7 @@ Author URI: https://layup.co.za/
 Author: LayUp Dev Team
 Tags: woocommerce, payment gateway, South Africa, LayUp
 Requires at least: 4.6
-Tested up to: 5.6
+Tested up to: 5.7
 Stable tag: 1.5.7
 Version: 1.5.7
 Requires PHP: 5.6
