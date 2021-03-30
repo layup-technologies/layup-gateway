@@ -1086,6 +1086,8 @@ function layup_display_icon()
 			$layup_preview_amount = $product->get_meta('layup_preview_amount');
 
 			$layup_preview_months = $product->get_meta('layup_preview_months');
+			
+			if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0){
 
 			echo '<div class="clearfix"><div style="font-size: 10px;padding: 10px 20px;margin-top: 15px;margin-right: 15px;margin-bottom: 15px;background-color: ' . esc_attr($gateway->btn_bg_color) . ';color: ' . esc_attr($gateway->btn_text_color) . ';border-radius: 150px;text-align: center;" class="btn-layup">
 
@@ -1273,6 +1275,7 @@ window.onclick = function(event) {
 
 
     </div></div>';
+}
 
 		}
 
@@ -1319,11 +1322,15 @@ function layup_display_estimate()
 
 			$layup_preview_months = $product->get_meta('layup_preview_months');
 
-			echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup"><p>
+			if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0){
 
-      From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months
-
-      </p></div>';
+				echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">
+	
+		  From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months
+	
+		  </div>';
+					
+				}
 
 		}
 

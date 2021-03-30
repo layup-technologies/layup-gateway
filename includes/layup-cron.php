@@ -396,8 +396,9 @@ foreach($products as $prod) {
 $product = wc_get_product( $prod->ID );
 
 
+$format_number = number_format($product->get_price(), 2, '.', '');
 
-$price = $product->get_price() * 100;
+$price = $format_number * 100;
 
 
 
