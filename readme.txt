@@ -45,10 +45,7 @@ LayUp provides an automated payment plan solution that integrates seamlessly wit
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Use the woocommerce->Settings->Payments->LayUp screen to configure the plugin
-4. ***Please make sure that all your products have SKUs set as the LayUp API requires it to make a purchase.
+1. Upload the plugin files to the /wp-content/plugins/plugin-name directory, or install the plugin through the WordPress plugins screen directly.2. Activate the plugin through the ‘Plugins’ screen in WordPress3. Use the woocommerce->Settings->Payments->LayUp screen to configure the plugin4. Next go to woocommerce->Settings and click on the Layup Merchant settings tab5. Fill in the provided Merchant ID and click save6. Your Merchant name(Company name) and Merchant domain should already filled in. Your Merchant notify URL should be empty, you will have to fill this in like so: https://yourdomainname.com/wc-api/WC_Layup_Gateway7. "wc-api/WC_Layup_Gateway" this is the important part and should not be changed.8. ***Please make sure that all your products have SKUs set as the LayUp API requires it to make a purchase.
 
 == Frequently Asked Questions ==
 
