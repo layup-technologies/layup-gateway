@@ -377,15 +377,21 @@ $lu_min_date = date('Y-m-d', strtotime("+" . 1 . " months", strtotime($lu_curr_d
 $lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
 
 
-if ($gateway->api_key != ''){
 	$api_key = $gateway->api_key;
-} else {
-	$api_key = "myApiKey";
-}
 
 
+if ($gateway->testmode == 'yes')
+	{
 
-$preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
+		$preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
+
+	}
+	else
+	{
+
+		$preview_api_url = "https://api.layup.co.za/v1/payment-plan/preview";
+
+	}
 
 
 
