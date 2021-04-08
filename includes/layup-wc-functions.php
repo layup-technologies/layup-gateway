@@ -1089,192 +1089,237 @@ function layup_display_icon()
 			
 			if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0){
 
-			echo '<div class="clearfix"><div style="font-size: 10px;padding: 10px 20px;margin-top: 15px;margin-right: 15px;margin-bottom: 15px;background-color: ' . esc_attr($gateway->btn_bg_color) . ';color: ' . esc_attr($gateway->btn_text_color) . ';border-radius: 150px;text-align: center;" class="btn-layup">
-
-    PAY IT OFF WITH
-
-    <img style="width: 60px !important; top: 0 !important; vertical-align: middle; border-style: none" src="' . plugin_dir_url(dirname(__FILE__)) . 'img/logo-color.168d4abe.png">
-
-    </div>
-
-    <div style="font-size: 12px;padding: 10px;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
-
-    From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months. Interest-free. ' . esc_attr($gateway->layup_dep) . '% deposit.<br>
-    <span id="lumodallink" style="color:#1295a5;">Learn More</span>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
-    <style>
-
-
-/* The Modal (background) */
-
-.btn-layup {
-	float:left; 
-	max-width: 50%;
-}
-.btn-est-layup {
-	margin-left: 15px;
-}
-
-@media screen and (max-width: 1040px) {
-    .btn-layup {
-        float:none;
-		max-width: 80%;
-    }
-	.btn-est-layup {
-	margin-left: 0px;
-	}
-  }
-  
-  @media screen and (max-width: 600px) {
-  .btn-layup {
-		max-width: 100%;
-    }
-}
-
-.lumodal {
-  font-family: "Quicksand", serif !important;
-  display: none ; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 99999; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.lumodal-content {
-  background-color: #f7f9fc;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 60%;
-  text-align:center;
-  overflow:auto;
-}
-.lumodal-content .center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  
-}
-
-.lumodal-content .lu-modal-col {
-    float:left; width:31.33%; margin:1%; margin-bottom:1em; padding: 2%;
-  
-}
-
-@media (max-width: 600px) {
-  /* CSS that should be displayed if width is equal to or less than 600px goes here */
-  .lumodal-content {
-  width: 80%;
-}
-  .lumodal-content .lu-modal-col {
-    width:80%;
-    margin: 0 auto;
-    display: table;
-    float:none;
-}
-.lumodal {
-    padding-top: 0px;
-}
-}
-
-.lumodal-content .lu-modal-col:nth-of-type(3n+4) {clear:left;}
-
-/* The Close Button */
-.luclose {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  border-radius: 5px;
-  border:#808080 solid 1px;
-  line-height: 0;
-  padding: 10px 10px 14px 10px;
-}
-
-.luclose:hover,
-.luclose:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#lumodallink:hover {
-    text-decoration: underline;
-    cursor: pointer;
-}
-</style>
-
-<!-- The Modal -->
-<div id="lumyModal" class="lumodal">
-
-  <!-- Modal content -->
-  <div class="lumodal-content">
-    <span class="luclose">&times;</span>
-    <img alt="Layup Logo" class="center" style="width:250px !important;height:auto !important;" src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-color.png">
-    <p style="color:#0c4152;font-weight: 700;">Simple, Smart, Instalments</p>
-    <h2 style="font-family: Quicksand !important; color:#0c4152;font-weight: 700;font-size: 2em;">How it <span style="color:#1295a5;">works?</span></h2>
-    <p style="color:#151a30;font-weight: 700;">No credit checks | Interest free payments | No ID required</p>
-    <div style="margin: 0 auto;display: table;width: 90%;">
-    <div class="lu-modal-col">
-        <img alt="activate" style="width:131px !important;height:auto !important;" class="center" src="' . plugin_dir_url(dirname(__FILE__)) . 'img/modal-imageAsset 2.png">
-        <h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Activate</h3>
-        <p style="color:#151a30;font-weight: 500;font-size: 1em;">Select to <strong>pay it off with LayUp,</strong> using your debit/credit card or instant EFT</p>
-    </div>
-    <div class="lu-modal-col">
-        <img alt="activate" style="width:131px !important;height:auto !important;" class="center" src="' . plugin_dir_url(dirname(__FILE__)) . 'img/modal-imageAsset 4.png">
-        <h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Payment Plan</h3>
-        <p style="color:#151a30;font-weight: 500;font-size: 1em;">Pay over time, on your terms, <strong>interest free</strong></p>
-    </div>
-    <div class="lu-modal-col">
-        <img alt="activate" style="width:131px !important;height:auto !important;" class="center" src="' . plugin_dir_url(dirname(__FILE__)) . 'img/modal-imageAsset 3.png">
-        <h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Complete</h3>
-        <p style="color:#151a30;font-weight: 500;font-size: 1em;">Receive the purchase once <strong>paid in full</strong></p>
-    </div>
-</div>
-<hr style="color:#aaaaaa;background-color: #d0d0d0;height: 1px;border: none;">
-<p style="color:#151a30;font-weight: 500;font-size: 1em;">To see LayUp complete terms visit:</p>
-<p style="color:#151a30;font-weight: 700;font-size: 1em;"><a target="_blank" href="https://layup.co.za/terms-and-conditions/">https://layup.co.za/terms-and-conditions/</a></p>
-  </div>
-
-</div>
-
-<script>
-// Get the modal
-var modal = document.getElementById("lumyModal");
-
-// Get the button that opens the modal
-var btn = document.getElementById("lumodallink");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("luclose")[0];
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-</script>
-
-
-    </div></div>';
+			echo '<div style="display:flex;align-items: center;max-width: 100%;">
+			<div style="font-family:Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 30px 10px 20px;margin-top: 15px;margin-bottom: 15px;color: #000000;text-align: center;"
+				class="btn-layup">
+		
+				<div class="btn-layup-text">PAY IT OFF WITH</div>
+		
+				<div class="btn-layup-logo"><img style="width: 100% !important; top: 0 !important; vertical-align: middle; border-style: none"
+					src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-color.png">
+				</div>
+			</div>
+		
+			<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;border-left:#808080 1px solid;" class="btn-est-layup">
+		
+				<p style="margin-top: 0px; ">From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months. Interest-free. ' . esc_attr($gateway->layup_dep) . '% deposit.</p>
+				<span id="lumodallink" style="color:#1295a5;">Learn More</span>
+				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+				<style>
+					/* The Modal (background) */
+		
+					.btn-layup {
+						float: left;
+						max-width: 30%;
+						margin-right:0px;
+					}
+		
+					.btn-est-layup {
+						max-width: 100%;
+						padding: 10px 10px 10px 30px;
+						margin-left:0px;
+						float: left;
+						font-size: 12px;
+					}
+		
+					@media screen and (max-width: 1040px) {
+						.btn-layup {
+							float: none;
+							max-width: 40%;
+						}
+		
+						.btn-est-layup {
+							margin-left: 0px;
+						}
+					}
+		
+					@media screen and (max-width: 600px) {
+						.btn-layup-text {
+							font-size: 75%;
+						}
+						.btn-layup {
+							max-width: 50%;
+						}
+						.btn-est-layup {
+						font-size: 10px;
+					}
+					}
+		
+					.lumodal {
+						font-family: "Quicksand", serif !important;
+						display: none;
+						/* Hidden by default */
+						position: fixed;
+						/* Stay in place */
+						z-index: 99999;
+						/* Sit on top */
+						padding-top: 100px;
+						/* Location of the box */
+						left: 0;
+						top: 0;
+						width: 100%;
+						/* Full width */
+						height: 100%;
+						/* Full height */
+						overflow: auto;
+						/* Enable scroll if needed */
+						background-color: rgb(0, 0, 0);
+						/* Fallback color */
+						background-color: rgba(0, 0, 0, 0.4);
+						/* Black w/ opacity */
+					}
+		
+					/* Modal Content */
+					.lumodal-content {
+						background-color: #f7f9fc;
+						margin: auto;
+						padding: 20px;
+						border: 1px solid #888;
+						width: 60%;
+						text-align: center;
+						overflow: auto;
+					}
+		
+					.lumodal-content .center {
+						display: block;
+						margin-left: auto;
+						margin-right: auto;
+		
+					}
+		
+					.lumodal-content .lu-modal-col {
+						float: left;
+						width: 31.33%;
+						margin: 1%;
+						margin-bottom: 1em;
+						padding: 2%;
+		
+					}
+		
+					@media (max-width: 600px) {
+		
+						/* CSS that should be displayed if width is equal to or less than 600px goes here */
+						.lumodal-content {
+							width: 80%;
+						}
+		
+						.lumodal-content .lu-modal-col {
+							width: 80%;
+							margin: 0 auto;
+							display: table;
+							float: none;
+						}
+		
+						.lumodal {
+							padding-top: 0px;
+						}
+					}
+		
+					.lumodal-content .lu-modal-col:nth-of-type(3n+4) {
+						clear: left;
+					}
+		
+					/* The Close Button */
+					.luclose {
+						color: #aaaaaa;
+						float: right;
+						font-size: 28px;
+						font-weight: bold;
+						border-radius: 5px;
+						border: #808080 solid 1px;
+						line-height: 0;
+						padding: 10px 10px 14px 10px;
+					}
+		
+					.luclose:hover,
+					.luclose:focus {
+						color: #000;
+						text-decoration: none;
+						cursor: pointer;
+					}
+		
+					#lumodallink:hover {
+						text-decoration: underline;
+						cursor: pointer;
+					}
+				</style>
+		
+				<!-- The Modal -->
+				<div id="lumyModal" class="lumodal">
+		
+					<!-- Modal content -->
+					<div class="lumodal-content">
+						<span class="luclose">×</span>
+						<img alt="Layup Logo" class="center" style="width:250px !important;height:auto !important;"
+							src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-color.png">
+						<p style="color:#0c4152;font-weight: 700;">Simple, Smart, Instalments</p>
+						<h2 style="font-family: Quicksand !important; color:#0c4152;font-weight: 700;font-size: 2em;">How it
+							<span style="color:#1295a5;">works?</span></h2>
+						<p style="color:#151a30;font-weight: 700;">No credit checks | Interest free payments | No ID required
+						</p>
+						<div style="margin: 0 auto;display: table;width: 100%;">
+							<div class="lu-modal-col">
+								<img alt="activate" style="width:131px !important;height:auto !important;" class="center"
+									src="' . plugin_dir_url(dirname(__FILE__)) . 'img/modal-imageAsset 2.png">
+								<h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Activate</h3>
+								<p style="color:#151a30;font-weight: 500;font-size: 1em;">Select to <strong>pay it off with
+										LayUp,</strong> using your debit/credit card or instant EFT</p>
+							</div>
+							<div class="lu-modal-col">
+								<img alt="activate" style="width:131px !important;height:auto !important;" class="center"
+									src="' . plugin_dir_url(dirname(__FILE__)) . 'img/modal-imageAsset 4.png">
+								<h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Payment Plan</h3>
+								<p style="color:#151a30;font-weight: 500;font-size: 1em;">Pay over time, on your terms,
+									<strong>interest free</strong></p>
+							</div>
+							<div class="lu-modal-col">
+								<img alt="activate" style="width:131px !important;height:auto !important;" class="center"
+									src="' . plugin_dir_url(dirname(__FILE__)) . 'img/modal-imageAsset 3.png">
+								<h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Complete</h3>
+								<p style="color:#151a30;font-weight: 500;font-size: 1em;">Receive the purchase once <strong>paid
+										in full</strong></p>
+							</div>
+						</div>
+						<hr style="color:#aaaaaa;background-color: #d0d0d0;height: 1px;border: none;">
+						<p style="color:#151a30;font-weight: 500;font-size: 1em;">To see LayUp complete terms visit:</p>
+						<p style="color:#151a30;font-weight: 700;font-size: 1em;"><a target="_blank"
+								href="https://layup.co.za/terms-and-conditions/">https://layup.co.za/terms-and-conditions/</a>
+						</p>
+					</div>
+		
+				</div>
+		
+				<script>
+					// Get the modal
+					var modal = document.getElementById("lumyModal");
+		
+					// Get the button that opens the modal
+					var btn = document.getElementById("lumodallink");
+		
+					// Get the <span> element that closes the modal
+					var span = document.getElementsByClassName("luclose")[0];
+		
+					// When the user clicks the button, open the modal 
+					btn.onclick = function () {
+						modal.style.display = "block";
+					}
+		
+					// When the user clicks on <span> (x), close the modal
+					span.onclick = function () {
+						modal.style.display = "none";
+					}
+		
+					// When the user clicks anywhere outside of the modal, close it
+					window.onclick = function (event) {
+						if (event.target == modal) {
+							modal.style.display = "none";
+						}
+					}
+				</script>
+		
+		
+			</div>
+		</div>';
 }
 
 		}
