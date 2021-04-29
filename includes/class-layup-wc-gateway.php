@@ -306,7 +306,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'description' => 'The deposit amount based on what was chosen as the deposit type',
+                'description' => 'The deposit type that you want your customers to pay.',
 
                 'options' => array(
                     'percentage' => 'Percentage',
@@ -314,7 +314,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                     'flat' => 'Flat fee'
                )
 
-
+               'default'     => 'percentage'
 
 
             ),
@@ -331,7 +331,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'description' => 'The deposit amount based on what was chosen as the deposit type',
+                'description' => 'The deposit amount based on what was chosen as the deposit type.',
 
 
 
