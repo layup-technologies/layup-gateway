@@ -126,6 +126,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $this->layup_dep = (int)$this->get_option( 'layup_dep' );
 
+        $this->layup_dep_type = $this->get_option( 'layup_dep_type' );
+
 
 		if ($this->get_option( 'lu_api_key' ) != ''){
 			$this->api_key = $this->get_option( 'lu_api_key' );
@@ -309,9 +311,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                 'description' => 'The deposit type that you want your customers to pay.',
 
                 'options' => array(
-                    'percentage' => 'Percentage',
-                    'first installment' => 'First installment',
-                    'flat' => 'Flat fee'
+                    'PERCENTAGE' => 'Percentage',
+                    'INSTALMENT' => 'First instalment',
+                    'FLAT' => 'Flat fee'
                )
 
                
@@ -831,46 +833,36 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order_details = array(
 
-
+            "depositAmount": $this->layup_dep,
 
             'products'=> $products,
-
 
 
             'endDateMax' => $max_date,
 
 
-
             'endDateMin' => $min_date,
-
-
-
-            'state' => 'CANCELLED',
-
 
 
             'depositPerc' => $this->layup_dep,
 
 
-
             'absorbsFee' => true,
-
 
 
             'reference' => $ref,
 
 
-
             'name' => $blog_title.' #'.$order_id,
-
 
 
             'imageUrl' => $order_image[0],
 
+            $order_details['depositType'] = $this->layup_dep_type
+
 
 
         );
-
 
 
         $headers = array(
