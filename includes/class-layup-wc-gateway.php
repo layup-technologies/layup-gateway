@@ -314,7 +314,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                     'flat' => 'Flat fee'
                )
 
-               'default'     => 'percentage'
+               
 
 
             ),
