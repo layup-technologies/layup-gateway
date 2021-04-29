@@ -295,6 +295,33 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
+<<<<<<< Updated upstream
+=======
+            'layup_dep_type' => array(
+
+
+
+                'title'       => 'Deposit Type',
+
+
+                'type'        => 'select',
+
+
+
+                'description' => 'The type of deposit you want your customers to pay.',
+
+                'options' => array(
+                    'percentage' => 'Percentage',
+                    'first installment' => 'First installment',
+                    'flat' => 'Flat fee'
+               )
+
+
+
+
+            ),
+
+>>>>>>> Stashed changes
             'layup_dep' => array(
 
 
@@ -307,7 +334,11 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
+<<<<<<< Updated upstream
                 'description' => 'The deposit amount as a percentage',
+=======
+                'description' => 'The deposit amount based on what was chosen as the deposit type.',
+>>>>>>> Stashed changes
 
 
 
