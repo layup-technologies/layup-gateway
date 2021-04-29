@@ -15,5 +15,5 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ftp.cameronstuartmorgan.co.za
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
+        username: layup@cameronstuartmorgan.co.za
+        password: k]d-KO?]SWY3
