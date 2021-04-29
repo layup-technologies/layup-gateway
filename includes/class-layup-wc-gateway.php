@@ -833,9 +833,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order_details = array(
 
-            "depositAmount": $this->layup_dep,
+            'depositAmount' => $this->layup_dep,
 
-            'products'=> $products,
+            'products' => $products,
 
 
             'endDateMax' => $max_date,
