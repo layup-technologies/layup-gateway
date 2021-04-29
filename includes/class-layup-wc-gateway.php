@@ -295,8 +295,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-<<<<<<< Updated upstream
-=======
             'layup_dep_type' => array(
 
 
@@ -321,7 +319,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             ),
 
->>>>>>> Stashed changes
             'layup_dep' => array(
 
 
@@ -334,11 +331,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-<<<<<<< Updated upstream
-                'description' => 'The deposit amount as a percentage',
-=======
                 'description' => 'The deposit amount based on what was chosen as the deposit type.',
->>>>>>> Stashed changes
 
 
 
