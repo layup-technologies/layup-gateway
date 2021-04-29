@@ -259,7 +259,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'default'     => 'Activate your payment plan with a small deposit and break down the total cost into more affordable monthly payments.',
+                'default'     => 'Interest Free Lay-By | Safe & Easy Instalments | No Credit Checks | Instant Sign Up',
 
 
 
@@ -295,6 +295,30 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
+            'layup_dep_type' => array(
+
+
+
+                'title'       => 'Deposit Type',
+
+
+                'type'        => 'select',
+
+
+
+                'description' => 'The deposit amount based on what was chosen as the deposit type',
+
+                'options' => array(
+                    'percentage' => 'Percentage',
+                    'first installment' => 'First installment',
+                    'flat' => 'Flat fee'
+               )
+
+
+
+
+            ),
+
             'layup_dep' => array(
 
 
@@ -307,7 +331,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'description' => 'The deposit amount as a percentage',
+                'description' => 'The deposit amount based on what was chosen as the deposit type',
 
 
 
