@@ -445,56 +445,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-
-
-            'btn_bg_color' => array(
-
-
-
-                'title'       => 'LayUp Button Colour',
-
-
-
-                'type'        => 'color',
-
-
-
-                'description' => 'Changes the background color of the buttons on a single product page',
-
-
-
-                'default'     => '#ffffff'
-
-
-
-            ),
-
-
-
-            'btn_text_color' => array(
-
-
-
-                'title'       => 'LayUp Button text Colour',
-
-
-
-                'type'        => 'color',
-
-
-
-                'description' => 'Changes the text colour of the buttons on a single product page',
-
-
-
-                'default'     => '#000000'
-
-
-
-            ),
-
-
-
         );
 
 
