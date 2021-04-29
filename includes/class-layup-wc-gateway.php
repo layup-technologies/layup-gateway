@@ -858,7 +858,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             'imageUrl' => $order_image[0],
 
-            $order_details['depositType'] = $this->layup_dep_type
+            'depositType' = $this->layup_dep_type
 
 
 
