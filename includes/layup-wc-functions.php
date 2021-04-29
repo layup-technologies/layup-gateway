@@ -4,7 +4,7 @@ add_action('wp_enqueue_scripts', 'register_layup_style');
 function register_layup_style()
 {
 
-	wp_register_style("layup_css", plugins_url('../css/payment-plans.css', __FILE__) , array() , '1.0.0', 'all');
+	wp_register_style("layup_css", plugin_dir_url(dirname(__FILE__)) . '../css/payment-plans.css' , array() , '1.0.0', 'all');
 
 }
 
