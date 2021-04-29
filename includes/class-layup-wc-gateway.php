@@ -314,10 +314,10 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                     'PERCENTAGE' => 'Percentage',
                     'INSTALMENT' => 'First instalment',
                     'FLAT' => 'Flat fee'
-               )
+                ),
 
                
-
+                'default'     => 'PERCENTAGE'
 
             ),
 
