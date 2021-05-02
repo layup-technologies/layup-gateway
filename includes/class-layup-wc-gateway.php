@@ -963,7 +963,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-               wc_add_notice( $body['state'], 'error' );
+               wc_add_notice( $this->layup_dep.' and '. $this->layup_dep_type, 'error' );
 
 
 
