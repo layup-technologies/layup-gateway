@@ -594,7 +594,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
     
                 $custom_dep_inarray = true; //set inarray to true
                 
-                $custom_dep_prod = $product->post->post_title;
+                $custom_dep_prod = $product->get_title();
                 $this->layup_dep = get_post_meta( $product->get_id(), 'layup_custom_deposit_amount', true );
                 $this->layup_dep_type = get_post_meta( $product->get_id(), 'layup_custom_deposit_type', true );
                 break;
