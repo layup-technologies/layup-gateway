@@ -126,6 +126,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $this->layup_dep = (int)$this->get_option( 'layup_dep' );
 
+        $this->layup_dep_type = $this->get_option( 'layup_dep_type' );
+
 
 		if ($this->get_option( 'lu_api_key' ) != ''){
 			$this->api_key = $this->get_option( 'lu_api_key' );
@@ -259,7 +261,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'default'     => 'Activate your payment plan with a small deposit and break down the total cost into more affordable monthly payments.',
+                'default'     => 'Interest Free Lay-By | Safe & Easy Instalments | No Credit Checks | Instant Sign Up',
 
 
 
@@ -295,6 +297,30 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
+            'layup_dep_type' => array(
+
+
+
+                'title'       => 'Deposit Type',
+
+
+                'type'        => 'select',
+
+
+
+                'description' => 'The deposit type that you want your customers to pay.',
+
+                'options' => array(
+                    'PERCENTAGE' => 'Percentage',
+                    'INSTALMENT' => 'First instalment',
+                    'FLAT' => 'Flat fee'
+                ),
+
+               
+                'default'     => 'PERCENTAGE'
+
+            ),
+
             'layup_dep' => array(
 
 
@@ -307,7 +333,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'description' => 'The deposit amount as a percentage',
+                'description' => 'The deposit amount based on what was chosen as the deposit type.',
 
 
 
@@ -416,56 +442,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             ),
 
 
-
-
-
-
-
-            'btn_bg_color' => array(
-
-
-
-                'title'       => 'LayUp Button Colour',
-
-
-
-                'type'        => 'color',
-
-
-
-                'description' => 'Changes the background color of the buttons on a single product page',
-
-
-
-                'default'     => '#ffffff'
-
-
-
-            ),
-
-
-
-            'btn_text_color' => array(
-
-
-
-                'title'       => 'LayUp Button text Colour',
-
-
-
-                'type'        => 'color',
-
-
-
-                'description' => 'Changes the text colour of the buttons on a single product page',
-
-
-
-                'default'     => '#000000'
-
-
-
-            ),
 
 
 
@@ -807,46 +783,36 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order_details = array(
 
+            'depositAmount' => $this->layup_dep * 100,
 
-
-            'products'=> $products,
-
+            'products' => $products,
 
 
             'endDateMax' => $max_date,
 
 
-
             'endDateMin' => $min_date,
-
-
-
-            'state' => 'CANCELLED',
-
 
 
             'depositPerc' => $this->layup_dep,
 
 
-
             'absorbsFee' => true,
-
 
 
             'reference' => $ref,
 
 
-
             'name' => $blog_title.' #'.$order_id,
-
 
 
             'imageUrl' => $order_image[0],
 
+            'depositType' => $this->layup_dep_type,
+
 
 
         );
-
 
 
         $headers = array(
