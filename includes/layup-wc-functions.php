@@ -897,6 +897,8 @@ function create_layup_custom_deposit_amount_field()
 		'desc_tip' => true,
 
 		'description' => __('The deposit amount that you want your customers to pay when checking out with LayUp.', 'layup-gateway') ,
+
+		'default'     => '20'
 	);
 
 	woocommerce_wp_text_input($args);
@@ -924,8 +926,14 @@ function save_layup_disable_field($post_id)
 	$product = wc_get_product($post_id);
 
 	$layup_disable = isset($_POST['layup_disable']) ? sanitize_text_field($_POST['layup_disable']) : '';
+	$layup_custom_deposit = isset($_POST['layup_custom_deposit']) ? sanitize_text_field($_POST['layup_custom_deposit']) : '';
+	$layup_custom_deposit_type = isset($_POST['layup_custom_deposit_type']) ? sanitize_text_field($_POST['layup_custom_deposit_type']) : '';
+	$layup_custom_deposit_amount = isset($_POST['layup_custom_deposit_amount']) ? sanitize_text_field($_POST['layup_custom_deposit_amount']) : '';
 
 	$product->update_meta_data('layup_disable', $layup_disable);
+	$product->update_meta_data('layup_custom_deposit', $layup_custom_deposit);
+	$product->update_meta_data('layup_custom_deposit_type', $layup_custom_deposit_type);
+	$product->update_meta_data('layup_custom_deposit_amount', $layup_custom_deposit_amount);
 
 	$price = $product->get_price() * 100;
 

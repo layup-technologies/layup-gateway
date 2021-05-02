@@ -577,7 +577,39 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order_items = $order->get_items( array('line_item') );
 
+        // Build product array
 
+        $custom_dep_inarray = false;
+
+        foreach( $order_items as $item_id => $order_item ) {
+
+
+
+            $product = $order_item->get_product();
+
+            $is_custom_dep = get_post_meta( $product->get_id(), 'layup_custom_deposit', true );
+
+            if (!empty($is_custom_dep))
+            {
+    
+                $custom_dep_inarray = true; //set inarray to true
+                
+                $custom_dep_prod = $product->post->post_title;
+                $this->layup_dep = get_post_meta( $product->get_id(), 'layup_custom_deposit_amount', true );
+                $this->layup_dep_type = get_post_meta( $product->get_id(), 'layup_custom_deposit_type', true );
+                break;
+    
+            }
+
+        }
+
+            if ($custom_dep_inarray && count( WC()->cart->get_cart() ) > 1){
+
+                wc_add_notice(  'The following product can only be checked out on its own using LayUp: '.$custom_dep_prod, 'error' );
+
+                return;
+
+            } else {
 
         $woo_thank_you = $order->get_checkout_order_received_url();
 
@@ -956,6 +988,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
        }
+
+    }
 
 
 
