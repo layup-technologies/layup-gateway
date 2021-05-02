@@ -963,7 +963,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-               wc_add_notice( var_dump($response['body']), 'error' );
+               wc_add_notice( 'something happened', 'error' );
 
 
 
@@ -979,7 +979,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-           wc_add_notice(  var_dump($response['body']), 'error' );
+           wc_add_notice(  'something else happened', 'error' );
 
 
 
