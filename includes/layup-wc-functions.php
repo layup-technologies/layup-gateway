@@ -484,7 +484,7 @@ function woo_add_layup_date_fields()
 
 ?>
 
-<div class="input_fields_wrap">
+<div class="options_group input_fields_wrap">
 
     <a class="add_field_button button-secondary">Add Field</a>
 
