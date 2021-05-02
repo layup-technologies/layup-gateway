@@ -819,6 +819,93 @@ function create_layup_disable_field()
 add_action('woocommerce_product_options_inventory_product_data', 'create_layup_disable_field');
 
 /**
+ * Create the custom deposit LayUp checkbox field on product admin page
+ */
+
+function create_layup_custom_deposit_field()
+{
+
+	$args = array(
+
+		'id' => 'layup_custom_deposit',
+
+		'label' => __('Use custom layup deposit for this product', 'layup-gateway') ,
+
+		'class' => 'lu-custom-deposit',
+
+		'desc_tip' => true,
+
+		'description' => __('Check this box if you want this product to use its own deposit type and amount for layup checkout.', 'layup-gateway') ,
+
+	);
+
+	woocommerce_wp_checkbox($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_deposit_field');
+
+/**
+ * Create the custom deposit LayUp checkbox field on product admin page
+ */
+
+function create_layup_custom_deposit_type_field()
+{
+
+	$args = array(
+
+		'id' => 'layup_custom_deposit_type',
+
+		'label' => __('Select a deposit type', 'layup-gateway') ,
+
+		'options' => array(
+			'PERCENTAGE' => 'Percentage',
+			'INSTALMENT' => 'First instalment',
+			'FLAT' => 'Flat fee'
+		),
+
+		'class' => 'lu-custom-deposit-type',
+
+		'desc_tip' => true,
+
+		'description' => __('The deposit type that you want your customers to pay when checking out with LayUp<br>Percentage = a percentage of the total order price.<br>First instalment = The same amount as the first instalment.<br>Flat fee = A specific amount that you want the deposit to be.', 'layup-gateway') ,
+
+		'default'     => 'PERCENTAGE'
+	);
+
+	woocommerce_wp_select($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_deposit_type_field');
+
+/**
+ * Create the custom deposit LayUp checkbox field on product admin page
+ */
+
+function create_layup_custom_deposit_amount_field()
+{
+
+	$args = array(
+
+		'id' => 'layup_custom_deposit_amount',
+
+		'label' => __('Choose a deposit amount (only applicable if pecentage or flat fee is chosen for the deposit type.)', 'layup-gateway') ,
+
+		'class' => 'lu-custom-deposit-amount',
+
+		'desc_tip' => true,
+
+		'description' => __('The deposit amount that you want your customers to pay when checking out with LayUp.', 'layup-gateway') ,
+	);
+
+	woocommerce_wp_text_input($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_deposit_amount_field');
+
+/**
  * Save the LayUp product fields
  */
 function save_layup_disable_field($post_id)
