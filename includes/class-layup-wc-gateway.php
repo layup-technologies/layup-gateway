@@ -581,13 +581,13 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $custom_dep_inarray = false;
 
-        foreach( $order_items as $item_id => $order_item ) {
+        foreach( $order_items as $cd_item_id => $cd_order_item ) {
 
 
 
-            $product = $order_item->get_product();
+            $cd_product = $cd_order_item->get_product();
 
-            $is_custom_dep = get_post_meta( $product->get_id(), 'layup_custom_deposit', true );
+            $is_custom_dep = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit', true );
 
             if (!empty($is_custom_dep))
             {
@@ -595,8 +595,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                 $custom_dep_inarray = true; //set inarray to true
                 
                 $custom_dep_prod = $product->get_title();
-                $this->layup_dep = get_post_meta( $product->get_id(), 'layup_custom_deposit_amount', true );
-                $this->layup_dep_type = get_post_meta( $product->get_id(), 'layup_custom_deposit_type', true );
+                $this->layup_dep = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit_amount', true );
+                $this->layup_dep_type = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit_type', true );
                 break;
     
             }
