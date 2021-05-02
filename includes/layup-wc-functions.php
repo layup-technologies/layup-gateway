@@ -529,7 +529,7 @@ function woo_add_layup_date_fields()
     <?php
 }
 
-add_action('woocommerce_product_options_general_product_data', 'woo_add_layup_date_fields');
+add_action('woocommerce_product_options_inventory_product_data', 'woo_add_layup_date_fields');
 
 add_action('admin_footer', 'layup_admin_footer_script');
 
