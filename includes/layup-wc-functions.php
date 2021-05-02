@@ -485,10 +485,10 @@ function woo_add_layup_date_fields()
 ?>
 
 <div class="options_group input_fields_wrap">
+	<p class="form-field add_field_button">
+    	<a class="add_field_button button-secondary">Add Field</a>
 
-    <a class="add_field_button button-secondary">Add Field</a>
-
-    <span class="description"><?php esc_attr(_e('Add a date if this product needs to be paid off before a given time frame. Make sure its after your minimum and before your maximum dates set in layup settings', 'woocommerce')); ?></span>
+    	<span class="description"><?php esc_attr(_e('Add a date if this product needs to be paid off before a given time frame. Make sure its after your minimum and before your maximum dates set in layup settings', 'woocommerce')); ?></span>
 
     <?php
 
@@ -523,7 +523,7 @@ function woo_add_layup_date_fields()
 	}
 
 ?>
-
+</p>
 </div>
 
     <?php
