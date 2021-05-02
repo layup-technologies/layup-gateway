@@ -816,7 +816,7 @@ function create_layup_disable_field()
 
 }
 
-add_action('woocommerce_product_options_general_product_data', 'create_layup_disable_field');
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_disable_field');
 
 /**
  * Save the LayUp product fields
