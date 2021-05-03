@@ -866,9 +866,12 @@ function create_layup_custom_deposit_type_field()
 
 		'class' => 'lu-custom-deposit-type',
 
-		'desc_tip' => true,
+		'desc_tip' => false,
 
-		'description' => __('The deposit type that you want your customers to pay when checking out with LayUp<br>Percentage = a percentage of the total order price.<br>First instalment = The same amount as the first instalment.<br>Flat fee = A specific amount that you want the deposit to be.', 'layup-gateway') ,
+		'description' => __('Select one of the following deposit types, required to initiate a payment plan and activate an order, applicable to all payment plans created by this Merchant Account.<br>
+		Percentage: Define a percentage of the total order value e.g. 10%.<br>
+		First Instalment: Deposit equal to the instalment value determined by the customer according to the payment plan duration e.g. R5,000 order paid over 5 months = R1,000 deposit.<br>
+		Flat Fee: Define a specific amount (lower than the max order value) e.g. R150.', 'layup-gateway') ,
 
 		'default'     => 'PERCENTAGE'
 	);
