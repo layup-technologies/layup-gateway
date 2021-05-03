@@ -336,7 +336,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'description' => 'The deposit amount based on what was chosen as the deposit type.',
+                'description' => 'The deposit amount based on what was chosen as the deposit type.<br>(only applicable if pecentage or flat fee is chosen for the deposit type.)',
 
 
 
