@@ -632,7 +632,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'amount'=> (int)$order_item->get_total() * 100,
+                'amount'=> (float)$order_item->get_total() * 100,
 
 
 
