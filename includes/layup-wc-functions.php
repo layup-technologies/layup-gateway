@@ -868,7 +868,7 @@ function create_layup_custom_deposit_type_field()
 
 		'desc_tip' => false,
 
-		'description' => __('<br>Select one of the following deposit types, required to initiate a payment plan and activate an order, applicable to all payment plans created by this Merchant Account.<br>
+		'description' => __('<br><br>Select one of the following deposit types, required to initiate a payment plan and activate an order, applicable to all payment plans created by this Merchant Account.<br>
 		Percentage: Define a percentage of the total order value e.g. 10%.<br>
 		First Instalment: Deposit equal to the instalment value determined by the customer according to the payment plan duration e.g. R5,000 order paid over 5 months = R1,000 deposit.<br>
 		Flat Fee: Define a specific amount (lower than the max order value) e.g. R150.', 'layup-gateway') ,
