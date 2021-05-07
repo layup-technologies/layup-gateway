@@ -389,7 +389,7 @@ $lu_curr_date = date('c');
 
 
 foreach($products as $prod) {
-
+    $prod_file .= $prod->ID . '|';
     $product = wc_get_product( $prod->ID );
     
     $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
@@ -488,8 +488,8 @@ update_post_meta( $prod->ID, 'layup_preview_deposit_amount', $deposit_amount );
 }
 
         }
-
-
+        
+        file_put_contents('testing-pp-2.txt', $prod_file);
 
         return;
 
