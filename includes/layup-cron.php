@@ -326,6 +326,20 @@ function layup_check_prod() {
 
 
 
+                    'key' => 'layup_preview_deposit_type',
+    
+    
+    
+                    'compare' => 'NOT EXISTS'
+    
+    
+    
+                    ),
+
+                array(
+
+
+
                     'key' => 'layup_preview_months',
 
 
@@ -396,7 +410,7 @@ if ($layup_custom_months == 'yes')
 
 			$lu_min_date = date('Y-m-d', strtotime("+" . $layup_custom_months_min . " months", strtotime($lu_curr_date)));
 
-			$lu_max_date = date('Y-m-d', strtotime("+" . $layup_custom_months_max . " months", strtotime($lu_curr_date)));
+			$lu_max_date = date('Y-m-d', strtotime("+" . $layup_custom_months_max + 1. " months", strtotime($lu_curr_date)));
 
 		} else {
 
