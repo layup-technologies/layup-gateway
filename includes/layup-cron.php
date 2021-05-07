@@ -376,13 +376,12 @@ $lu_curr_date = date('c');
 
 foreach($products as $prod) {
 
+    $product = wc_get_product( $prod->ID );
     
     $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
     $layup_preview_months = $product->get_meta('layup_preview_months');
 
     if ($layup_custom_months_max != $layup_preview_months || $layup_preview_months == '') {
-
-$product = wc_get_product( $prod->ID );
 
 $format_number = number_format($product->get_price(), 2, '.', '');
 
