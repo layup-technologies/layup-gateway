@@ -1023,7 +1023,7 @@ function save_layup_disable_field($post_id)
 	$product->update_meta_data('layup_custom_deposit_type', $layup_custom_deposit_type);
 	$product->update_meta_data('layup_custom_deposit_amount', $layup_custom_deposit_amount);
 
-	$product->update_meta_data('layup_custom_months', $layup_custom_deposit);
+	$product->update_meta_data('layup_custom_months', $layup_custom_months);
 	$product->update_meta_data('layup_custom_months_min', $layup_custom_months_min);
 	$product->update_meta_data('layup_custom_months_max', $layup_custom_months_max);
 
