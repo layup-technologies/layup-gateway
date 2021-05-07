@@ -959,7 +959,7 @@ function create_layup_custom_months_min_field()
 		'default'     => '20'
 	);
 
-	woocommerce_wp_number_input($args);
+	woocommerce_wp_text_input($args);
 
 }
 
