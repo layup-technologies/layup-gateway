@@ -377,8 +377,8 @@ $lu_curr_date = date('c');
 foreach($products as $prod) {
 
     
-    $layup_custom_months_max = isset($product->get_meta('layup_custom_months_max')) ? $product->get_meta('layup_custom_months_max') : '';
-    $layup_preview_months = isset($product->get_meta('layup_preview_months')) ? $product->get_meta('layup_preview_months') : '';
+    $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
+    $layup_preview_months = $product->get_meta('layup_preview_months');
 
     if ($layup_custom_months_max != $layup_preview_months || $layup_preview_months == '') {
 
@@ -388,8 +388,8 @@ $format_number = number_format($product->get_price(), 2, '.', '');
 
 $price = $format_number * 100;
 
-$layup_custom_deposit = isset($product->get_meta('layup_custom_deposit')) ? $product->get_meta('layup_custom_deposit') : '';
-$layup_custom_months = isset($product->get_meta('layup_custom_months')) ? $product->get_meta('layup_custom_months') : '';
+$layup_custom_deposit = $product->get_meta('layup_custom_deposit');
+$layup_custom_months = $product->get_meta('layup_custom_months');
 
 if ($layup_custom_months == 'yes')
 		{
