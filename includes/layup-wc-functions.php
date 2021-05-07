@@ -1016,7 +1016,7 @@ function save_layup_disable_field($post_id)
 
 	$layup_custom_months = isset($_POST['layup_custom_months']) ? sanitize_text_field($_POST['layup_custom_months']) : '';
 	$layup_custom_months_min = isset($_POST['layup_custom_months_min']) ? sanitize_text_field($_POST['layup_custom_months_min']) : '';
-	$layup_custom_months_max = isset($_POST['layup_custom_months_max']) ? sanitize_text_field($_POST['layup_custom_months_max']) : '';
+	$layup_custom_months_max(int) = isset($_POST['layup_custom_months_max']) ? sanitize_text_field($_POST['layup_custom_months_max']) : '';
 
 	$product->update_meta_data('layup_disable', $layup_disable);
 	$product->update_meta_data('layup_custom_deposit', $layup_custom_deposit);
@@ -1078,7 +1078,7 @@ function save_layup_disable_field($post_id)
 
 			$lu_min_date = date('Y-m-d', strtotime("+" . $layup_custom_months_min . " months", strtotime($lu_curr_date)));
 
-			$lu_max_date = date('Y-m-d', strtotime("+" . $layup_custom_months_max . " months", strtotime($lu_curr_date)));
+			$lu_max_date = date('Y-m-d', strtotime("+" . $layup_custom_months_max + 1 . " months", strtotime($lu_curr_date)));
 
 		} else {
 
@@ -1176,6 +1176,8 @@ function save_layup_disable_field($post_id)
 
 			$deposit_type = $gateway->layup_dep_type;
 		}
+
+		settype($deposit_amount, 'float');
 
 		$max_date = max($dates);
 
