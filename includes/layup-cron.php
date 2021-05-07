@@ -369,128 +369,110 @@ if (empty($products)){
 $lu_curr_date = date('c');
 
 
-
-$lu_min_date = date('Y-m-d', strtotime("+" . 1 . " months", strtotime($lu_curr_date)));
-
-
-
-$lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
-
-
 	$api_key = 'myApiKey';
 
 	$preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
 
 
-
-
-
 foreach($products as $prod) {
 
+    
+    $layup_custom_months_max = isset($product->get_meta('layup_custom_months_max')) ? $product->get_meta('layup_custom_months_max') : '';
+    $layup_preview_months = isset($product->get_meta('layup_preview_months')) ? $product->get_meta('layup_preview_months') : '';
 
+    if ($layup_custom_months_max != $layup_preview_months || $layup_preview_months == '') {
 
 $product = wc_get_product( $prod->ID );
-
 
 $format_number = number_format($product->get_price(), 2, '.', '');
 
 $price = $format_number * 100;
 
+$layup_custom_deposit = isset($product->get_meta('layup_custom_deposit')) ? $product->get_meta('layup_custom_deposit') : '';
+$layup_custom_months = isset($product->get_meta('layup_custom_months')) ? $product->get_meta('layup_custom_months') : '';
 
+if ($layup_custom_months == 'yes')
+		{
+            $layup_custom_months_min = $product->get_meta('layup_custom_months_min');
+
+			$lu_min_date = date('Y-m-d', strtotime("+" . $layup_custom_months_min . " months", strtotime($lu_curr_date)));
+
+			$lu_max_date = date('Y-m-d', strtotime("+" . $layup_custom_months_max . " months", strtotime($lu_curr_date)));
+
+		} else {
+
+			$lu_min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($lu_curr_date)));
+
+			$lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
+		}
+
+if ($layup_custom_deposit == 'yes')
+		{
+
+			$deposit_amount = $layup_custom_deposit_amount,
+
+			$deposit_type => $layup_custom_deposit_type,
+
+		} else {
+
+			$deposit_amount = $gateway->layup_dep,
+
+			$deposit_type => $gateway->layup_dep_type,
+		}
 
 $preview_details = array(
 
-
+    'depositAmount' => $deposit_amount * 100,
 
     'amountDue' => $price,
 
-
-
-    'depositPerc' => $gateway->layup_dep,
-
-
+    'depositPerc' => $deposit_amount,
 
     'endDateMax' => $lu_max_date,
 
-
-
     'endDateMin' => $lu_min_date,
 
+    'absorbsFee' => false,
 
-
-    'absorbsFee' => false
-
-
+    'depositType' => $deposit_type
 
 );
-
-
 
 $preview_headers = array(
 
-
-
     'Content-Type' => 'application/json',
-
-
 
     'apikey' => $api_key,
 
-
-
 );
-
-
-
 
 
 $preview_details_json = json_encode( $preview_details , JSON_UNESCAPED_SLASHES );
 
-
-
 $preview_args = array(
-
-
 
     'headers' => $preview_headers,
 
-
-
     'body' => $preview_details_json
-
-
 
     );
 
-
-
 $preview_response = wp_remote_post( $preview_api_url, $preview_args);
-
-
 
 $preview_body = json_decode( $preview_response['body'], true );
 
-
-
 $max_payment_months = count($preview_body['paymentPlans']);
-
-
 
 $amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
 
-
-
 $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
 
-
-
 update_post_meta( $prod->ID, 'layup_preview_months', $max_payment_months );	
+update_post_meta( $prod->ID, 'layup_preview_amount', $amount_monthly_form );
+update_post_meta( $prod->ID, 'layup_preview_deposit_type', $deposit_type );
+update_post_meta( $prod->ID, 'layup_preview_deposit_amount', $deposit_amount );	
 
-
-
-update_post_meta( $prod->ID, 'layup_preview_amount', $amount_monthly_form );	
-
-
+}
 
         }
 
