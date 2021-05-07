@@ -488,8 +488,8 @@ update_post_meta( $prod->ID, 'layup_preview_deposit_amount', $deposit_amount );
 }
 
         }
-        
-        file_put_contents('testing-pp-2.txt', $prod_file);
+
+        file_put_contents('testing-pp-3.txt', $prod_file);
 
         return;
 
