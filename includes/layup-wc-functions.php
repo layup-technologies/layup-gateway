@@ -1070,11 +1070,10 @@ function save_layup_disable_field($post_id)
 
 	if ($dates == '')
 	{
-		file_put_contents('testing-pp.txt', $layup_custom_months.' '. $layup_custom_deposit);
+
 		if ($layup_custom_months == 'yes')
 		{
 
-			file_put_contents('testing-pp-2.txt', $$layup_custom_months_min.' '. $layup_custom_months_max);
 
 			$lu_min_date = date('Y-m-d', strtotime("+" . $layup_custom_months_min . " months", strtotime($lu_curr_date)));
 
