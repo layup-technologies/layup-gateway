@@ -950,7 +950,7 @@ function create_layup_custom_months_min_field()
 
 		'label' => __('Minimum months', 'layup-gateway') ,
 
-		'class' => 'lu-custom-months_min',
+		'class' => 'lu-custom-months-min',
 
 		'desc_tip' => true,
 
@@ -977,7 +977,7 @@ function create_layup_custom_months_max_field()
 
 		'label' => __('Maximum months', 'layup-gateway') ,
 
-		'class' => 'lu-custom-months_max',
+		'class' => 'lu-custom-months-max',
 
 		'desc_tip' => true,
 
@@ -1024,8 +1024,8 @@ function save_layup_disable_field($post_id)
 	$product->update_meta_data('layup_custom_deposit_amount', $layup_custom_deposit_amount);
 
 	$product->update_meta_data('layup_custom_months', $layup_custom_deposit);
-	$product->update_meta_data('layup_custom_months_min', $layup_custom_deposit_type);
-	$product->update_meta_data('layup_custom_months_max', $layup_custom_deposit_amount);
+	$product->update_meta_data('layup_custom_months_min', $layup_custom_months_min);
+	$product->update_meta_data('layup_custom_months_max', $layup_custom_months_max);
 
 	$price = $product->get_price() * 100;
 
