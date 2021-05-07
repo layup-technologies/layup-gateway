@@ -1014,7 +1014,7 @@ function save_layup_disable_field($post_id)
 	$layup_custom_deposit_type = isset($_POST['layup_custom_deposit_type']) ? sanitize_text_field($_POST['layup_custom_deposit_type']) : '';
 	$layup_custom_deposit_amount = isset($_POST['layup_custom_deposit_amount']) ? sanitize_text_field($_POST['layup_custom_deposit_amount']) : '';
 
-	$layup_custom_months = isset($_POST['$layup_custom_months']) ? sanitize_text_field($_POST['$layup_custom_months']) : '';
+	$layup_custom_months = isset($_POST['layup_custom_months']) ? sanitize_text_field($_POST['layup_custom_months']) : '';
 	$layup_custom_months_min = isset($_POST['layup_custom_months_min']) ? sanitize_text_field($_POST['layup_custom_months_min']) : '';
 	$layup_custom_months_max = isset($_POST['layup_custom_months_max']) ? sanitize_text_field($_POST['layup_custom_months_max']) : '';
 
