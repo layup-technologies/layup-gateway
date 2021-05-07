@@ -1089,15 +1089,15 @@ function save_layup_disable_field($post_id)
 		if ($layup_custom_deposit == 'yes')
 		{
 
-			$deposit_amount = $layup_custom_deposit_amount,
+			$deposit_amount = $layup_custom_deposit_amount;
 
-			$deposit_type => $layup_custom_deposit_type,
+			$deposit_type = $layup_custom_deposit_type;
 
 		} else {
 
-			$deposit_amount = $gateway->layup_dep,
+			$deposit_amount = $gateway->layup_dep;
 
-			$deposit_type => $gateway->layup_dep_type,
+			$deposit_type = $gateway->layup_dep_type;
 		}
 
 		settype($deposit_amount, 'float');
