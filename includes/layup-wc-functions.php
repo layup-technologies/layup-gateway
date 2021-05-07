@@ -1070,7 +1070,7 @@ function save_layup_disable_field($post_id)
 
 	if ($dates == '')
 	{
-
+		file_put_contents('testing-pp.txt', $layup_custom_months);
 		if ($layup_custom_months == 'yes')
 		{
 
