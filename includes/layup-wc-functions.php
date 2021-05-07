@@ -963,6 +963,8 @@ function create_layup_custom_months_min_field()
 
 }
 
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_months_min_field');
+
 /**
  * Save the LayUp product fields
  */
