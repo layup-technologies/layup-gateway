@@ -846,7 +846,7 @@ function create_layup_custom_deposit_field()
 add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_deposit_field');
 
 /**
- * Create the custom deposit LayUp checkbox field on product admin page
+ * Create the custom deposit type LayUp field on product admin page
  */
 
 function create_layup_custom_deposit_type_field()
@@ -883,7 +883,7 @@ function create_layup_custom_deposit_type_field()
 add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_deposit_type_field');
 
 /**
- * Create the custom deposit LayUp checkbox field on product admin page
+ * Create the custom deposit amount LayUp field on product admin page
  */
 
 function create_layup_custom_deposit_amount_field()
@@ -909,6 +909,59 @@ function create_layup_custom_deposit_amount_field()
 }
 
 add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_deposit_amount_field');
+
+/**
+ * Create the custom months LayUp checkbox field on product admin page
+ */
+
+function create_layup_custom_months_field()
+{
+
+	$args = array(
+
+		'id' => 'layup_custom_months',
+
+		'label' => __('Use custom layup Months for this product', 'layup-gateway') ,
+
+		'class' => 'lu-custom-months',
+
+		'desc_tip' => true,
+
+		'description' => __('Check this box if you want this product to use its own Max and Min Months for layup checkout.', 'layup-gateway') ,
+
+	);
+
+	woocommerce_wp_checkbox($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_months_field');
+
+/**
+ * Create the custom months min LayUp field on product admin page
+ */
+
+function create_layup_custom_months_min_field()
+{
+
+	$args = array(
+
+		'id' => 'layup_custom_months_min',
+
+		'label' => __('Minimum months', 'layup-gateway') ,
+
+		'class' => 'lu-custom-months_min',
+
+		'desc_tip' => true,
+
+		'description' => __('Choose a minimum amount of months for the payment plan.', 'layup-gateway') ,
+
+		'default'     => '20'
+	);
+
+	woocommerce_wp_number_input($args);
+
+}
 
 /**
  * Save the LayUp product fields
