@@ -1074,7 +1074,7 @@ function save_layup_disable_field($post_id)
 		if ($layup_custom_months == 'yes')
 		{
 			$min_months = $layup_custom_months_min;
-			$max_months = $layup_custom_months_max + 1;
+			$max_months = $layup_custom_months_max;
 
 		} else {
 
