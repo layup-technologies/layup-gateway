@@ -409,17 +409,20 @@ $layup_custom_months = $product->get_meta('layup_custom_months');
 if ($layup_custom_months == 'yes')
 		{
             $layup_custom_months_min = $product->get_meta('layup_custom_months_min');
-
-			$lu_min_date = date('Y-m-d', strtotime("+" . $layup_custom_months_min . " months", strtotime($lu_curr_date)));
-
-			$lu_max_date = date('Y-m-d', strtotime("+" . $layup_custom_months_max + 1 . " months", strtotime($lu_curr_date)));
+			$min_months = $layup_custom_months_min;
+			$max_months = $layup_custom_months_max + 1;
 
 		} else {
 
-			$lu_min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($lu_curr_date)));
+			$min_months = $gateway->lu_min_end_date;
+			$max_months = $gateway->lu_max_end_date;
 
-			$lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
 		}
+
+		$lu_min_date = date('Y-m-d', strtotime("+" . $min_months . " months", strtotime($lu_curr_date)));
+
+		$lu_max_date = date('Y-m-d', strtotime("+" . $max_months . " months", strtotime($lu_curr_date)));
+
 
 if ($layup_custom_deposit == 'yes')
 		{
@@ -476,12 +479,13 @@ $preview_response = wp_remote_post( $preview_api_url, $preview_args);
 
 $preview_body = json_decode( $preview_response['body'], true );
 
-$max_payment_months = count($preview_body['paymentPlans']);
+$max_payments = count($preview_body['paymentPlans']);
 
-$amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
+		$amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
+		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
 
 $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
-
+$product->update_meta_data('layup_preview_months_min', $min_months);
 update_post_meta( $prod->ID, 'layup_preview_months', $max_payment_months );	
 update_post_meta( $prod->ID, 'layup_preview_amount', $amount_monthly_form );
 update_post_meta( $prod->ID, 'layup_preview_deposit_type', $deposit_type );
