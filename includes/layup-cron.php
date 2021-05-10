@@ -326,7 +326,7 @@ function layup_check_prod() {
 
 
 
-                    'key' => 'layup_preview_months_min',
+                    'key' => 'layup_preview_min_months',
     
     
     
@@ -416,7 +416,7 @@ foreach($products as $prod) {
     $layup_preview_amount = $product->get_meta('layup_preview_amount');
 
     if ($layup_custom_months_max != $layup_preview_months || $layup_preview_months == '' || $layup_preview_deposit_type == '' || $layup_preview_deposit_amount == '' || $layup_preview_months_min == '' || $layup_preview_amount == '') {
-
+        file_put_contents('testing-pp-4.txt', $prod_file);
 $format_number = number_format($product->get_price(), 2, '.', '');
 
 $price = $format_number * 100;
