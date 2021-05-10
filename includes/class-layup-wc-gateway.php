@@ -615,13 +615,13 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         }
 
-            if (true){
+            /*if (true){
 
                 wc_add_notice(  json_encode($check_dep_months_min).'<br>'.json_encode($check_dep_months_max).'<br>'.json_encode($check_dep_type).'<br>'.json_encode($check_dep_amount), 'error' );
 
                 return;
 
-            } else {
+            } else {*/
 
         $woo_thank_you = $order->get_checkout_order_received_url();
 
@@ -975,7 +975,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-               wc_add_notice( $this->layup_dep.' and '. $this->layup_dep_type, 'error' );
+               wc_add_notice( 'An error occured, Please try again', 'error' );
 
 
 
@@ -991,7 +991,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-           wc_add_notice(  'something else happened', 'error' );
+           wc_add_notice(  'An error occured, Please try again', 'error' );
 
 
 
@@ -1000,10 +1000,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
        }
-
-    }
-
-
 
      }
 
