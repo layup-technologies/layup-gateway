@@ -584,13 +584,19 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $custom_dep_inarray = false;
 
+        $check_dep_type = [];
+        $check_dep_amount = [];
+        $check_dep_months_min = [];
+        $check_dep_months_max = [];
+
         foreach( $order_items as $cd_item_id => $cd_order_item ) {
-
-
 
             $cd_product = $cd_order_item->get_product();
 
-            $is_custom_dep = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit', true );
+            array_push($check_dep_type, get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_type', true ));
+            array_push($check_dep_amount, get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_amount', true ));
+            array_push($check_dep_type, get_post_meta( $cd_product->get_id(), 'layup_preview_months_min', true ));
+            array_push($check_dep_type, get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ));
 
             if (!empty($is_custom_dep))
             {
@@ -607,9 +613,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         }
 
-            if ($custom_dep_inarray && count( WC()->cart->get_cart() ) > 1){
+            if (true){
 
-                wc_add_notice(  'The following product can only be checked out on its own using LayUp: '.$custom_dep_prod, 'error' );
+                wc_add_notice(  print_r($check_dep_type), 'error' );
 
                 return;
 
