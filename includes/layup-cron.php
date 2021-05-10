@@ -504,14 +504,14 @@ $max_payments = count($preview_body['paymentPlans']);
 
 $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
 
-$product->update_meta_data('layup_preview_months', $max_payment_months);
-		$product->update_meta_data('layup_preview_min_months', $min_months);
+update_meta_data($prod->ID,'layup_preview_months', $max_payment_months);
+		update_meta_data($prod->ID,'layup_preview_min_months', $min_months);
 
-		$product->update_meta_data('layup_preview_amount', $amount_monthly_form);
+		update_meta_data($prod->ID,'layup_preview_amount', $amount_monthly_form);
 
-		$product->update_meta_data('layup_preview_deposit_type', $deposit_type);
+		update_meta_data($prod->ID,'layup_preview_deposit_type', $deposit_type);
 
-		$product->update_meta_data('layup_preview_deposit_amount', $deposit_amount);
+		update_meta_data($prod->ID,'layup_preview_deposit_amount', $deposit_amount);
 
 }
 
