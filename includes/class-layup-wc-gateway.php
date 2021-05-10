@@ -610,8 +610,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             $this->layup_dep = $check_dep_amount[0];
             settype($this->layup_dep, 'float');
             $this->layup_dep_type = $check_dep_type[0];
-            $this->lu_min_end_date = $check_dep_months_min[0];
-            $this->lu_max_end_date = $check_dep_months_max[0];
+            $this->lu_min_end_date = $check_dep_months_min[0] + 1;
+            $this->lu_max_end_date = $check_dep_months_max[0] + 1;
 
         }
 

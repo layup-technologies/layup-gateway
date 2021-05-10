@@ -426,7 +426,7 @@ $layup_custom_months = $product->get_meta('layup_custom_months');
 if ($layup_custom_months == 'yes')
 		{
             $layup_custom_months_min = $product->get_meta('layup_custom_months_min');
-			$min_months = $layup_custom_months_min;
+			$min_months = $layup_custom_months_min + 1;
 			$max_months = $layup_custom_months_max + 1;
             
 		} else {
