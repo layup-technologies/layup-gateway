@@ -410,8 +410,12 @@ foreach($products as $prod) {
     
     $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
     $layup_preview_months = $product->get_meta('layup_preview_months');
+    $layup_preview_months_min = $product->get_meta('layup_preview_min_months');
+    $layup_preview_deposit_type = $product->get_meta('layup_preview_deposit_type');
+    $layup_preview_deposit_amount = $product->get_meta('layup_preview_deposit_amount');
+    $layup_preview_amount = $product->get_meta('layup_preview_amount');
 
-    if ($layup_custom_months_max != $layup_preview_months || $layup_preview_months == '') {
+    if ($layup_custom_months_max != $layup_preview_months || $layup_preview_months == '' || $layup_preview_deposit_type == '' || $layup_preview_deposit_amount == '' || $layup_preview_months_min == '' || $layup_preview_amount == '') {
 
 $format_number = number_format($product->get_price(), 2, '.', '');
 
