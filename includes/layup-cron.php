@@ -376,7 +376,7 @@ function layup_check_prod() {
 
         );
 
-
+        file_put_contents('testing-pp-max-date.txt', $gateway->lu_max_end_date);
 
     $products = get_posts($args);
 
