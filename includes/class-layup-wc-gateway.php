@@ -600,12 +600,10 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         }
 
-        if (count(array_unique($check_dep_type)) > 1 || count(array_unique($check_dep_amount)) > 1 || count(array_unique($check_dep_months_min)) > 1 || count(array_unique($check_dep_months_max)) > 1) {
+        if (count(array_unique($check_dep_type)) <= 1 || count(array_unique($check_dep_amount)) <= 1 || count(array_unique($check_dep_months_min)) <= 1 || count(array_unique($check_dep_months_max)) <= 1) {
 
-            wc_add_notice(  'Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.', 'error' );
-
-            return;
-        } else {
+            
+        
 
             $this->layup_dep = $check_dep_amount[0];
             settype($this->layup_dep, 'float');
@@ -613,15 +611,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             $this->lu_min_end_date = $check_dep_months_min[0] + 1;
             $this->lu_max_end_date = $check_dep_months_max[0] + 1;
 
-        }
-
-            /*if (true){
-
-                wc_add_notice(  json_encode($check_dep_months_min).'<br>'.json_encode($check_dep_months_max).'<br>'.json_encode($check_dep_type).'<br>'.json_encode($check_dep_amount), 'error' );
-
-                return;
-
-            } else {*/
+        
 
         $woo_thank_you = $order->get_checkout_order_received_url();
 
@@ -1000,6 +990,13 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
        }
+
+    } else {
+
+        wc_add_notice(  'Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.', 'error' );
+
+            return;
+    }
 
      }
 
