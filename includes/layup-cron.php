@@ -456,6 +456,8 @@ if ($layup_custom_deposit == 'yes')
 			$deposit_type = $gateway->layup_dep_type;
 		}
 
+        settype($deposit_amount, 'float');
+
 $preview_details = array(
 
     'depositAmount' => $deposit_amount * 100,
@@ -498,6 +500,8 @@ $preview_response = wp_remote_post( $preview_api_url, $preview_args);
 $preview_body = json_decode( $preview_response['body'], true );
 
 $max_payments = count($preview_body['paymentPlans']);
+
+file_put_contents('testing-pp-5.txt', $prod_file);
 
 		$amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
 		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
