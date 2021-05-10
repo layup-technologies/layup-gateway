@@ -376,7 +376,7 @@ function layup_check_prod() {
 
         );
 
-        file_put_contents('testing-pp-max-date.txt', $gateway->lu_max_end_date);
+        
 
     $products = get_posts($args);
 
@@ -403,9 +403,7 @@ $lu_curr_date = date('c');
 
 
 foreach($products as $prod) {
-    $prod_file .= $prod->ID . '|';
 
-    file_put_contents('testing-pp-3.txt', $prod_file);
     $product = wc_get_product( $prod->ID );
     
     $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
@@ -415,9 +413,9 @@ foreach($products as $prod) {
     $layup_preview_deposit_amount = $product->get_meta('layup_preview_deposit_amount');
     $layup_preview_amount = $product->get_meta('layup_preview_amount');
     $test_months = $layup_custom_months_max.'|'.$layup_preview_months;
-    file_put_contents('testing-pp-months.txt', $test_months);
+    
     if ($layup_custom_months_max != $layup_preview_months || $layup_preview_months == '' || $layup_preview_deposit_type == '' || $layup_preview_deposit_amount == '' || $layup_preview_months_min == '' || $layup_preview_amount == '') {
-        file_put_contents('testing-pp-4.txt', $prod_file);
+        
 $format_number = number_format($product->get_price(), 2, '.', '');
 
 $price = $format_number * 100;
@@ -430,12 +428,12 @@ if ($layup_custom_months == 'yes')
             $layup_custom_months_min = $product->get_meta('layup_custom_months_min');
 			$min_months = $layup_custom_months_min;
 			$max_months = $layup_custom_months_max + 1;
-            file_put_contents('testing-pp-cm.txt', $min_months);
+            
 		} else {
 
 			$min_months = $gateway->lu_min_end_date;
 			$max_months = $gateway->lu_max_end_date;
-            file_put_contents('testing-pp-ncm.txt', $min_months);
+            
 		}
 
 		$lu_min_date = date('Y-m-d', strtotime("+" . $min_months . " months", strtotime($lu_curr_date)));
@@ -498,22 +496,23 @@ $preview_args = array(
 
 $preview_response = wp_remote_post( $preview_api_url, $preview_args);
 
-file_put_contents('testing-pp-rep.txt', $preview_response['body']);
+
 
 $preview_body = json_decode( $preview_response['body'], true );
 
 $max_payments = count($preview_body['paymentPlans']);
 
-file_put_contents('testing-pp-5.txt', $prod_file);
+
 
 		$amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
 		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
+        $min_payment_months = $preview_body['paymentPlans'][0]['quantity'];
 
 $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
 $testing_val = $max_payment_months.'|'.$min_months.'|'.$amount_monthly_form.'|'.$deposit_type.'|'.$deposit_amount;
-file_put_contents('testing-pp-val.txt', $testing_val);
+
 $product->update_meta_data('layup_preview_months', $max_payment_months);
-		$product->update_meta_data('layup_preview_min_months', $min_months);
+		$product->update_meta_data('layup_preview_min_months', $min_payment_months);
 
 		$product->update_meta_data('layup_preview_amount', $amount_monthly_form);
 

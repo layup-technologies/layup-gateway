@@ -1148,11 +1148,12 @@ function save_layup_disable_field($post_id)
 
 		$amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
 		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
+		$min_payment_months = $preview_body['paymentPlans'][0]['quantity'];
 
 		$amount_monthly_form = number_format(($amount_monthly / 100) , 2, '.', ' ');
 
 		$product->update_meta_data('layup_preview_months', $max_payment_months);
-		$product->update_meta_data('layup_preview_min_months', $min_months);
+		$product->update_meta_data('layup_preview_min_months', $min_payment_months);
 
 		$product->update_meta_data('layup_preview_amount', $amount_monthly_form);
 
@@ -1242,12 +1243,13 @@ function save_layup_disable_field($post_id)
 
 		$amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
 		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
+		$min_payment_months = $preview_body['paymentPlans'][0]['quantity'];
 
 		$amount_monthly_form = number_format(($amount_monthly / 100) , 2, '.', ',');
 
 		$product->update_meta_data('layup_preview_months', $max_payment_months);
 
-		$product->update_meta_data('layup_preview_min_months', $min_months);
+		$product->update_meta_data('layup_preview_min_months', $min_payment_months);
 
 		$product->update_meta_data('layup_preview_amount', $amount_monthly_form);
 

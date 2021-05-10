@@ -598,12 +598,16 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             array_push($check_dep_months_min, get_post_meta( $cd_product->get_id(), 'layup_preview_min_months', true ));
             array_push($check_dep_months_max, get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ));
 
+             
+            $is_custom_dep = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit', true )
+
             if (!empty($is_custom_dep))
             {
+
     
                 $custom_dep_inarray = true; //set inarray to true
                 
-                $custom_dep_prod = $cd_product->get_title();
+                $custom_dep_prod .= $cd_product->get_title().', ';
                 $this->layup_dep = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit_amount', true );
                 settype($this->layup_dep, 'float');
                 $this->layup_dep_type = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit_type', true );
@@ -613,9 +617,24 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         }
 
+        if (count(array_unique($check_dep_type)) > 1 || count(array_unique($check_dep_amount)) > 1 || count(array_unique($check_dep_months_min)) > 1 || count(array_unique($check_dep_months_max)) > 1) {
+
+            wc_add_notice(  'Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.', 'error' );
+
+            return;
+        } else {
+
+            $this->layup_dep = $check_dep_amount[0];
+            settype($this->layup_dep, 'float');
+            $this->layup_dep_type = $check_dep_type[0];
+            $this->lu_min_end_date = $check_dep_months_min[0];
+            $this->lu_max_end_date = $check_dep_months_max[0];
+
+        }
+
             if (true){
 
-                wc_add_notice(  json_encode($check_dep_months_min).'<br>'.json_encode($check_dep_months_max), 'error' );
+                wc_add_notice(  json_encode($check_dep_months_min).'<br>'.json_encode($check_dep_months_max).'<br>'.json_encode($check_dep_type).'<br>'.json_encode($check_dep_amount), 'error' );
 
                 return;
 
