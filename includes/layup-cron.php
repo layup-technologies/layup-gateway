@@ -520,6 +520,8 @@ $product->update_meta_data('layup_preview_months', $max_payment_months);
 
 		$product->update_meta_data('layup_preview_deposit_amount', $deposit_amount);
 
+        $product->save();
+
 }
 
         }
