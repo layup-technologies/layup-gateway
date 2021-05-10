@@ -615,7 +615,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             if (true){
 
-                wc_add_notice(  var_dump($check_dep_type), 'error' );
+                wc_add_notice(  'The following product can only be checked out on its own using LayUp: '.$custom_dep_prod, 'error' );
+
+                echo var_dump($check_dep_type);
 
                 return;
 
