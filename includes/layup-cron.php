@@ -326,6 +326,20 @@ function layup_check_prod() {
 
 
 
+                    'key' => 'layup_preview_months_min',
+    
+    
+    
+                    'compare' => 'NOT EXISTS'
+    
+    
+    
+                    ),
+
+                array(
+
+
+
                     'key' => 'layup_preview_deposit_type',
     
     
