@@ -429,12 +429,12 @@ if ($layup_custom_months == 'yes')
             $layup_custom_months_min = $product->get_meta('layup_custom_months_min');
 			$min_months = $layup_custom_months_min;
 			$max_months = $layup_custom_months_max + 1;
-
+            file_put_contents('testing-pp-cm.txt', $min_months);
 		} else {
 
 			$min_months = $gateway->lu_min_end_date;
 			$max_months = $gateway->lu_max_end_date;
-
+            file_put_contents('testing-pp-ncm.txt', $min_months);
 		}
 
 		$lu_min_date = date('Y-m-d', strtotime("+" . $min_months . " months", strtotime($lu_curr_date)));
