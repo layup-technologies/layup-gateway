@@ -330,7 +330,7 @@ function layup_check_prod() {
     
     
     
-                    'compare' => 'EXISTS'
+                    'compare' => 'NOT EXISTS'
     
     
     
