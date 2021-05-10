@@ -1146,8 +1146,8 @@ function save_layup_disable_field($post_id)
 
 		$max_payments = count($preview_body['paymentPlans']);
 
-		$amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
-		$max_payment_months = $preview_body['paymentPlans'][$max_payment_months - 1]['quantity'];
+		$amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
+		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
 
 		$amount_monthly_form = number_format(($amount_monthly / 100) , 2, '.', ' ');
 
@@ -1240,8 +1240,8 @@ function save_layup_disable_field($post_id)
 
 		$max_payments = count($preview_body['paymentPlans']);
 
-		$amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
-		$max_payment_months = $preview_body['paymentPlans'][$max_payment_months - 1]['quantity'];
+		$amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
+		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
 
 		$amount_monthly_form = number_format(($amount_monthly / 100) , 2, '.', ',');
 
