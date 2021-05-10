@@ -497,6 +497,8 @@ $preview_args = array(
 
 $preview_response = wp_remote_post( $preview_api_url, $preview_args);
 
+file_put_contents('testing-pp-rep.txt', $preview_response['body']);
+
 $preview_body = json_decode( $preview_response['body'], true );
 
 $max_payments = count($preview_body['paymentPlans']);
@@ -507,7 +509,7 @@ file_put_contents('testing-pp-5.txt', $prod_file);
 		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
 
 $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
-file_put_contents('testing-pp-5.txt', $prod_file);
+
 $product->update_meta_data('layup_preview_months', $max_payment_months);
 		$product->update_meta_data('layup_preview_min_months', $min_months);
 
