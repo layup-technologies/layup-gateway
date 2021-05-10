@@ -615,7 +615,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             if (true){
 
-                wc_add_notice(  print_r($check_dep_type), 'error' );
+                wc_add_notice(  var_dump($check_dep_type), 'error' );
 
                 return;
 
