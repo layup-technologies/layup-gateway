@@ -615,7 +615,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             if (true){
 
-                wc_add_notice(  json_encode($check_dep_type), 'error' );
+                wc_add_notice(  json_encode($check_dep_months_min).'<br>'.json_encode($check_dep_months_max), 'error' );
 
                 return;
 
