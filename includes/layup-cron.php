@@ -509,7 +509,8 @@ file_put_contents('testing-pp-5.txt', $prod_file);
 		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
 
 $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
-
+$testing_val = $max_payment_months.'|'.$min_months.'|'.$amount_monthly_form.'|'.$deposit_type.'|'.$deposit_amount;
+file_put_contents('testing-pp-val.txt', $testing_val);
 $product->update_meta_data('layup_preview_months', $max_payment_months);
 		$product->update_meta_data('layup_preview_min_months', $min_months);
 
