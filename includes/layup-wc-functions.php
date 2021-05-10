@@ -1073,18 +1073,19 @@ function save_layup_disable_field($post_id)
 
 		if ($layup_custom_months == 'yes')
 		{
-
-
-			$lu_min_date = date('Y-m-d', strtotime("+" . $layup_custom_months_min . " months", strtotime($lu_curr_date)));
-
-			$lu_max_date = date('Y-m-d', strtotime("+" . $layup_custom_months_max + 1 . " months", strtotime($lu_curr_date)));
+			$min_months = $layup_custom_months_min;
+			$max_months = $layup_custom_months_max + 1;
 
 		} else {
 
-			$lu_min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($lu_curr_date)));
+			$min_months = $gateway->lu_min_end_date;
+			$max_months = $gateway->lu_max_end_date;
 
-			$lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
 		}
+
+		$lu_min_date = date('Y-m-d', strtotime("+" . $min_months . " months", strtotime($lu_curr_date)));
+
+		$lu_max_date = date('Y-m-d', strtotime("+" . $max_months . " months", strtotime($lu_curr_date)));
 
 
 		if ($layup_custom_deposit == 'yes')
@@ -1150,6 +1151,7 @@ function save_layup_disable_field($post_id)
 		$amount_monthly_form = number_format(($amount_monthly / 100) , 2, '.', ' ');
 
 		$product->update_meta_data('layup_preview_months', $max_payment_months);
+		$product->update_meta_data('layup_preview_months_min', $min_months);
 
 		$product->update_meta_data('layup_preview_amount', $amount_monthly_form);
 
@@ -1161,6 +1163,19 @@ function save_layup_disable_field($post_id)
 	}
 	else
 	{
+
+		if ($layup_custom_months == 'yes')
+		{
+			$min_months = $layup_custom_months_min;
+
+		} else {
+
+			$min_months = $gateway->lu_min_end_date;
+
+		}
+
+		$lu_min_date = date('Y-m-d', strtotime("+" . $min_months . " months", strtotime($lu_curr_date)));
+
 
 		if ($layup_custom_deposit == 'yes')
 		{
@@ -1179,8 +1194,6 @@ function save_layup_disable_field($post_id)
 		settype($deposit_amount, 'float');
 
 		$max_date = max($dates);
-
-		$lu_min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($lu_curr_date)));
 
 		$lu_max_date = date('c', strtotime($max_date));
 
@@ -1231,6 +1244,8 @@ function save_layup_disable_field($post_id)
 		$amount_monthly_form = number_format(($amount_monthly / 100) , 2, '.', ',');
 
 		$product->update_meta_data('layup_preview_months', $max_payment_months);
+
+		$product->update_meta_data('layup_preview_months_min', $min_months);
 
 		$product->update_meta_data('layup_preview_amount', $amount_monthly_form);
 
