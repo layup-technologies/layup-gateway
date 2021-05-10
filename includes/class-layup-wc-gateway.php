@@ -598,23 +598,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             array_push($check_dep_months_min, get_post_meta( $cd_product->get_id(), 'layup_preview_min_months', true ));
             array_push($check_dep_months_max, get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ));
 
-             
-            $is_custom_dep = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit', true )
-
-            if (!empty($is_custom_dep))
-            {
-
-    
-                $custom_dep_inarray = true; //set inarray to true
-                
-                $custom_dep_prod .= $cd_product->get_title().', ';
-                $this->layup_dep = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit_amount', true );
-                settype($this->layup_dep, 'float');
-                $this->layup_dep_type = get_post_meta( $cd_product->get_id(), 'layup_custom_deposit_type', true );
-                break;
-    
-            }
-
         }
 
         if (count(array_unique($check_dep_type)) > 1 || count(array_unique($check_dep_amount)) > 1 || count(array_unique($check_dep_months_min)) > 1 || count(array_unique($check_dep_months_max)) > 1) {
