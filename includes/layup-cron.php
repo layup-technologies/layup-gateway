@@ -499,7 +499,7 @@ $max_payments = count($preview_body['paymentPlans']);
 		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
 
 $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
-update_meta_data($prod->ID, 'layup_preview_months_min', $min_months);
+update_meta_data($prod->ID, 'layup_preview_min_months', $min_months);
 update_post_meta( $prod->ID, 'layup_preview_months', $max_payment_months );	
 update_post_meta( $prod->ID, 'layup_preview_amount', $amount_monthly_form );
 update_post_meta( $prod->ID, 'layup_preview_deposit_type', $deposit_type );
