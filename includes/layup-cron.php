@@ -414,7 +414,8 @@ foreach($products as $prod) {
     $layup_preview_deposit_type = $product->get_meta('layup_preview_deposit_type');
     $layup_preview_deposit_amount = $product->get_meta('layup_preview_deposit_amount');
     $layup_preview_amount = $product->get_meta('layup_preview_amount');
-
+    $test_months = $layup_custom_months_max.'|'.$layup_preview_months;
+    file_put_contents('testing-pp-months.txt', $test_months);
     if ($layup_custom_months_max != $layup_preview_months || $layup_preview_months == '' || $layup_preview_deposit_type == '' || $layup_preview_deposit_amount == '' || $layup_preview_months_min == '' || $layup_preview_amount == '') {
         file_put_contents('testing-pp-4.txt', $prod_file);
 $format_number = number_format($product->get_price(), 2, '.', '');
