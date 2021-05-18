@@ -294,7 +294,7 @@ function layup_check_prod() {
 
 
 
-            'posts_per_page' => 50,
+            'posts_per_page' => 20,
 
 
 

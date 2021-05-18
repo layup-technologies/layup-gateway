@@ -842,22 +842,24 @@ function save_layup_disable_field($post_id)
 
 	$price = $product->get_price() * 100;
 
-	foreach ($_POST['layup_date'] as $postdate)
-	{
-
-		$d = DateTime::createFromFormat('Y-m-d', $postdate);
-
-		$valid_date = $d && $d->format('Y-m-d') === $postdate;
-
-		if ($valid_date == false)
+	if($_POST['layup_date'] != '') {
+		foreach ($_POST['layup_date'] as $postdate)
 		{
 
-			unset($_POST['layup_date']);
+			$d = DateTime::createFromFormat('Y-m-d', $postdate);
 
-			break;
+			$valid_date = $d && $d->format('Y-m-d') === $postdate;
+
+			if ($valid_date == false)
+			{
+
+				unset($_POST['layup_date']);
+
+				break;
+
+			}
 
 		}
-
 	}
 
 	$dates = isset($_POST['layup_date']) ? preg_replace("([^0-9-])", "", $_POST['layup_date']) : '';
@@ -1003,13 +1005,15 @@ add_action('woocommerce_process_product_meta', 'save_layup_disable_field');
 function check_layup_disable_field($gateways)
 {
 
+	if (is_checkout()) {
+
 	global $woocommerce;
 
 	$inarray = false;
 
 	//wc_clear_notices();
 	
-
+	if(!empty($woocommerce->cart->cart_contents)) {
 	foreach ($woocommerce->cart->cart_contents as $key => $values)
 	{ //enumerate over all cart contents
 		
@@ -1027,6 +1031,7 @@ function check_layup_disable_field($gateways)
 		}
 
 	}
+}
 
 	if ($inarray)
 	{ //product is in the cart
@@ -1044,6 +1049,7 @@ function check_layup_disable_field($gateways)
 	}
 
 	return $gateways;
+}
 
 }
 
