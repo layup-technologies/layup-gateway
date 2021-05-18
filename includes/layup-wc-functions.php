@@ -1029,22 +1029,25 @@ function save_layup_disable_field($post_id)
 
 	$price = $product->get_price() * 100;
 
-	foreach ($_POST['layup_date'] as $postdate)
+	if ($_POST['layup_date'] != '')
 	{
-
-		$d = DateTime::createFromFormat('Y-m-d', $postdate);
-
-		$valid_date = $d && $d->format('Y-m-d') === $postdate;
-
-		if ($valid_date == false)
+		foreach ($_POST['layup_date'] as $postdate)
 		{
 
-			unset($_POST['layup_date']);
+			$d = DateTime::createFromFormat('Y-m-d', $postdate);
 
-			break;
+			$valid_date = $d && $d->format('Y-m-d') === $postdate;
+
+			if ($valid_date == false)
+			{
+
+				unset($_POST['layup_date']);
+
+				break;
+
+			}
 
 		}
-
 	}
 
 	$dates = isset($_POST['layup_date']) ? preg_replace("([^0-9-])", "", $_POST['layup_date']) : '';
