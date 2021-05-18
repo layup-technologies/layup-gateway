@@ -1278,23 +1278,24 @@ function check_layup_disable_field($gateways)
 
 	//wc_clear_notices();
 	
-
-	foreach ($woocommerce->cart->cart_contents as $key => $values)
-	{ //enumerate over all cart contents
+	if (!empty($woocommerce->cart->cart_contents)) {
+		foreach ($woocommerce->cart->cart_contents as $key => $values)
+		{ //enumerate over all cart contents
 		
 
-		$layup_disable_meta = get_post_meta($values['product_id'], 'layup_disable', true);
+			$layup_disable_meta = get_post_meta($values['product_id'], 'layup_disable', true);
 
-		if (!empty($layup_disable_meta))
-		{
+			if (!empty($layup_disable_meta))
+			{
 
-			$inarray = true; //set inarray to true
+				$inarray = true; //set inarray to true
 			
 
-			break;
+				break;
+
+			}
 
 		}
-
 	}
 
 	if ($inarray)
