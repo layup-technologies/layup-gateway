@@ -1281,7 +1281,7 @@ function check_layup_disable_field($gateways)
 
 	$inarray = false;
 
-	//wc_clear_notices();
+	wc_clear_notices();
 	
 	if (!empty($woocommerce->cart->cart_contents)) {
 		foreach ($woocommerce->cart->cart_contents as $key => $values)
