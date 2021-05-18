@@ -1274,6 +1274,8 @@ add_action('woocommerce_process_product_meta', 'save_layup_disable_field');
 
 function check_layup_disable_field($gateways)
 {
+	if (is_checkout())
+		{
 
 	global $woocommerce;
 
@@ -1317,7 +1319,7 @@ function check_layup_disable_field($gateways)
 	}
 
 	return $gateways;
-
+		}
 }
 
 add_filter('woocommerce_available_payment_gateways', 'check_layup_disable_field', 1);
