@@ -593,7 +593,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             $cd_product = $cd_order_item->get_product();
             file_put_contents('variation.txt',$cd_product->get_id() );
-            if ( $cd_product->get_type() == 'variable' ) {
+            if ( $cd_product->is_type( 'variation' ) ) {
                 $cd_product = wc_get_product( $cd_product->get_parent_id() );
                 file_put_contents('variationparent.txt',$cd_product->get_id() );
             }
