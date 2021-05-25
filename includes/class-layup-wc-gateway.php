@@ -599,7 +599,10 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             array_push($check_dep_months_max, get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ));
 
         }
-
+file_put_contents('variationtest1.txt',$check_dep_type );
+file_put_contents('variationtest2.txt',$check_dep_amount );
+file_put_contents('variationtest3.txt',$check_dep_months_min );
+file_put_contents('variationtest4.txt',$check_dep_months_max );
         if (count(array_unique($check_dep_type)) <= 1 || count(array_unique($check_dep_amount)) <= 1 || count(array_unique($check_dep_months_min)) <= 1 || count(array_unique($check_dep_months_max)) <= 1) {
 
             
