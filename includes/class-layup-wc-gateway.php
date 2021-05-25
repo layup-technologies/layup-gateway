@@ -592,8 +592,10 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
         foreach( $order_items as $cd_item_id => $cd_order_item ) {
 
             $cd_product = $cd_order_item->get_product();
+            file_put_contents('variation.txt',$cd_product->get_id() );
             if ( $cd_product->is_type( 'variable' ) ) {
                 $cd_product = wc_get_product( $cd_product->get_parent_id() );
+                file_put_contents('variationparent.txt',$cd_product->get_id() );
             }
 
             array_push($check_dep_type, get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_type', true ));
