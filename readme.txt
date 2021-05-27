@@ -352,4 +352,3 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 = 1.0.0 =
 
 * Initial Release
-

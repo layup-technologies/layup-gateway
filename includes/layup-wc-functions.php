@@ -1029,8 +1029,8 @@ function save_layup_disable_field($post_id)
 
 	$price = $product->get_price() * 100;
 
-	if ($_POST['layup_date'] != '')
-	{
+	if($_POST['layup_date'] != '') {
+    
 		foreach ($_POST['layup_date'] as $postdate)
 		{
 
@@ -1277,16 +1277,17 @@ function check_layup_disable_field($gateways)
 	if (is_checkout())
 		{
 
+	if (is_checkout()) {
+
 	global $woocommerce;
 
 	$inarray = false;
 
 	wc_clear_notices();
 	
-	if (!empty($woocommerce->cart->cart_contents)) {
-		foreach ($woocommerce->cart->cart_contents as $key => $values)
-		{ //enumerate over all cart contents
-		
+	if(!empty($woocommerce->cart->cart_contents)) {
+	foreach ($woocommerce->cart->cart_contents as $key => $values)
+	{ //enumerate over all cart contents
 
 			$layup_disable_meta = get_post_meta($values['product_id'], 'layup_disable', true);
 
@@ -1302,6 +1303,7 @@ function check_layup_disable_field($gateways)
 
 		}
 	}
+}
 
 	if ($inarray)
 	{ //product is in the cart
@@ -1319,7 +1321,9 @@ function check_layup_disable_field($gateways)
 	}
 
 	return $gateways;
-		}
+
+}
+
 }
 
 add_filter('woocommerce_available_payment_gateways', 'check_layup_disable_field', 1);
