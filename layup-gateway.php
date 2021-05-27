@@ -4,29 +4,17 @@
 
 /*
 
-
-
  * Plugin Name: WooCommerce LayUp Payment Gateway
-
-
 
  * Plugin URI: https://layup.co.za/how-it-works
 
-
-
  * Description: Activate your payment plan with a small deposit and break down the total cost into more affordable monthly payments.
-
-
 
  * Author: LayUp Dev Team
 
-
-
  * Author URI: https://layup.co.za
 
-
-
- * Version: 1.6.4
+ * Version: 1.7.0
 
  *
 
@@ -176,7 +164,7 @@ function layup_init_gateway_class() {
 
 
 
-    define( 'WC_GATEWAY_LAYUP_VERSION', '1.6.2' );
+    define( 'WC_GATEWAY_LAYUP_VERSION', '1.7.0' );
 
 
 

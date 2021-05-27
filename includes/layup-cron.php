@@ -326,6 +326,34 @@ function layup_check_prod() {
 
 
 
+                    'key' => 'layup_preview_min_months',
+    
+    
+    
+                    'compare' => 'NOT EXISTS'
+    
+    
+    
+                    ),
+
+                array(
+
+
+
+                    'key' => 'layup_preview_deposit_type',
+    
+    
+    
+                    'compare' => 'NOT EXISTS'
+    
+    
+    
+                    ),
+
+                array(
+
+
+
                     'key' => 'layup_preview_months',
 
 
@@ -348,7 +376,7 @@ function layup_check_prod() {
 
         );
 
-
+        
 
     $products = get_posts($args);
 
@@ -369,100 +397,102 @@ if (empty($products)){
 $lu_curr_date = date('c');
 
 
-
-$lu_min_date = date('Y-m-d', strtotime("+" . 1 . " months", strtotime($lu_curr_date)));
-
-
-
-$lu_max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($lu_curr_date)));
-
-
 	$api_key = 'myApiKey';
 
 	$preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
 
 
-
-
-
 foreach($products as $prod) {
 
-
-
-$product = wc_get_product( $prod->ID );
-
-
+    $product = wc_get_product( $prod->ID );
+    
+    $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
+    $layup_preview_months = $product->get_meta('layup_preview_months');
+    $layup_preview_months_min = $product->get_meta('layup_preview_min_months');
+    $layup_preview_deposit_type = $product->get_meta('layup_preview_deposit_type');
+    $layup_preview_deposit_amount = $product->get_meta('layup_preview_deposit_amount');
+    $layup_preview_amount = $product->get_meta('layup_preview_amount');
+    $test_months = $layup_custom_months_max.'|'.$layup_preview_months;
+    
+    if ($layup_custom_months_max != $layup_preview_months || $layup_preview_months == '' || $layup_preview_deposit_type == '' || $layup_preview_deposit_amount == '' || $layup_preview_months_min == '' || $layup_preview_amount == '') {
+        
 $format_number = number_format($product->get_price(), 2, '.', '');
 
 $price = $format_number * 100;
 
+$layup_custom_deposit = $product->get_meta('layup_custom_deposit');
+$layup_custom_months = $product->get_meta('layup_custom_months');
 
+if ($layup_custom_months == 'yes')
+		{
+            $layup_custom_months_min = $product->get_meta('layup_custom_months_min');
+			$min_months = $layup_custom_months_min + 1;
+			$max_months = $layup_custom_months_max + 1;
+            
+		} else {
+
+			$min_months = $gateway->lu_min_end_date;
+			$max_months = $gateway->lu_max_end_date;
+            
+		}
+
+		$lu_min_date = date('Y-m-d', strtotime("+" . $min_months . " months", strtotime($lu_curr_date)));
+
+		$lu_max_date = date('Y-m-d', strtotime("+" . $max_months . " months", strtotime($lu_curr_date)));
+
+
+if ($layup_custom_deposit == 'yes')
+		{
+
+			$deposit_amount = $layup_custom_deposit_amount;
+
+			$deposit_type = $layup_custom_deposit_type;
+
+		} else {
+
+			$deposit_amount = $gateway->layup_dep;
+
+			$deposit_type = $gateway->layup_dep_type;
+		}
+
+        settype($deposit_amount, 'float');
 
 $preview_details = array(
 
-
+    'depositAmount' => $deposit_amount * 100,
 
     'amountDue' => $price,
 
-
-
-    'depositPerc' => $gateway->layup_dep,
-
-
+    'depositPerc' => $deposit_amount,
 
     'endDateMax' => $lu_max_date,
 
-
-
     'endDateMin' => $lu_min_date,
 
+    'absorbsFee' => false,
 
-
-    'absorbsFee' => false
-
-
+    'depositType' => $deposit_type
 
 );
-
-
 
 $preview_headers = array(
 
-
-
     'Content-Type' => 'application/json',
-
-
 
     'apikey' => $api_key,
 
-
-
 );
-
-
-
 
 
 $preview_details_json = json_encode( $preview_details , JSON_UNESCAPED_SLASHES );
 
-
-
 $preview_args = array(
-
-
 
     'headers' => $preview_headers,
 
-
-
     'body' => $preview_details_json
 
-
-
     );
-
-
 
 $preview_response = wp_remote_post( $preview_api_url, $preview_args);
 
@@ -470,31 +500,33 @@ $preview_response = wp_remote_post( $preview_api_url, $preview_args);
 
 $preview_body = json_decode( $preview_response['body'], true );
 
-
-
-$max_payment_months = count($preview_body['paymentPlans']);
+$max_payments = count($preview_body['paymentPlans']);
 
 
 
-$amount_monthly = $preview_body['paymentPlans'][$max_payment_months - 1]['payments'][1]['amount'];
-
-
+		$amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
+		$max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
+        $min_payment_months = $preview_body['paymentPlans'][0]['quantity'];
 
 $amount_monthly_form = number_format(($amount_monthly /100), 2, '.', ',');
+$testing_val = $max_payment_months.'|'.$min_months.'|'.$amount_monthly_form.'|'.$deposit_type.'|'.$deposit_amount;
 
+$product->update_meta_data('layup_preview_months', $max_payment_months);
+		$product->update_meta_data('layup_preview_min_months', $min_payment_months);
 
+		$product->update_meta_data('layup_preview_amount', $amount_monthly_form);
 
-update_post_meta( $prod->ID, 'layup_preview_months', $max_payment_months );	
+		$product->update_meta_data('layup_preview_deposit_type', $deposit_type);
 
+		$product->update_meta_data('layup_preview_deposit_amount', $deposit_amount);
 
+        $product->save();
 
-update_post_meta( $prod->ID, 'layup_preview_amount', $amount_monthly_form );	
-
-
+}
 
         }
 
-
+        
 
         return;
 

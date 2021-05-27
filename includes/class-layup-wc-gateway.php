@@ -308,7 +308,10 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'description' => 'The deposit type that you want your customers to pay.',
+                'description' => 'Select one of the following deposit types, required to initiate a payment plan and activate an order, applicable to all payment plans created by this Merchant Account.<br>
+                Percentage: Define a percentage of the total order value e.g. 10%.<br>
+                First Instalment: Deposit equal to the instalment value determined by the customer according to the payment plan duration e.g. R5,000 order paid over 5 months = R1,000 deposit.<br>
+                Flat Fee: Define a specific amount (lower than the max order value) e.g. R150.',
 
                 'options' => array(
                     'PERCENTAGE' => 'Percentage',
@@ -333,7 +336,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'description' => 'The deposit amount based on what was chosen as the deposit type.',
+                'description' => 'The deposit amount based on what was chosen as the deposit type.<br>(only applicable if pecentage or flat fee is chosen for the deposit type.)',
 
 
 
@@ -577,7 +580,43 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order_items = $order->get_items( array('line_item') );
 
+        // Build product array
 
+        $custom_dep_inarray = false;
+
+        $check_dep_type = [];
+        $check_dep_amount = [];
+        $check_dep_months_min = [];
+        $check_dep_months_max = [];
+
+        foreach( $order_items as $cd_item_id => $cd_order_item ) {
+
+            $cd_product = $cd_order_item->get_product();
+            
+            if ( $cd_product->is_type( 'variation' ) ) {
+                $cd_product = wc_get_product( $cd_product->get_parent_id() );
+                
+            }
+
+            array_push($check_dep_type, get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_type', true ));
+            array_push($check_dep_amount, get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_amount', true ));
+            array_push($check_dep_months_min, get_post_meta( $cd_product->get_id(), 'layup_preview_min_months', true ));
+            array_push($check_dep_months_max, get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ));
+
+        }
+
+        if (count(array_unique($check_dep_type)) <= 1 || count(array_unique($check_dep_amount)) <= 1 || count(array_unique($check_dep_months_min)) <= 1 || count(array_unique($check_dep_months_max)) <= 1) {
+
+            
+        
+
+            $this->layup_dep = $check_dep_amount[0];
+            settype($this->layup_dep, 'float');
+            $this->layup_dep_type = $check_dep_type[0];
+            $this->lu_min_end_date = $check_dep_months_min[0] + 1;
+            $this->lu_max_end_date = $check_dep_months_max[0] + 1;
+
+        
 
         $woo_thank_you = $order->get_checkout_order_received_url();
 
@@ -599,7 +638,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'amount'=> (int)$order_item->get_total() * 100,
+                'amount'=> (float)$order_item->get_total() * 100,
 
 
 
@@ -931,7 +970,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-               wc_add_notice( var_dump($response['body']), 'error' );
+               wc_add_notice( 'An error occured, Please try again', 'error' );
 
 
 
@@ -947,7 +986,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-           wc_add_notice(  var_dump($response['body']), 'error' );
+           wc_add_notice(  'An error occured, Please try again', 'error' );
 
 
 
@@ -957,7 +996,12 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
        }
 
+    } else {
 
+        wc_add_notice(  'Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.', 'error' );
+
+            return;
+    }
 
      }
 
