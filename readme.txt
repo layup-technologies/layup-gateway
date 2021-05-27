@@ -201,9 +201,13 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 == Changelog ==
 
+= v1.7.0 =
+
+* Added a feature to set deposit type, deposit amount and min and max dates on a per product basis
+
 = v1.6.4 =
 
-* Added deposit type
+* Optimisations done for server resources on resource heavy websites
 
 = v1.6.3 =
 

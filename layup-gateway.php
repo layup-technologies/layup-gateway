@@ -26,7 +26,7 @@
 
 
 
- * Version: 1.6.3
+ * Version: 1.7.0
 
  *
 
@@ -176,7 +176,7 @@ function layup_init_gateway_class() {
 
 
 
-    define( 'WC_GATEWAY_LAYUP_VERSION', '1.6.2' );
+    define( 'WC_GATEWAY_LAYUP_VERSION', '1.7.0' );
 
 
 
