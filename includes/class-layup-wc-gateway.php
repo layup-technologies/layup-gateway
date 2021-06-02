@@ -968,15 +968,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             } else {
 
-
-file_put_contents("checkout-body1.txt", var_dump($response));
-               wc_add_notice( $response, 'error' );
-
-
+               wc_add_notice( $response['body'], 'error' );
 
                return;
-
-
 
            }
 
@@ -984,11 +978,7 @@ file_put_contents("checkout-body1.txt", var_dump($response));
 
        } else {
 
-
-        file_put_contents("checkout-body2.txt", $body);
-           wc_add_notice(  $body, 'error' );
-
-
+           wc_add_notice(  'LayUp service is unreachable. Please try again', 'error' );
 
            return;
 
