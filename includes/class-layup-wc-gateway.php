@@ -970,7 +970,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-               wc_add_notice( 'An error occured, Please try again', 'error' );
+               wc_add_notice( $body, 'error' );
 
 
 
@@ -986,7 +986,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-           wc_add_notice(  'An error occured, Please try again', 'error' );
+           wc_add_notice(  $body, 'error' );
 
 
 
