@@ -969,7 +969,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             } else {
 
 
-
+file_put_contents("checkout-body1.txt", $body);
                wc_add_notice( $body, 'error' );
 
 
@@ -985,7 +985,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
        } else {
 
 
-
+        file_put_contents("checkout-body2.txt", $body);
            wc_add_notice(  $body, 'error' );
 
 
