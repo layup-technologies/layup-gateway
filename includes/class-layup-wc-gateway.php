@@ -969,7 +969,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             } else {
 
 
-file_put_contents("checkout-body1.txt", print_r($response));
+file_put_contents("checkout-body1.txt", var_dump($response));
                wc_add_notice( $response, 'error' );
 
 
