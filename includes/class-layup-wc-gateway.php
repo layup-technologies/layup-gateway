@@ -100,7 +100,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-        $this->lu_max_end_date = $this->get_option( 'lu_max_end_date') + 1;
+        $this->lu_max_end_date = $this->get_option( 'lu_max_end_date');
 
 
 
