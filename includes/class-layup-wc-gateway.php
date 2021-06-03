@@ -617,11 +617,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                 array_push($check_dep_months_max, get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ));
             } else {
                 array_push($check_dep_months_max, $this->lu_max_end_date);
-            }
-
-            $fp = fopen('data.txt', 'a');//opens file in append mode  
-fwrite($fp, json_encode($check_dep_type).' | ');    
-fclose($fp);  
+            } 
 
         }
 
