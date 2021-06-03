@@ -609,14 +609,23 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             
         
-
+            if(!empty($check_dep_amount[0])){
             $this->layup_dep = $check_dep_amount[0];
             settype($this->layup_dep, 'float');
-            $this->layup_dep_type = $check_dep_type[0];
-            $this->lu_min_end_date = $check_dep_months_min[0] + 1;
-            $this->lu_max_end_date = $check_dep_months_max[0] + 1;
+            }
 
-        
+            if(!empty($check_dep_type[0])){
+            $this->layup_dep_type = $check_dep_type[0];
+            }
+
+            if(!empty($check_dep_months_min[0])){
+            $this->lu_min_end_date = $check_dep_months_min[0] + 1;
+            }
+
+            if(!empty($check_dep_months_max[0])){
+            $this->lu_max_end_date = $check_dep_months_max[0] + 1;
+            }
+
 
         $woo_thank_you = $order->get_checkout_order_received_url();
 
@@ -968,15 +977,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             } else {
 
-
-
-               wc_add_notice( 'An error occured, Please try again', 'error' );
-
-
+               wc_add_notice( $response['body'], 'error' );
 
                return;
-
-
 
            }
 
@@ -984,11 +987,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
        } else {
 
-
-
-           wc_add_notice(  'An error occured, Please try again', 'error' );
-
-
+           wc_add_notice(  'LayUp service is unreachable. Please try again', 'error' );
 
            return;
 
