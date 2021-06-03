@@ -25,6 +25,36 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
+add_action( 'upgrader_process_complete', 'layup_upgrade_function',10, 2);
+ 
+function layup_upgrade_function( $upgrader_object, $options ) {
+    $current_plugin_path_name = plugin_basename( __FILE__ );
+ 
+    if ($options['action'] == 'update' && $options['type'] == 'plugin' ) {
+       foreach($options['plugins'] as $each_plugin) {
+          if ($each_plugin==$current_plugin_path_name) {
+
+			wp_clear_scheduled_hook('layup_order_check');
+
+			wp_clear_scheduled_hook('layup_prod_check');
+
+			if (! wp_next_scheduled ( 'layup_order_check' )) {
+
+				wp_schedule_event(time(), 'weekly', 'layup_order_check');
+		
+			}
+		
+			if (! wp_next_scheduled ( 'layup_prod_check' )) {
+		
+				wp_schedule_event(time(), 'hourly', 'layup_prod_check');
+		
+			}
+ 
+          }
+       }
+    }
+}
+
 
  /*
 
