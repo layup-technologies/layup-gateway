@@ -14,7 +14,7 @@
 
  * Author URI: https://layup.co.za
 
- * Version: 1.7.1
+ * Version: 1.7.2
 
  *
 
@@ -164,7 +164,7 @@ function layup_init_gateway_class() {
 
 
 
-    define( 'WC_GATEWAY_LAYUP_VERSION', '1.7.1' );
+    define( 'WC_GATEWAY_LAYUP_VERSION', '1.7.2' );
 
 
 
