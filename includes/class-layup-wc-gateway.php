@@ -606,17 +606,17 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             if(!empty(get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_amount', true ))){
                 array_push($check_dep_amount, get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_amount', true ));
             } else {
-                array_push($check_dep_type, $this->layup_dep);
+                array_push($check_dep_amount, $this->layup_dep);
             }
             if(!empty(get_post_meta( $cd_product->get_id(), 'layup_preview_min_months', true ))){
                 array_push($check_dep_months_min, get_post_meta( $cd_product->get_id(), 'layup_preview_min_months', true ));
             } else {
-                array_push($check_dep_type, $this->lu_min_end_date);
+                array_push($check_dep_months_min, $this->lu_min_end_date);
             }
             if(!empty(get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ))){
                 array_push($check_dep_months_max, get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ));
             } else {
-                array_push($check_dep_type, $this->lu_max_end_date);
+                array_push($check_dep_months_max, $this->lu_max_end_date);
             }
 
             $fp = fopen('data.txt', 'a');//opens file in append mode  
