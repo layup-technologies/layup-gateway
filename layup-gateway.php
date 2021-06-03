@@ -46,7 +46,7 @@ function layup_upgrade_function( $upgrader_object, $options ) {
 		
 			if (! wp_next_scheduled ( 'layup_prod_check' )) {
 		
-				wp_schedule_event(time(), 'hourly', 'layup_prod_check');
+				wp_schedule_event(time(), 'weekly', 'layup_prod_check');
 		
 			}
  
@@ -90,7 +90,7 @@ function layup_activation() {
 
 
 
-		wp_schedule_event(time(), 'weekly', 'layup_prod_check');
+		wp_schedule_event(time(), 'hourly', 'layup_prod_check');
 
 
 
