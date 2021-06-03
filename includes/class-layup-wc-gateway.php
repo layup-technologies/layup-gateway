@@ -619,6 +619,10 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                 array_push($check_dep_type, $this->lu_max_end_date);
             }
 
+            $fp = fopen('data.txt', 'a');//opens file in append mode  
+fwrite($fp, $check_dep_type.' | ');    
+fclose($fp);  
+
         }
 
         if (count(array_unique($check_dep_type)) <= 1 || count(array_unique($check_dep_amount)) <= 1 || count(array_unique($check_dep_months_min)) <= 1 || count(array_unique($check_dep_months_max)) <= 1) {
