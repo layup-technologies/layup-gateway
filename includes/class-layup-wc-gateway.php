@@ -620,7 +620,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             }
 
             $fp = fopen('data.txt', 'a');//opens file in append mode  
-fwrite($fp, var_dump($check_dep_type).' | ');    
+fwrite($fp, json_encode($check_dep_type).' | ');    
 fclose($fp);  
 
         }
