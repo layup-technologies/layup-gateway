@@ -625,7 +625,7 @@ fclose($fp);
 
         }
 
-        if (count(array_unique($check_dep_type)) <= 1 || count(array_unique($check_dep_amount)) <= 1 || count(array_unique($check_dep_months_min)) <= 1 || count(array_unique($check_dep_months_max)) <= 1) {
+        if (count(array_unique($check_dep_type)) <= 1 && count(array_unique($check_dep_amount)) <= 1 && count(array_unique($check_dep_months_min)) <= 1 && count(array_unique($check_dep_months_max)) <= 1) {
 
             
         
