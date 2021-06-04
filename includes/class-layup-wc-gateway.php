@@ -1073,7 +1073,16 @@ error_log( print_r( $body, true ) );
     
                     //get monthly amount
     
-                    $plans['payments'][1]['amount'];
+                    foreach( $plans['payments'] as $payment) {
+    
+                        if ($payment['paymentType'] != 'DEPOSIT'){
+    
+                            $monthly = $payment['amount'];
+                             break;
+    
+                        }
+    
+                    }
     
                     $amount = 0;
     
