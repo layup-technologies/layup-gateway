@@ -847,7 +847,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order_details = array(
 
-            'depositAmount' => $this->layup_dep * 100,
+            'depositAmount' => (int)$this->layup_dep * 100,
 
             'products' => $products,
 
@@ -858,7 +858,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             'endDateMin' => $min_date,
 
 
-            'depositPerc' => $this->layup_dep,
+            'depositPerc' => (int)$this->layup_dep,
 
 
             'absorbsFee' => true,

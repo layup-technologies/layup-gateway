@@ -459,11 +459,11 @@ if ($layup_custom_deposit == 'yes')
 
 $preview_details = array(
 
-    'depositAmount' => $deposit_amount * 100,
+    'depositAmount' => (int)$deposit_amount * 100,
 
     'amountDue' => (int)$price,
 
-    'depositPerc' => $deposit_amount,
+    'depositPerc' => (int)$deposit_amount,
 
     'endDateMax' => $lu_max_date,
 
