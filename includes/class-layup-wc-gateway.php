@@ -1072,7 +1072,7 @@ error_log( print_r( $body, true ) );
                     update_post_meta( $order->get_order_number(), 'layup_pp_quant_'.$pp, $plans['quantity'] );
     
                     //get monthly amount
-    
+    file_put_contents("monthly-payment.txt", $plans['payments'][1]['amount']);
                     foreach( $plans['payments'] as $payment) {
     
                         if ($payment['paymentType'] != 'DEPOSIT'){
