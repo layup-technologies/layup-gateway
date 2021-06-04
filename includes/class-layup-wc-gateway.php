@@ -1074,7 +1074,7 @@ error_log( print_r( $body, true ) );
                     //get monthly amount
     
                     foreach( $plans['payments'] as $payment) {
-    file_put_contents("monthly-payment.txt", json_encode($payment))
+    file_put_contents("monthly-payment.txt", json_encode($payment));
                         if (empty($payment['paymentType'])){
     
                             $monthly = $payment['amount'];
