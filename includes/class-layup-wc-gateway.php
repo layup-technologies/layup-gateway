@@ -1075,7 +1075,7 @@ error_log( print_r( $body, true ) );
     
                     foreach( $plans['payments'] as $payment) {
     
-                        if ($payment['paymentType'] != 'DEPOSIT'){
+                        if (empty($payment['paymentType'])){
     
                             $monthly = $payment['amount'];
                              break;
