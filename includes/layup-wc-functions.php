@@ -1027,7 +1027,7 @@ function save_layup_disable_field($post_id)
 	$product->update_meta_data('layup_custom_months_min', $layup_custom_months_min);
 	$product->update_meta_data('layup_custom_months_max', $layup_custom_months_max);
 
-	$price = $product->get_price() * 100;
+	$price = (float)$product->get_price() * 100;
 
 	if($_POST['layup_date'] != '') {
     
@@ -1109,11 +1109,11 @@ function save_layup_disable_field($post_id)
 
 		$preview_details = array(
 
-			'depositAmount' => $deposit_amount * 100,
+			'depositAmount' => (int)$deposit_amount * 100,
 
-			'amountDue' => $price,
+			'amountDue' => (int)$price,
 
-			'depositPerc' => $deposit_amount,
+			'depositPerc' => (int)$deposit_amount,
 
 			'endDateMax' => $lu_max_date,
 
@@ -1204,11 +1204,11 @@ function save_layup_disable_field($post_id)
 
 		$preview_details = array(
 
-			'depositAmount' => $deposit_amount * 100,
+			'depositAmount' => (int)$deposit_amount * 100,
 
-			'amountDue' => $price,
+			'amountDue' => (int)$price,
 
-			'depositPerc' => $deposit_amount,
+			'depositPerc' => (int)$deposit_amount,
 
 			'endDateMax' => $lu_max_date,
 

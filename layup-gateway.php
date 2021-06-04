@@ -25,17 +25,23 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
+function layup_cron_schedules($schedules){
+    if(!isset($schedules["layup10min"])){
+        $schedules["layup10min"] = array(
+            'interval' => 10*60,
+            'display' => __('Once every 10 minutes'));
+    }
+    
+    return $schedules;
+}
+add_filter('cron_schedules','layup_cron_schedules');
+
 
  /*
-
  *  register WP cron event on activation
-
  */
 
-
-
 register_activation_hook(__FILE__, 'layup_activation');
-
 
 
 function layup_activation() {
@@ -60,7 +66,7 @@ function layup_activation() {
 
 
 
-		wp_schedule_event(time(), 'hourly', 'layup_prod_check');
+		wp_schedule_event(time(), 'layup10min', 'layup_prod_check');
 
 
 

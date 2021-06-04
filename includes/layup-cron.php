@@ -418,7 +418,7 @@ foreach($products as $prod) {
         
 $format_number = number_format($product->get_price(), 2, '.', '');
 
-$price = $format_number * 100;
+$price = (float)$format_number * 100;
 
 $layup_custom_deposit = $product->get_meta('layup_custom_deposit');
 $layup_custom_months = $product->get_meta('layup_custom_months');
@@ -459,11 +459,11 @@ if ($layup_custom_deposit == 'yes')
 
 $preview_details = array(
 
-    'depositAmount' => $deposit_amount * 100,
+    'depositAmount' => (int)$deposit_amount * 100,
 
-    'amountDue' => $price,
+    'amountDue' => (int)$price,
 
-    'depositPerc' => $deposit_amount,
+    'depositPerc' => (int)$deposit_amount,
 
     'endDateMax' => $lu_max_date,
 

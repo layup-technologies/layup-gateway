@@ -657,13 +657,13 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             $product = $order_item->get_product();
 
-
+            $price = (float)$order_item->get_total() * 100;
 
             $products[$i] = array(
 
 
 
-                'amount'=> (float)$order_item->get_total() * 100,
+                'amount'=> (int)$price,
 
 
 
@@ -771,7 +771,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order_shipping_total = $order->get_total_shipping();
 
-
+        $shipping_price = (float)$order_shipping_total * 100;
 
         if ($order_shipping_total != '') {
 
@@ -781,7 +781,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'amount'=> (int)$order_shipping_total * 100,
+                'amount'=> (int)$shipping_price,
 
 
 
@@ -811,7 +811,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order_tax_total = $order->get_total_tax();
 
-
+        $tax_price = (float)$order_tax_total * 100;
 
         if ($order_tax_total != '') {
 
@@ -821,7 +821,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'amount'=> (int)$order_tax_total * 100,
+                'amount'=> (int)$tax_price,
 
 
 
@@ -847,7 +847,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order_details = array(
 
-            'depositAmount' => $this->layup_dep * 100,
+            'depositAmount' => (int)$this->layup_dep * 100,
 
             'products' => $products,
 
@@ -858,7 +858,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             'endDateMin' => $min_date,
 
 
-            'depositPerc' => $this->layup_dep,
+            'depositPerc' => (int)$this->layup_dep,
 
 
             'absorbsFee' => true,
