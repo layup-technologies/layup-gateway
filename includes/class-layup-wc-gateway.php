@@ -677,7 +677,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'sku'=> $product->get_sku()
+                'sku'=> $product_sku
 
 
 
