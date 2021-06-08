@@ -659,6 +659,12 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             $price = (float)$order_item->get_total() * 100;
 
+            if($product->get_sku() != ''){
+                $product_sku = $product->get_sku();
+            } else {
+                $product_sku = $this->generate_layup_sku($product->get_title());
+            }
+
             $products[$i] = array(
 
 
@@ -1019,6 +1025,24 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
     }
 
      }
+
+     if(!function_exists('generate_layup_sku')){
+        function generate_layup_sku($str){
+            $acronym;
+            $word;
+            $words = preg_split("/(\s|\-|\.)/", $str);
+            $i = 0;
+            foreach($words as $w) {
+                $acronym .= substr($w,0,1);
+                if ($i++ == 3) break;
+            }
+            $word = $word . $acronym ;
+            $digits = 3;
+            $rand_num = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
+            $word = $word . $rand_num ;
+            return $word;
+        }
+    }
 
 
     // Handles the callbacks received from the payment backend. give this url to your payment processing comapny as the ipn response URL:
