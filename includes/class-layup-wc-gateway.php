@@ -1024,7 +1024,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             return;
     }
 
-     }
+     };
 
      if(!function_exists('generate_layup_sku')){
         function generate_layup_sku($str){
