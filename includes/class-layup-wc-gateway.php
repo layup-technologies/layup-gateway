@@ -544,29 +544,22 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
     public function process_payment( $order_id ) {
 
-
-
         global $woocommerce;
-
-
-
-        $products = array();
 
         $cart_inarray = false;
         $product_names = '';
-        $i = 0;
-        $products = $woocommerce->cart->cart_contents;
+        $cart_products = $woocommerce->cart->cart_contents;
 
-        foreach ($products as $product)
+        foreach ($cart_products as $cart_product)
         { //enumerate over all cart contents
     
-                $layup_disable_meta = get_post_meta($product['data']->get_id(), 'layup_disable', true);
+                $layup_disable_meta = get_post_meta($cart_product['data']->get_id(), 'layup_disable', true);
     
                 if (!empty($layup_disable_meta))
                 {
     
                     $cart_inarray = true; //set inarray to true
-                    $product_names .= $product['data']->get_title().', ';
+                    $product_names .= $cart_product['data']->get_title().', ';
     
                 }
     
@@ -575,7 +568,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
         if ($cart_inarray)
 	{ //product is in the cart
 
-        wc_add_notice(  'You currently have the following items in your cart that do not allow you to use LayUp as a payment method:'.$product_names.'please remove them if you wish to use the LayUp payment method.', 'error' );
+        wc_add_notice(  'You currently have the following items in your cart that do not allow you to use LayUp as a payment method: '.$product_names.'please remove them if you wish to use the LayUp payment method.', 'error' );
 
         return;
     }
@@ -584,19 +577,11 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $order = wc_get_order( $order_id );
 
-
-
         $unid = md5(uniqid($order_id, true));
-
-
 
         $ref = substr($unid, 0, 10);
 
-
-
         $blog_title = get_bloginfo();
-
-
 
         $order_items = $order->get_items( array('line_item') );
 
@@ -669,8 +654,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         // Build product array
 
-
-
+        $products = array();
+        $i = 0;
+        
         foreach( $order_items as $item_id => $order_item ) {
 
 
