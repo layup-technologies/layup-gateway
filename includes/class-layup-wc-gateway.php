@@ -555,17 +555,18 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
         $cart_inarray = false;
         $product_names = '';
         $i = 0;
+        $products = $woocommerce->cart->cart_contents;
 
-        foreach ($woocommerce->cart->cart_contents as $key => $values)
+        foreach ($products as $product)
         { //enumerate over all cart contents
     
-                $layup_disable_meta = get_post_meta($values['product_id'], 'layup_disable', true);
+                $layup_disable_meta = get_post_meta($product['data']->get_id(), 'layup_disable', true);
     
                 if (!empty($layup_disable_meta))
                 {
     
                     $cart_inarray = true; //set inarray to true
-                    $product_names .= $values['product_name'].', ';
+                    $product_names .= $product['data']->get_title().', ';
     
                 }
     
@@ -574,7 +575,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
         if ($cart_inarray)
 	{ //product is in the cart
 
-        wc_add_notice(  'You currently the following items in your cart that do not allow you to use LayUp as a payment method:'.$product_names.'please remove them if you wish to use the LayUp payment method.', 'error' );
+        wc_add_notice(  'You currently have the following items in your cart that do not allow you to use LayUp as a payment method:'.$product_names.'please remove them if you wish to use the LayUp payment method.', 'error' );
 
         return;
     }
