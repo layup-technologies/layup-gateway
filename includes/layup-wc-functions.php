@@ -1268,65 +1268,6 @@ function save_layup_disable_field($post_id)
 
 add_action('woocommerce_process_product_meta', 'save_layup_disable_field');
 
-/**
- * Check products in cart for Disable LayUp field and disable LayUp gateway
- */
-
-function check_layup_disable_field($gateways)
-{
-	if (is_checkout())
-		{
-
-	if (is_checkout()) {
-
-	global $woocommerce;
-
-	$inarray = false;
-
-	wc_clear_notices();
-	
-	if(!empty($woocommerce->cart->cart_contents)) {
-	foreach ($woocommerce->cart->cart_contents as $key => $values)
-	{ //enumerate over all cart contents
-
-			$layup_disable_meta = get_post_meta($values['product_id'], 'layup_disable', true);
-
-			if (!empty($layup_disable_meta))
-			{
-
-				$inarray = true; //set inarray to true
-			
-
-				break;
-
-			}
-
-		}
-	}
-}
-
-	if ($inarray)
-	{ //product is in the cart
-		
-
-		unset($gateways['layup']);
-
-		if (is_checkout())
-		{
-
-			wc_add_notice('You currently have items in your cart that do not allow you to use LayUp as a payment method, please remove them if you wish to use the LayUp payment method.', 'error');
-
-		}
-
-	}
-
-	return $gateways;
-
-}
-
-}
-
-add_filter('woocommerce_available_payment_gateways', 'check_layup_disable_field', 1);
 
 /**
  * Display LayUp icon and estimate text on single product page
