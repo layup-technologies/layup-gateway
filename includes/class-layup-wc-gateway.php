@@ -1145,6 +1145,10 @@ error_log( print_r( $body, true ) );
 
                 $order->update_status('wc-cancelled', __('Order cancelled by LayUp.', 'layup-gateway'));
 
+            } elseif ($_POST['type'] == 'ORDEREXPIRED') {
+
+                $order->update_status('wc-cancelled', __('Order expired by LayUp.', 'layup-gateway'));
+
             } else {
                 return;
             }
