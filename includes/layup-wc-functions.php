@@ -1661,3 +1661,212 @@ function my_error_notice()
 
 add_action('admin_notices', 'my_error_notice');
 
+/*
+ * New columns
+ */
+add_filter('manage_product_posts_columns', 'layup_disable_column');
+// the above hook will add columns only for default 'post' post type, for CPT:
+// manage_{POST TYPE NAME}_posts_columns
+function layup_disable_column( $column_array ) {
+
+	$column_array['layup_disable'] = 'Layup Disabled';
+	// the above code will add columns at the end of the array
+	// if you want columns to be added in another place, use array_slice()
+
+	return $column_array;
+}
+
+/*
+ * Populate our new columns with data
+ */
+add_action('manage_posts_custom_column', 'layup_populate_column', 10, 2);
+function layup_populate_column( $column_name, $id ) {
+
+	// if you have to populate more that one columns, use switch()
+	switch( $column_name ) :
+		case 'layup_disable': {
+			if( get_post_meta($id,'layup_disable',true) == 'yes') 
+				echo 'Yes';
+			break;
+		}
+	endswitch;
+
+}
+
+/*
+ * quick_edit_custom_box allows to add HTML in Quick Edit
+ * Please note: it files for EACH column, so it is similar to manage_posts_custom_column
+ */
+add_action('bulk_edit_custom_box',  'layup_quick_edit_fields', 10, 2);
+add_action('quick_edit_custom_box',  'layup_quick_edit_fields', 10, 2);
+
+function layup_quick_edit_fields( $column_name, $post_type ) {
+
+	// you can check post type as well but is seems not required because your columns are added for specific CPT anyway
+
+	switch( $column_name ) :
+		case 'featured': {
+			wp_nonce_field( 'layup_q_edit_nonce', 'layup_nonce' );
+			echo '<fieldset class="inline-edit-col-right">
+				<div class="inline-edit-col">
+					<div class="inline-edit-group wp-clearfix">';
+			echo '<label class="alignleft">
+					<input type="checkbox" name="layup_disable">
+					<span class="checkbox-title">Disable LayUp checkout</span>
+				</label>';
+
+			// for the LAST column only - closing the fieldset element
+			echo '</div></div></fieldset>';
+
+			break;
+
+		}
+
+	endswitch;
+
+}
+
+/*
+ * Quick Edit Save
+ */
+add_action( 'save_post', 'layup_quick_edit_save' );
+
+function misha_quick_edit_save( $post_id ){
+
+	// check user capabilities
+	if ( !current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	// check nonce
+	if ( !wp_verify_nonce( $_POST['layup_nonce'], 'layup_q_edit_nonce' ) ) {
+		return;
+	}
+// update checkbox
+	if ( isset( $_POST['layup_disable'] ) ) {
+		update_post_meta( $post_id, 'layup_disable', 'yes' );
+	} else {
+		update_post_meta( $post_id, 'layup_disable', '' );
+	}
+
+
+}
+
+add_action( 'admin_enqueue_scripts', 'layup_enqueue_quick_edit_population' );
+function layup_enqueue_quick_edit_population( $pagehook ) {
+
+	// do nothing if we are not on the target pages
+	if ( 'edit.php' != $pagehook ) {
+		return;
+	}
+
+	wp_enqueue_script('jquery');
+
+	?>
+
+
+        <!-- add JS script -->
+        <script type="text/javascript">
+            jQuery(function($){
+
+// it is a copy of the inline edit function
+var wp_inline_edit_function = inlineEditPost.edit;
+
+// we overwrite the it with our own
+inlineEditPost.edit = function( post_id ) {
+
+	// let's merge arguments of the original function
+	wp_inline_edit_function.apply( this, arguments );
+
+	// get the post ID from the argument
+	var id = 0;
+	if ( typeof( post_id ) == 'object' ) { // if it is object, get the ID number
+		id = parseInt( this.getId( post_id ) );
+	}
+
+	//if post id exists
+	if ( id > 0 ) {
+
+		// add rows to variables
+		var specific_post_edit_row = $( '#edit-' + id ),
+			specific_post_row = $( '#post-' + id ),
+			layup_disabled = false; // let's say by default checkbox is unchecked
+
+		// check if the Featured Product column says Yes
+		if( $( '.column-layup_disable', specific_post_row ).text() == 'Yes' ) layup_disabled = true;
+
+		// populate the inputs with column data
+		$( ':input[name="layup_disabled"]', specific_post_edit_row ).prop('checked', layup_disabled );
+	}
+}
+});
+
+jQuery(function($){
+	$( 'body' ).on( 'click', 'input[name="bulk_edit"]', function() {
+
+		// let's add the WordPress default spinner just before the button
+		$( this ).after('<span class="spinner is-active"></span>');
+
+
+		// define: prices, featured products and the bulk edit table row
+		var bulk_edit_row = $( 'tr#bulk-edit' ),
+		    post_ids = new Array()
+		    layup_disabled = bulk_edit_row.find( 'input[name="layup_disabled"]' ).attr('checked') ? 1 : 0;
+
+		// now we have to obtain the post IDs selected for bulk edit
+		bulk_edit_row.find( '#bulk-titles' ).children().each( function() {
+			post_ids.push( $( this ).attr( 'id' ).replace( /^(ttle)/i, '' ) );
+		});
+
+		// save the data with AJAX
+		$.ajax({
+			url: ajaxurl, // WordPress has already defined the AJAX url for us (at least in admin area)
+			type: 'POST',
+			data: {
+				action: 'layup_save_bulk', // wp_ajax action hook
+				post_ids: post_ids, // array of post IDs
+				layup_disabled: layup_disabled, // new value for product featured
+				nonce: $('#layup_nonce').val() // I take the nonce from hidden #misha_nonce field
+			}
+		});
+	});
+});
+        </script>
+<?php
+    }
+
+    // https://developer.wordpress.org/reference/hooks/admin_print_footer_scripts-hook_suffix/
+    add_action('admin_print_footer_scripts-edit.php', 'wpar_quick_edit_js');
+
+	add_action( 'wp_ajax_misha_save_bulk', 'misha_save_bulk_edit_hook' ); 
+// add_action( 'wp_ajax_{ACTION}', 'FUNCTION NAME' );
+
+function layup_save_bulk_edit_hook() {
+
+
+	// you can check the same nonce we added in Quick Edit tutorial
+	if ( !wp_verify_nonce( $_POST['nonce'], 'quick_edit_layup_nonce' ) ) {
+		die();
+	}
+
+	// well, if post IDs are empty, it is nothing to do here
+	if( empty( $_POST[ 'post_ids' ] ) ) {
+		die();
+	}
+
+	// for each post ID
+	foreach( $_POST[ 'post_ids' ] as $id ) {
+
+		// if price is empty, maybe we shouldn't change it
+
+		// another story with checkbox
+		if ( !empty( $_POST['featured'] ) ) {
+			update_post_meta( $id, 'layup_disabled', 'yes' );
+		} else {
+			update_post_meta( $id, 'layup_disabled', '' );
+		}
+
+	}
+
+	die();
+}
