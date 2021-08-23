@@ -1753,16 +1753,48 @@ function layup_quick_edit_save( $post_id ){
 }
 
 add_action( 'admin_enqueue_scripts', 'layup_enqueue_quick_edit_population' );
-function layup_enqueue_quick_edit_population( $pagehook ) {
+if (!function_exists('layup_quick_edit_js')) {
+    function layup_quick_edit_js()
+    {
+        // # check the current screen
+        // https://developer.wordpress.org/reference/functions/get_current_screen/
+        $current_screen = get_current_screen();
 
-	// do nothing if we are not on the target pages
-	if ( 'edit.php' != $pagehook ) {
-		return;
-	}
+        /*
+         * ****************************************
+         * # List of default screen ID in WordPress
+         * ****************************************
+        PAGE               $SCREEN_ID           FILE
+        -----------------  -------------------  -----------------------
+        Media Library      upload               upload.php
+        Comments           edit-comments        edit-comments.php
+        Tags               edit-post_tag        edit-tags.php
+        Plugins            plugins              plugins.php
+        Links              link-manager         link-manager.php
+        Users              users                users.php
+        Posts              edit-post            edit.php
+        Pages              edit-page            edit.php
+        Edit Site: Themes  site-themes-network  network/site-themes.php
+        Themes             themes-network       network/themes
+        Users              users-network        network/users
+        Edit Site: Users   site-users-network   network/site-users
+        Sites              sites-network        network/sites
+        
+        If you use the custom post type just like me, you can print out the get_current_screen() object
+        for checking what screen ID do you need for the next checking.
+        My current screen ID of project post type is "edit-mms_project_cpt".
+        
+        var_dump($current_screen);
+        exit;
+        */
 
-	wp_enqueue_script('jquery');
+        if ($current_screen->id != 'edit-product' || $current_screen->post_type !== 'product')
+            return;
 
-	?>
+
+        // # Make sure jQuery library is loaded because we will use jQuery for populate our custom field value.
+        wp_enqueue_script('jquery');
+        ?>
 
 
         <!-- add JS script -->
@@ -1833,7 +1865,11 @@ jQuery(function($){
 });
         </script>
 <?php
+	}
     }
+
+    // https://developer.wordpress.org/reference/hooks/admin_print_footer_scripts-hook_suffix/
+    add_action('admin_print_footer_scripts-edit.php', 'wpar_quick_edit_js');
 
 	add_action( 'wp_ajax_layup_save_bulk', 'layup_save_bulk_edit_hook' ); 
 // add_action( 'wp_ajax_{ACTION}', 'FUNCTION NAME' );
