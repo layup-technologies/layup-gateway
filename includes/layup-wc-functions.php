@@ -1661,6 +1661,185 @@ function my_error_notice()
 
 add_action('admin_notices', 'my_error_notice');
 
+/*
+ * New columns
+ */
+add_filter('manage_product_posts_columns', 'layup_disable_column');
+// the above hook will add columns only for default 'post' post type, for CPT:
+// manage_{POST TYPE NAME}_posts_columns
+function layup_disable_column( $column_array ) {
+
+	$column_array['layup_disable'] = 'Layup Disabled';
+	// the above code will add columns at the end of the array
+	// if you want columns to be added in another place, use array_slice()
+
+	return $column_array;
+}
+
+/*
+ * Populate our new columns with data
+ */
+add_action('manage_posts_custom_column', 'layup_populate_column', 10, 2);
+function layup_populate_column( $column_name, $id ) {
+
+	// if you have to populate more that one columns, use switch()
+	switch( $column_name ) :
+		case 'layup_disable': {
+			if( get_post_meta($id,'layup_disable',true) == 'yes') 
+				echo 'Yes';
+			break;
+		}
+	endswitch;
+
+}
+
+/*
+ * quick_edit_custom_box allows to add HTML in Quick Edit
+ * Please note: it files for EACH column, so it is similar to manage_posts_custom_column
+ */
+
+add_action('quick_edit_custom_box',  'layup_quick_edit_fields', 10, 2);
+
+function layup_quick_edit_fields( $column_name, $post_type ) {
+
+	// you can check post type as well but is seems not required because your columns are added for specific CPT anyway
+
+	switch( $column_name ) :
+		case 'featured': {
+			wp_nonce_field( 'layup_q_edit_nonce', 'layup_nonce' );
+			echo '<fieldset class="inline-edit-col-right">
+				<div class="inline-edit-col">
+					<div class="inline-edit-group wp-clearfix">';
+			echo '<label class="alignleft">
+					<input type="checkbox" name="layup_disable" value="yes">
+					<span class="checkbox-title">Disable LayUp checkout</span>
+				</label>';
+
+			// for the LAST column only - closing the fieldset element
+			echo '</div></div></fieldset>';
+
+			break;
+
+		}
+
+	endswitch;
+
+}
+
+/*
+ * Quick Edit Save
+ */
+add_action( 'save_post', 'layup_quick_edit_save' );
+
+function layup_quick_edit_save( $post_id ){
+
+	// check user capabilities
+	if ( !current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	// check nonce
+	if ( !wp_verify_nonce( $_POST['layup_nonce'], 'layup_q_edit_nonce' ) ) {
+		return;
+	}
+// update checkbox
+	if ( isset( $_POST['layup_disable'] ) ) {
+		update_post_meta( $post_id, 'layup_disable', 'yes' );
+	} else {
+		update_post_meta( $post_id, 'layup_disable', '' );
+	}
+
+
+}
+
+if (!function_exists('layup_quick_edit_js')) {
+    function layup_quick_edit_js()
+    {
+        // # check the current screen
+        // https://developer.wordpress.org/reference/functions/get_current_screen/
+        $current_screen = get_current_screen();
+
+        /*
+         * ****************************************
+         * # List of default screen ID in WordPress
+         * ****************************************
+        PAGE               $SCREEN_ID           FILE
+        -----------------  -------------------  -----------------------
+        Media Library      upload               upload.php
+        Comments           edit-comments        edit-comments.php
+        Tags               edit-post_tag        edit-tags.php
+        Plugins            plugins              plugins.php
+        Links              link-manager         link-manager.php
+        Users              users                users.php
+        Posts              edit-post            edit.php
+        Pages              edit-page            edit.php
+        Edit Site: Themes  site-themes-network  network/site-themes.php
+        Themes             themes-network       network/themes
+        Users              users-network        network/users
+        Edit Site: Users   site-users-network   network/site-users
+        Sites              sites-network        network/sites
+        
+        If you use the custom post type just like me, you can print out the get_current_screen() object
+        for checking what screen ID do you need for the next checking.
+        My current screen ID of project post type is "edit-mms_project_cpt".
+        
+        var_dump($current_screen);
+        exit;
+        */
+
+        if ($current_screen->id != 'edit-product' || $current_screen->post_type !== 'product')
+            return;
+
+
+        // # Make sure jQuery library is loaded because we will use jQuery for populate our custom field value.
+        wp_enqueue_script('jquery');
+        ?>
+
+
+        <!-- add JS script -->
+        <script type="text/javascript">
+            jQuery(function($){
+
+// it is a copy of the inline edit function
+var wp_inline_edit_function = inlineEditPost.edit;
+
+// we overwrite the it with our own
+inlineEditPost.edit = function( post_id ) {
+
+	// let's merge arguments of the original function
+	wp_inline_edit_function.apply( this, arguments );
+
+	// get the post ID from the argument
+	var id = 0;
+	if ( typeof( post_id ) == 'object' ) { // if it is object, get the ID number
+		id = parseInt( this.getId( post_id ) );
+	}
+
+	//if post id exists
+	if ( id > 0 ) {
+
+		// add rows to variables
+		var specific_post_edit_row = $( '#edit-' + id ),
+			specific_post_row = $( '#post-' + id ),
+			layup_disabled = false; // let's say by default checkbox is unchecked
+
+		// check if the Featured Product column says Yes
+		if( $( '.column-layup_disable', specific_post_row ).text() == 'Yes' ) layup_disabled = true;
+
+		// populate the inputs with column data
+		$( ':input[name="layup_disabled"]', specific_post_edit_row ).prop('checked', layup_disabled );
+	}
+}
+});
+
+        </script>
+<?php
+	}
+    }
+
+    // https://developer.wordpress.org/reference/hooks/admin_print_footer_scripts-hook_suffix/
+    add_action('admin_print_footer_scripts-edit.php', 'layup_quick_edit_js');
+
 
 add_action( 'woocommerce_product_bulk_edit_start', 'layup_custom_field_bulk_edit_input' );
           
