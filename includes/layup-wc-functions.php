@@ -1711,7 +1711,7 @@ function layup_quick_edit_fields( $column_name, $post_type ) {
 				<div class="inline-edit-col">
 					<div class="inline-edit-group wp-clearfix">';
 			echo '<label class="alignleft">
-					<input type="checkbox" name="layup_disable">
+					<input type="checkbox" name="layup_disable" value="yes">
 					<span class="checkbox-title">Disable LayUp checkout</span>
 				</label>';
 
@@ -1731,7 +1731,7 @@ function layup_quick_edit_fields( $column_name, $post_type ) {
  */
 add_action( 'save_post', 'layup_quick_edit_save' );
 
-function misha_quick_edit_save( $post_id ){
+function layup_quick_edit_save( $post_id ){
 
 	// check user capabilities
 	if ( !current_user_can( 'edit_post', $post_id ) ) {
