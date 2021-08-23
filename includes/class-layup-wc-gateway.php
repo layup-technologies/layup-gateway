@@ -400,7 +400,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'default'     => '12',
+                'default'     => '6',
 
 
 
@@ -408,7 +408,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                    'min'	=> '2'
+                    'min'	=> '1'
 
 
 
