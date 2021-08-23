@@ -1902,3 +1902,28 @@ function layup_save_bulk_edit_hook() {
 
 	die();
 }
+
+add_action( 'woocommerce_product_bulk_edit_start', 'layup_custom_field_bulk_edit_input' );
+          
+function layup_custom_field_bulk_edit_input() {
+    ?>
+    <div class="inline-edit-group">
+      <label class="alignleft">
+         <span class="title"><?php _e( 'Disable LayUp checkout', 'woocommerce' ); ?></span>
+         <span class="input-text-wrap">
+		 <input type="checkbox" name="layup_disable" value="yes">
+         </span>
+        </label>
+    </div>
+    <?php
+}
+ 
+add_action( 'woocommerce_product_bulk_edit_save', 'layup_custom_field_bulk_edit_save' );
+ 
+function layup_custom_field_bulk_edit_save( $product ) {
+    $post_id = $product->get_id();    
+   if ( isset( $_REQUEST['layup_disable'] ) ) {
+        $custom_field = $_REQUEST['layup_disable'];
+        update_post_meta( $post_id, 'layup_disable', wc_clean( $custom_field ) );
+    }
+}
