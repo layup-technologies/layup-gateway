@@ -1835,10 +1835,7 @@ jQuery(function($){
 <?php
     }
 
-    // https://developer.wordpress.org/reference/hooks/admin_print_footer_scripts-hook_suffix/
-    add_action('admin_print_footer_scripts-edit.php', 'wpar_quick_edit_js');
-
-	add_action( 'wp_ajax_misha_save_bulk', 'misha_save_bulk_edit_hook' ); 
+	add_action( 'wp_ajax_layup_save_bulk', 'layup_save_bulk_edit_hook' ); 
 // add_action( 'wp_ajax_{ACTION}', 'FUNCTION NAME' );
 
 function layup_save_bulk_edit_hook() {
