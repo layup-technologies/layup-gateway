@@ -1846,7 +1846,7 @@ jQuery(function($){
 
 		// now we have to obtain the post IDs selected for bulk edit
 		bulk_edit_row.find( '#bulk-titles' ).children().each( function() {
-			post_ids.push( $( this ).attr( 'id' ).replace( /^(ttle)/i, '' ) );
+			post_ids.push( $( this ).attr( 'id' ).replace( 'ttle', '' ) );
 		});
 
 		// save the data with AJAX
