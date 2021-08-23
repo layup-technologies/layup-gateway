@@ -1892,7 +1892,7 @@ function layup_save_bulk_edit_hook() {
 		// if price is empty, maybe we shouldn't change it
 
 		// another story with checkbox
-		if ( !empty( $_POST['featured'] ) ) {
+		if ( !empty( $_POST['layup_disabled'] ) ) {
 			update_post_meta( $id, 'layup_disabled', 'yes' );
 		} else {
 			update_post_meta( $id, 'layup_disabled', '' );
