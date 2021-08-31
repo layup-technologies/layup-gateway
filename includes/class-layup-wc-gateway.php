@@ -739,9 +739,14 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             if($i == 0){
 
+                if ( $product->is_type( 'variation' ) ) {
+                	$product_id = wc_get_product( $product->get_parent_id() );
+                
+            	} else {
+					$product_id = $product->get_id();
+				}
 
-
-                $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id($product->get_id()));
+                $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id($product_id));
 
 
 
