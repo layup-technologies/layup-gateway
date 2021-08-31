@@ -740,7 +740,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             if($i == 0){
 
                 if ( $product->is_type( 'variation' ) ) {
-                	$product_id = wc_get_product( $product->get_parent_id() );
+                	$parent_product = wc_get_product( $product->get_parent_id() );
+					$product_id = $parent_product->get_id();
                 
             	} else {
 					$product_id = $product->get_id();
