@@ -1537,7 +1537,7 @@ function layup_display_icon()
 
 				variantUpdateEvent = function (e) {
 					// assume were only dealing with a single product
-					let variants = document.querySelector(".variations_form").getAttribute("data-product_variations");
+					let variants = JSON.parse(document.querySelector(".variations_form").getAttribute("data-product_variations"));
 					let variantObject = variants.find(function (element) {
 						return element.variation_id.toString() === e.toString();
 					});
