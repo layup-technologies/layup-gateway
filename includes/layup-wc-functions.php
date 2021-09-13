@@ -1526,7 +1526,7 @@ function layup_display_icon()
 		
 				<script>
 
-				let el = document.querySelector("input[name="variation_id"]");
+				let el = document.querySelector("input[name=`variation_id`]");
 				if (!el) {
 					console.warn("LayUpCheckoutButton could not find quantity with selector variation_id");
 					return;
