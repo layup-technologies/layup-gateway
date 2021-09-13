@@ -1529,7 +1529,7 @@ function layup_display_icon()
 				jQuery( document ).ready(function() {
 				
 					let selector = "variation_id";
-					jQuery(`input[name=${selector}]`).(function() {
+					jQuery(`input[name=${selector}]`).change(function() {
 						let value = jQuery(this).val();
 						variantUpdateEvent(value);
 					});
