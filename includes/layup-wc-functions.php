@@ -1314,11 +1314,11 @@ function layup_display_icon()
 
 
 			if($layup_preview_deposit_type == 'PERCENTAGE'){
-				$layup_preview_deposit = 'Deposit: '. $layup_preview_deposit_amount . '%';
+				$layup_preview_deposit = 'Deposit: <span class="layup-deposit-amount">'. $layup_preview_deposit_amount . '%</span>';
 			} elseif ($layup_preview_deposit_type == 'FLAT') {
-				$layup_preview_deposit = 'Deposit: R'. $layup_preview_deposit_amount;
+				$layup_preview_deposit = 'Deposit: <span class="layup-deposit-amount">R'. $layup_preview_deposit_amount . '</span>';
 			} elseif ($layup_preview_deposit_type == 'INSTALMENT') {
-				$layup_preview_deposit = 'Deposit: First instalment';
+				$layup_preview_deposit = 'Deposit: <span class="layup-deposit-amount">First instalment</span>';
 			}
 			
 			
@@ -1337,7 +1337,7 @@ function layup_display_icon()
 		
 			<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;border-left:#808080 1px solid;" class="btn-est-layup">
 		
-				<p style="margin-top: 0px; ">From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months. Interest-free. ' . esc_attr($layup_preview_deposit) . '</p>
+				<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> Months. Interest-free. ' . esc_attr($layup_preview_deposit) . '</p>
 				<span id="lumodallink" style="color:#1295a5;">Learn More</span>
 				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 				<style>
@@ -1525,6 +1525,57 @@ function layup_display_icon()
 				</div>
 		
 				<script>
+
+				let el = document.querySelector("input[name="variation_id"]");
+				if (!el) {
+					console.warn("LayUpCheckoutButton could not find quantity with selector variation_id");
+					return;
+				}
+				
+				el.addEventListener("change", variantUpdateEvent.bind(this));
+
+
+				variantUpdateEvent = function (e) {
+					let q = parseFloat(e.target.value);
+					// assume were only dealing with a single product
+					let variants = document.querySelector(".variations_form").getAttribute("data-product_variations");
+					let variantObject = variants.find(function (element) {
+						return element.variation_id.toString() === q.toString();
+					});
+					if (variantObject === undefined) {
+						console.warn("Could not find variant data")
+					}
+					
+					updatePreview(variantObject);
+				};
+
+				updatePreview = function(variant) {
+
+					let price = variant.display_price.toFixed(2);
+					let priceNoDep = 0;
+					let newInstalment = 0;
+					let deposit = document.querySelector(".layup-deposit-amount").innerHTML;
+					let months = document.querySelector(".layup-months-amount").innerHTML;
+					if (deposit.startsWith("R")) {
+						deposit = deposit.substring(1);
+						priceNoDep = price - deposit;
+						newInstalment = priceNoDep / months;
+					} else if(deposit.endsWith("%")) {
+					  deposit = deposit.slice(0, -1);
+					  deposit = deposit / 100 * price;
+					  priceNoDep = price - deposit;
+					  newInstalment = priceNoDep / months;
+					} else if(deposit.startsWith("First")) {
+						deposit = deposit.slice(0, -1);
+						newInstalment = price / months;
+					}
+
+					document.querySelector(".layup-installment-amount").innerHTML = newInstalment;
+					
+
+
+				}
+
 					// Get the modal
 					var modal = document.getElementById("lumyModal");
 		
