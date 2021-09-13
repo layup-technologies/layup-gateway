@@ -1060,7 +1060,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
     // Handles the callbacks received from the payment backend. give this url to your payment processing comapny as the ipn response URL:
     // USAGE:  http://myurl.com/?wc-api=WC_Layup_Gateway
     function layup_callback() {
-        
+        $inputJSON = file_get_contents('php://input');
+        $_POST = json_decode($inputJSON, TRUE);
         $layup_order_id = $_POST['body']['orderId'];
 
          $orders = new WP_Query( array(
