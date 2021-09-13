@@ -7,8 +7,8 @@ Author: LayUp Dev Team
 Tags: woocommerce, payment gateway, South Africa, LayUp
 Requires at least: 4.6
 Tested up to: 5.7
-Stable tag: 1.7.6
-Version: 1.7.6
+Stable tag: 1.7.7
+Version: 1.7.7
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -200,6 +200,10 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 
 == Changelog ==
+
+= v1.7.7 =
+
+* Order Image to use parent product if product is variation
 
 = v1.7.6 =
 
