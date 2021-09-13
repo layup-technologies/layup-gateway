@@ -1525,21 +1525,21 @@ function layup_display_icon()
 				</div>
 		
 				<script>
-					let selector = "variation_id";
-				let el = document.querySelector(`input[name=${selector}]`);
-				if (!el) {
-					console.warn("LayUpCheckoutButton could not find quantity with selector variation_id");
-				}
-				
-				el.addEventListener("change", variantUpdateEvent.bind(this));
 
+				jQuery( document ).ready(function() {
+				
+					let selector = "variation_id";
+					document.querySelector(`input[name=${selector}]`).on("change", function() {
+						variantUpdateEvent(this.value);
+					  });
+				
+				});
 
 				variantUpdateEvent = function (e) {
-					let q = parseFloat(e.target.value);
 					// assume were only dealing with a single product
 					let variants = document.querySelector(".variations_form").getAttribute("data-product_variations");
 					let variantObject = variants.find(function (element) {
-						return element.variation_id.toString() === q.toString();
+						return element.variation_id.toString() === e.toString();
 					});
 					if (variantObject === undefined) {
 						console.warn("Could not find variant data")
