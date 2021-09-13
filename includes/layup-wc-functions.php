@@ -1542,6 +1542,7 @@ function layup_display_icon()
 					let variantObject = variants.find(function (element) {
 						return element.variation_id.toString() === e.toString();
 					});
+					console.log(variantObject);
 					if (variantObject === undefined) {
 						console.warn("Could not find variant data")
 					}
