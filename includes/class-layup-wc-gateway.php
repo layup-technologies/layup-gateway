@@ -400,7 +400,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'default'     => '12',
+                'default'     => '6',
 
 
 
@@ -408,7 +408,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                    'min'	=> '2'
+                    'min'	=> '1'
 
 
 
@@ -544,39 +544,44 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
     public function process_payment( $order_id ) {
 
-
-
         global $woocommerce;
 
+        $cart_inarray = false;
+        $product_names = '';
+        $cart_products = $woocommerce->cart->cart_contents;
 
+        foreach ($cart_products as $cart_product)
+        { //enumerate over all cart contents
+    
+                $layup_disable_meta = get_post_meta($cart_product['data']->get_id(), 'layup_disable', true);
+    
+                if (!empty($layup_disable_meta))
+                {
+    
+                    $cart_inarray = true; //set inarray to true
+                    $product_names .= $cart_product['data']->get_title().', ';
+    
+                }
+    
+            }
 
-        $products = array();
+        if ($cart_inarray)
+	{ //product is in the cart
 
+        wc_add_notice(  'You currently have the following items in your cart that do not allow you to use LayUp as a payment method: '.$product_names.'please remove them if you wish to use the LayUp payment method.', 'error' );
 
-
-        $i = 0;
-
-
+        return;
+    }
 
         // we need it to get any order detailes
 
-
-
         $order = wc_get_order( $order_id );
-
-
 
         $unid = md5(uniqid($order_id, true));
 
-
-
         $ref = substr($unid, 0, 10);
 
-
-
         $blog_title = get_bloginfo();
-
-
 
         $order_items = $order->get_items( array('line_item') );
 
@@ -649,8 +654,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         // Build product array
 
-
-
+        $products = array();
+        $i = 0;
+        
         foreach( $order_items as $item_id => $order_item ) {
 
 
@@ -733,9 +739,15 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
             if($i == 0){
 
+                if ( $product->is_type( 'variation' ) ) {
+                	$parent_product = wc_get_product( $product->get_parent_id() );
+					$product_id = $parent_product->get_id();
+                
+            	} else {
+					$product_id = $product->get_id();
+				}
 
-
-                $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id($product->get_id()));
+                $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id($product_id));
 
 
 
@@ -1138,6 +1150,10 @@ error_log( print_r( $body, true ) );
             } elseif ($_POST['type'] == 'ORDERCANCELLED') {
 
                 $order->update_status('wc-cancelled', __('Order cancelled by LayUp.', 'layup-gateway'));
+
+            } elseif ($_POST['type'] == 'ORDEREXPIRED') {
+
+                $order->update_status('wc-cancelled', __('Order expired by LayUp.', 'layup-gateway'));
 
             } else {
                 return;
