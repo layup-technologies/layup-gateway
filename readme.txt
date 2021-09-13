@@ -203,6 +203,7 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 = v1.7.7 =
 
+* Updated webhook to use json format
 * Order Image to use parent product if product is variation
 
 = v1.7.6 =
