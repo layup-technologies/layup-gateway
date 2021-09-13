@@ -1531,6 +1531,7 @@ function layup_display_icon()
 					let selector = "variation_id";
 					jQuery(`input[name=${selector}]`).change(function() {
 						let value = jQuery(this).val();
+						
 						variantUpdateEvent(value);
 					});
 				
@@ -1539,12 +1540,12 @@ function layup_display_icon()
 				variantUpdateEvent = function (e) {
 					// assume were only dealing with a single product
 					let variants = JSON.parse(document.querySelector(".variations_form").getAttribute("data-product_variations"));
-					console.log(variants);
-					console.log(e);
+					
+					
 					let variantObject = variants.find(function (element) {
 						return element.variation_id.toString() === e.toString();
 					});
-					console.log(variantObject);
+					
 					if (variantObject === undefined) {
 						console.warn("Could not find variant data")
 					}
@@ -1553,18 +1554,18 @@ function layup_display_icon()
 				};
 
 				updatePreview = function(variant) {
-
+					if(typeof variant !== "undefined") {
 					let price = variant.display_price.toFixed(2);
 					let priceNoDep = 0;
 					let newInstalment = 0;
 					let deposit = document.querySelector(".layup-deposit-amount").innerHTML;
-					let months = document.querySelector(".layup-months-amount").innerHTML;
+					let months = parseInt(document.querySelector(".layup-months-amount").innerHTML);
 					if (deposit.startsWith("Deposit: R")) {
-						deposit = deposit.substring(1);
+						deposit = deposit.substring(1).replace(/[^\d.-]/g, "");
 						priceNoDep = price - deposit;
 						newInstalment = priceNoDep / months;
 					} else if(deposit.endsWith("%")) {
-					  deposit = deposit.slice(0, -1);
+					  deposit = deposit.slice(0, -1).replace(/[^\d.-]/g, "");
 					  deposit = deposit / 100 * price;
 					  priceNoDep = price - deposit;
 					  newInstalment = priceNoDep / months;
@@ -1572,9 +1573,9 @@ function layup_display_icon()
 						deposit = deposit.slice(0, -1);
 						newInstalment = price / months;
 					}
-
-					document.querySelector(".layup-installment-amount").innerHTML = newInstalment;
 					
+					document.querySelector(".layup-installment-amount").innerHTML = newInstalment.toFixed(2);
+				}
 
 
 				}
