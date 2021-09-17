@@ -885,7 +885,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
             'reference' => $ref,
 
 
-            'name' => $blog_title.' #'.$order_id,
+            'name' => $blog_title.' #'.$order->get_order_number(),
 
 
             'imageUrl' => $order_image[0],
