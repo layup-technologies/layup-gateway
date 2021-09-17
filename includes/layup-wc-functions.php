@@ -1541,16 +1541,18 @@ function layup_display_icon()
 					// assume were only dealing with a single product
 					let variants = JSON.parse(document.querySelector(".variations_form").getAttribute("data-product_variations"));
 					
-					
-					let variantObject = variants.find(function (element) {
-						return element.variation_id.toString() === e.toString();
-					});
-					
-					if (variantObject === undefined) {
-						console.warn("Could not find variant data")
+					if(!variants){
+
+						let variantObject = variants.find(function (element) {
+							return element.variation_id.toString() === e.toString();
+						});
+						
+						if (variantObject === undefined) {
+							console.warn("Could not find variant data")
+						}
+						
+						updatePreview(variantObject);
 					}
-					
-					updatePreview(variantObject);
 				};
 
 				updatePreview = function(variant) {
