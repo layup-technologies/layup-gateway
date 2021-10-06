@@ -205,14 +205,14 @@ function layup_check_payments() {
 
                 $monthly_rands = $monthly/100;
 
-                $outstanding = $plans['amountDue'] - $paid;
+                $outstanding = $plans['amountDue'] + $plans['depositDue'] - $paid;
 
                 $outstanding_rands = $outstanding/100; 
 
 
                 //formate numbers to work with WC
 
-
+                $due_date = date("Y/m/d", strtotime($due));
 
                 $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
 
@@ -220,7 +220,7 @@ function layup_check_payments() {
 
                 $monthly_payment = number_format($monthly_rands, 2, '.', '');
 
-                update_post_meta( $order->get_id(), 'layup_pp_due_date_'.$pp, $due );
+                update_post_meta( $order->get_id(), 'layup_pp_due_date_'.$pp, $due_date );
 
                 update_post_meta( $order->get_id(), 'layup_pp_outstanding_'.$pp, $outstanding_foramted );
 
