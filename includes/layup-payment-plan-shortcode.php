@@ -67,6 +67,7 @@ function layup_payment_plans_shortcode() {
             $freq = get_post_meta( $order_id, 'layup_pp_freq_0', true );
 
             $monthly = get_post_meta( $order_id, 'layup_pp_monthly_0', true );
+            $due = get_post_meta( $order_id, 'layup_pp_due_date_0', true );
 
             $ref = get_post_meta( $order_id, 'layup_order_ref', true );
 
@@ -84,7 +85,7 @@ function layup_payment_plans_shortcode() {
 
             <p class="pp-content"><strong>Outstanding:</strong> R '.esc_attr($outstanding).'</p>
 
-            <p class="pp-content"><strong>Payment Plan:</strong> R '.esc_attr($monthly).' over '.esc_attr($quant).' '.esc_attr($freq).' payments</p>
+            <p class="pp-content"><strong>Next Payment:</strong> R '.esc_attr($monthly).' due on '.esc_attr($due).'</p>
 
             <a target="_blank" style="text-decoration: none;" href="'.esc_url($layupurl).'dashboard/purchases/'.esc_attr($layup_order_id).'"><div style="font-size: 10px;padding: 10px 20px;margin-bottom: 15px;background-color: '.esc_attr($gateway->btn_bg_color).';box-shadow: 0 0 13px #d6d6d6;-moz-box-shadow: 0 0 13px #d6d6d6;-webkit-box-shadow: 0 0 13px #d6d6d6;color: '.esc_attr($gateway->btn_text_color).';border-radius: 150px; width: 100%;text-align: center;" class="btn-layup">
 
