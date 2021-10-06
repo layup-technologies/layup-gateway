@@ -1103,13 +1103,15 @@ error_log( print_r( $body, true ) );
     
                     foreach( $body['plans'] as $plans ) {
     
-                    update_post_meta( $order->get_order_number(), 'layup_pp_id_'.$pp, $plans['_id'] );
-                    update_post_meta( $order->get_order_number(), 'layup_pp_freq_'.$pp, strtolower($plans['frequency']) );
-                    update_post_meta( $order->get_order_number(), 'layup_pp_quant_'.$pp, $plans['quantity'] );
+                    update_post_meta( $order->get_id(), 'layup_pp_id_'.$pp, $plans['_id'] );
+                    update_post_meta( $order->get_id(), 'layup_pp_freq_'.$pp, strtolower($plans['frequency']) );
+                    update_post_meta( $order->get_id(), 'layup_pp_quant_'.$pp, $plans['quantity'] );
     
                     //get monthly amount
                     
                     $monthly = $plans['payments'][2]['amount'];
+
+                    $due = $plans['payments'][2]['due'];
     
                     $amount = 0;
     
@@ -1124,9 +1126,11 @@ error_log( print_r( $body, true ) );
                     $outstanding = number_format($amount_rands, 2, '.', '');
     
                     $monthly_payment = number_format($monthly_rands, 2, '.', '');
+
+                    update_post_meta( $order->get_id(), 'layup_pp_due_date_'.$pp, $due );
     
-                    update_post_meta( $order->get_order_number(), 'layup_pp_outstanding_'.$pp, $outstanding );
-                    update_post_meta( $order->get_order_number(), 'layup_pp_monthly_'.$pp, $monthly_payment );
+                    update_post_meta( $order->get_id(), 'layup_pp_outstanding_'.$pp, $outstanding );
+                    update_post_meta( $order->get_id(), 'layup_pp_monthly_'.$pp, $monthly_payment );
     
                     $pp++;
     
@@ -1145,7 +1149,7 @@ error_log( print_r( $body, true ) );
                 $order->payment_complete();
 
                 $order->add_order_note( __('LayUp order paid in full.', 'layup-gateway') );
-                update_post_meta( $order->get_order_number(), 'layup_pp_outstanding_0', '0' );
+                update_post_meta( $order->get_id(), 'layup_pp_outstanding_0', '0' );
 
             } elseif ($_POST['type'] == 'ORDERCANCELLED') {
 

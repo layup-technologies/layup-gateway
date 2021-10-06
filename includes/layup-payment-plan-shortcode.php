@@ -58,7 +58,7 @@ function layup_payment_plans_shortcode() {
 
             $blog_title = get_bloginfo();
 
-            $order_id = $order->get_order_number();
+            $order_id = $order->get_id();
 
             $outstanding = get_post_meta( $order_id, 'layup_pp_outstanding_0', true );
 

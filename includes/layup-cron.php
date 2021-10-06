@@ -83,7 +83,7 @@ function layup_check_payments() {
 
 
 
-        $layup_order_id = get_post_meta( $order->get_order_number(), 'layup_order_id', true );
+        $layup_order_id = get_post_meta( $order->get_id(), 'layup_order_id', true );
 
 
 
@@ -163,7 +163,7 @@ function layup_check_payments() {
 
                 //get monthly amount
 
-
+                $due = '';
 
                 foreach( $plans['payments'] as $payment) {
 
@@ -172,7 +172,7 @@ function layup_check_payments() {
                     if ($payment['paid'] == false){
 
 
-
+                        $due = $payment['due'];
                         $monthly = $payment['amount'];
 
 
@@ -220,7 +220,7 @@ function layup_check_payments() {
 
                 $monthly_payment = number_format($monthly_rands, 2, '.', '');
 
-
+                update_post_meta( $order->get_id(), 'layup_pp_due_date_'.$pp, $due );
 
                 update_post_meta( $order->get_id(), 'layup_pp_outstanding_'.$pp, $outstanding_foramted );
 
