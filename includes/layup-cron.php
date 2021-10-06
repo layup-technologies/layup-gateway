@@ -209,10 +209,10 @@ function layup_check_payments() {
 
                 $outstanding_rands = $outstanding/100; 
 
-
+                $due_str = strstr($due, '(', true);
                 //formate numbers to work with WC
 
-                $due_date = date("Y/m/d", strtotime($due));
+                $due_date = date("Y/m/d", strtotime($due_str));
 
                 $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
 
