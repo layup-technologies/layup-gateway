@@ -138,7 +138,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $this->api_url = $this->testmode ? "https://sandbox-api.layup.co.za/v1/orders" : "https://api.layup.co.za/v1/orders";
 
-
         // This action hook saves the settings
 
         add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
