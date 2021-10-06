@@ -12,450 +12,450 @@ function register_layup_style()
  * Create layUp Merchant Settings in Woocommerce
  */
 
-if (!class_exists('WC_Settings_LayUp'))
-{
+// if (!class_exists('WC_Settings_LayUp'))
+// {
 
-	function layup_add_settings()
-	{
+// 	function layup_add_settings()
+// 	{
 
-		/**
-		 * Settings class
-		 */
-		class WC_Settings_LayUp extends WC_Settings_Page
-		{
+// 		/**
+// 		 * Settings class
+// 		 */
+// 		class WC_Settings_LayUp extends WC_Settings_Page
+// 		{
 
-			/**
-			 * Setup settings class
-			 */
-			public function __construct()
-			{
+// 			/**
+// 			 * Setup settings class
+// 			 */
+// 			public function __construct()
+// 			{
 
-				$this->id = 'layup-merchant';
+// 				$this->id = 'layup-merchant';
 
-				$this->label = __('LayUp Merchant Settings', 'woocommerce-settings-tab-layup');
+// 				$this->label = __('LayUp Merchant Settings', 'woocommerce-settings-tab-layup');
 
-				add_filter('woocommerce_settings_tabs_array', array(
-					$this,
-					'add_settings_page'
-				) , 20);
+// 				add_filter('woocommerce_settings_tabs_array', array(
+// 					$this,
+// 					'add_settings_page'
+// 				) , 20);
 
-				add_action('woocommerce_settings_' . $this->id, array(
-					$this,
-					'layup_output'
-				));
+// 				add_action('woocommerce_settings_' . $this->id, array(
+// 					$this,
+// 					'layup_output'
+// 				));
 
-				add_action('woocommerce_settings_save_' . $this->id, array(
-					$this,
-					'layup_save'
-				));
+// 				add_action('woocommerce_settings_save_' . $this->id, array(
+// 					$this,
+// 					'layup_save'
+// 				));
 
-				add_action('admin_notices', array(
-					$this,
-					'layup_admin_notices'
-				));
+// 				add_action('admin_notices', array(
+// 					$this,
+// 					'layup_admin_notices'
+// 				));
 
-			}
+// 			}
 
-			/**
-			 * Get settings array
-			 */
-			public function layup_get_settings()
-			{
+// 			/**
+// 			 * Get settings array
+// 			 */
+// 			public function layup_get_settings()
+// 			{
 
-				$merchant_id = get_option('layup_merchant_id');
+// 				$merchant_id = get_option('layup_merchant_id');
 
-				if ($merchant_id == '')
-				{
+// 				if ($merchant_id == '')
+// 				{
 
-					$settings = apply_filters('layup_settings', array(
+// 					$settings = apply_filters('layup_settings', array(
 
-						array(
+// 						array(
 
-							'name' => __('Merchant Details', 'woocommerce-settings-tab-layup') ,
+// 							'name' => __('Merchant Details', 'woocommerce-settings-tab-layup') ,
 
-							'type' => 'title',
+// 							'type' => 'title',
 
-							'desc' => '',
+// 							'desc' => '',
 
-							'id' => 'layup_merchant_settings_title'
+// 							'id' => 'layup_merchant_settings_title'
 
-						) ,
+// 						) ,
 
-						array(
+// 						array(
 
-							'name' => __('Merchant ID', 'woocommerce-settings-tab-layup') ,
+// 							'name' => __('Merchant ID', 'woocommerce-settings-tab-layup') ,
 
-							'type' => 'text',
+// 							'type' => 'text',
 
-							'desc' => __('Your Merchant ID provided by LayUp, Please Enter it here and click save so we can fetch your merchant details', 'woocommerce-settings-tab-layup') ,
+// 							'desc' => __('Your Merchant ID provided by LayUp, Please Enter it here and click save so we can fetch your merchant details', 'woocommerce-settings-tab-layup') ,
 
-							'id' => 'layup_merchant_id'
+// 							'id' => 'layup_merchant_id'
 
-						) ,
+// 						) ,
 
-						array(
+// 						array(
 
-							'type' => 'sectionend',
+// 							'type' => 'sectionend',
 
-							'id' => 'layup_merchant_section_end'
+// 							'id' => 'layup_merchant_section_end'
 
-						)
+// 						)
 
-					));
+// 					));
 
-				}
-				else
-				{
+// 				}
+// 				else
+// 				{
 
-					$settings = apply_filters('layup_settings', array(
+// 					$settings = apply_filters('layup_settings', array(
 
-						array(
+// 						array(
 
-							'name' => __('Merchant Details', 'woocommerce-settings-tab-layup') ,
+// 							'name' => __('Merchant Details', 'woocommerce-settings-tab-layup') ,
 
-							'type' => 'title',
+// 							'type' => 'title',
 
-							'desc' => '',
+// 							'desc' => '',
 
-							'id' => 'layup_merchant_settings_title'
+// 							'id' => 'layup_merchant_settings_title'
 
-						) ,
+// 						) ,
 
-						array(
+// 						array(
 
-							'name' => __('Merchant ID', 'woocommerce-settings-tab-layup') ,
+// 							'name' => __('Merchant ID', 'woocommerce-settings-tab-layup') ,
 
-							'type' => 'password',
+// 							'type' => 'password',
 
-							'desc' => __('Your Merchant ID provided by LayUp, Please Enter it here and click save so we can fetch your merchant details', 'woocommerce-settings-tab-layup') ,
+// 							'desc' => __('Your Merchant ID provided by LayUp, Please Enter it here and click save so we can fetch your merchant details', 'woocommerce-settings-tab-layup') ,
 
-							'id' => 'layup_merchant_id',
+// 							'id' => 'layup_merchant_id',
 
-						) ,
+// 						) ,
 
-						array(
+// 						array(
 
-							'name' => __('Merchant Name', 'woocommerce-settings-tab-layup') ,
+// 							'name' => __('Merchant Name', 'woocommerce-settings-tab-layup') ,
 
-							'type' => 'text',
+// 							'type' => 'text',
 
-							'desc' => __('The name of your merchant account, usually your company Name', 'woocommerce-settings-tab-layup') ,
+// 							'desc' => __('The name of your merchant account, usually your company Name', 'woocommerce-settings-tab-layup') ,
 
-							'id' => 'layup_merchant_name',
+// 							'id' => 'layup_merchant_name',
 
-						) ,
+// 						) ,
 
-						array(
+// 						array(
 
-							'name' => __('Merchant domain', 'woocommerce-settings-tab-layup') ,
+// 							'name' => __('Merchant domain', 'woocommerce-settings-tab-layup') ,
 
-							'type' => 'text',
+// 							'type' => 'text',
 
-							'desc' => __('The Domain of your website, e.g. yourdomain.co.za', 'woocommerce-settings-tab-layup') ,
+// 							'desc' => __('The Domain of your website, e.g. yourdomain.co.za', 'woocommerce-settings-tab-layup') ,
 
-							'id' => 'layup_merchant_domain',
+// 							'id' => 'layup_merchant_domain',
 
-						) ,
+// 						) ,
 
-						array(
+// 						array(
 
-							'name' => __('Merchant notify URL', 'woocommerce-settings-tab-layup') ,
+// 							'name' => __('Merchant notify URL', 'woocommerce-settings-tab-layup') ,
 
-							'type' => 'text',
+// 							'type' => 'text',
 
-							'desc' => __('The notify URL of your website, usually the website`s payment thank you page', 'woocommerce-settings-tab-layup') ,
+// 							'desc' => __('The notify URL of your website, usually the website`s payment thank you page', 'woocommerce-settings-tab-layup') ,
 
-							'id' => 'layup_merchant_notifyurl',
+// 							'id' => 'layup_merchant_notifyurl',
 
-						) ,
+// 						) ,
 
-						array(
+// 						array(
 
-							'type' => 'sectionend',
+// 							'type' => 'sectionend',
 
-							'id' => 'layup_merchant_section_end'
+// 							'id' => 'layup_merchant_section_end'
 
-						)
+// 						)
 
-					));
+// 					));
 
-				}
+// 				}
 
-				return apply_filters('woocommerce_get_settings_' . $this->id, $settings);
+// 				return apply_filters('woocommerce_get_settings_' . $this->id, $settings);
 
-			}
+// 			}
 
-			/**
-			 * Output the settings
-			 */
+// 			/**
+// 			 * Output the settings
+// 			 */
 
-			public function layup_output()
-			{
+// 			public function layup_output()
+// 			{
 
-				global $woocommerce;
+// 				global $woocommerce;
 
-				$gateway_id = 'layup';
+// 				$gateway_id = 'layup';
 
-				$gateways = WC_Payment_Gateways::instance();
+// 				$gateways = WC_Payment_Gateways::instance();
 
-				$gateway = $gateways->payment_gateways() [$gateway_id];
+// 				$gateway = $gateways->payment_gateways() [$gateway_id];
 
-				$merchant_id = get_option('layup_merchant_id');
+// 				$merchant_id = get_option('layup_merchant_id');
 
-				$api_key_check = $gateway->api_key;
+// 				$api_key_check = $gateway->api_key;
 
-				if ($merchant_id !== '' || $api_key_check !== '')
-				{
+// 				if ($merchant_id !== '' || $api_key_check !== '')
+// 				{
 
-					$api_key = $gateway->api_key;
+// 					$api_key = $gateway->api_key;
 					
-				if ($gateway->testmode == 'yes')
-						{
+// 				if ($gateway->testmode == 'yes')
+// 						{
 
-							$api_url = "https://sandbox-api.layup.co.za/";
+// 							$api_url = "https://sandbox-api.layup.co.za/";
 
-						}
-						else
-						{
+// 						}
+// 						else
+// 						{
 
-							$api_url = "https://api.layup.co.za/";
+// 							$api_url = "https://api.layup.co.za/";
 
-						}
+// 						}
 					
 
-					$headers = array(
+// 					$headers = array(
 
-						'accept' => 'application/json',
+// 						'accept' => 'application/json',
 
-						'apikey' => $api_key,
+// 						'apikey' => $api_key,
 
-					);
+// 					);
 
-					$merchant_args = array(
+// 					$merchant_args = array(
 
-						'headers' => $headers,
+// 						'headers' => $headers,
 
-					);
+// 					);
 
-					$merch_response = wp_remote_get($api_url . 'v1/merchants/' . $merchant_id, $merchant_args);
+// 					$merch_response = wp_remote_get($api_url . 'v1/merchants/' . $merchant_id, $merchant_args);
 
-					if (!is_wp_error($merch_response))
-					{
+// 					if (!is_wp_error($merch_response))
+// 					{
 
-						if ($merch_response['body'] == 'Forbidden')
-						{
+// 						if ($merch_response['body'] == 'Forbidden')
+// 						{
 
-							echo '<div class="error"><p>'
- . __('The Merchant ID was invalid, please try again', 'layup-gateway')
- . '</p></div>';
+// 							echo '<div class="error"><p>'
+//  . __('The Merchant ID was invalid, please try again', 'layup-gateway')
+//  . '</p></div>';
 
-						}
-						else
-						{
+// 						}
+// 						else
+// 						{
 
-							$body = json_decode($merch_response['body'], true);
+// 							$body = json_decode($merch_response['body'], true);
 
-							$name = $body['name'];
+// 							$name = $body['name'];
 
-							$domain = $body['domain'];
+// 							$domain = $body['domain'];
 
-							$notifyUrl = $body['notifyUrl'];
+// 							$notifyUrl = $body['notifyUrl'];
 
-							update_option('layup_merchant_name', $name);
+// 							update_option('layup_merchant_name', $name);
 
-							update_option('layup_merchant_domain', esc_url_raw($domain));
+// 							update_option('layup_merchant_domain', esc_url_raw($domain));
 
-							update_option('layup_merchant_notifyurl', esc_url_raw($notifyUrl));
+// 							update_option('layup_merchant_notifyurl', esc_url_raw($notifyUrl));
 				
-						}
+// 						}
 
-					}
-					else
-					{
+// 					}
+// 					else
+// 					{
 
-						echo '<div class="error"><p>'
- . __('There was an error, please try again', 'layup-gateway')
- . '</p></div>';
+// 						echo '<div class="error"><p>'
+//  . __('There was an error, please try again', 'layup-gateway')
+//  . '</p></div>';
 
-					}
+// 					}
 				
-				}
-				else
-				{
+// 				}
+// 				else
+// 				{
 
-					echo '<div class="error"><p>'
- . __('Please make sure you have entered your API key in the payment settings before you enter your Merchant ID', 'layup-gateway')
- . '</p></div>';
+// 					echo '<div class="error"><p>'
+//  . __('Please make sure you have entered your API key in the payment settings before you enter your Merchant ID', 'layup-gateway')
+//  . '</p></div>';
 
-				}
+// 				}
 
-				$settings = $this->layup_get_settings();
+// 				$settings = $this->layup_get_settings();
 
-				WC_Admin_Settings::output_fields($settings);
+// 				WC_Admin_Settings::output_fields($settings);
 
-			}
+// 			}
 
-			/**
-			 * Save settings
-			 */
+// 			/**
+// 			 * Save settings
+// 			 */
 
-			public function layup_save()
-			{
+// 			public function layup_save()
+// 			{
 
-				if (array_key_exists('layup_merchant_name', $_POST))
-				{
+// 				if (array_key_exists('layup_merchant_name', $_POST))
+// 				{
 
-					if (esc_url_raw($_POST['layup_merchant_domain']) === $_POST['layup_merchant_domain'] && esc_url_raw($_POST['layup_merchant_notifyurl']) === $_POST['layup_merchant_notifyurl'])
-					{
+// 					if (esc_url_raw($_POST['layup_merchant_domain']) === $_POST['layup_merchant_domain'] && esc_url_raw($_POST['layup_merchant_notifyurl']) === $_POST['layup_merchant_notifyurl'])
+// 					{
 
-						global $woocommerce;
-						echo 'layup';
-						$gateway_id = 'layup';
+// 						global $woocommerce;
+// 						echo 'layup';
+// 						$gateway_id = 'layup';
 
-						$gateways = WC_Payment_Gateways::instance();
+// 						$gateways = WC_Payment_Gateways::instance();
 
-						$gateway = $gateways->payment_gateways() [$gateway_id];
+// 						$gateway = $gateways->payment_gateways() [$gateway_id];
 
-						$save_api_key_check = $gateway->api_key;
+// 						$save_api_key_check = $gateway->api_key;
 						
-						$save_api_key = $gateway->api_key;
+// 						$save_api_key = $gateway->api_key;
 
-						$save_merchant_id = $_POST['layup_merchant_id'];
+// 						$save_merchant_id = $_POST['layup_merchant_id'];
 
-						if ($save_merchant_id !== '')
-						{
+// 						if ($save_merchant_id !== '')
+// 						{
 
-							if ($gateway->testmode == 'yes')
-							{
+// 							if ($gateway->testmode == 'yes')
+// 							{
 
-								$save_api_url = "https://sandbox-api.layup.co.za/";
+// 								$save_api_url = "https://sandbox-api.layup.co.za/";
 
-							}
-							else
-							{
+// 							}
+// 							else
+// 							{
 
-								$save_api_url = "https://api.layup.co.za/";
+// 								$save_api_url = "https://api.layup.co.za/";
 
-							}
+// 							}
 
-							$save_merchant_details = array(
+// 							$save_merchant_details = array(
 
-								'name' => sanitize_text_field($_POST['layup_merchant_name']) ,
+// 								'name' => sanitize_text_field($_POST['layup_merchant_name']) ,
 
-								'domain' => sanitize_text_field($_POST['layup_merchant_domain']) ,
+// 								'domain' => sanitize_text_field($_POST['layup_merchant_domain']) ,
 
-								'notifyUrl' => sanitize_text_field($_POST['layup_merchant_notifyurl'])
+// 								'notifyUrl' => sanitize_text_field($_POST['layup_merchant_notifyurl'])
 
-							);
+// 							);
 
-							$save_merchant_details_json = json_encode($save_merchant_details, JSON_UNESCAPED_SLASHES);
+// 							$save_merchant_details_json = json_encode($save_merchant_details, JSON_UNESCAPED_SLASHES);
 
-							$save_headers = array(
+// 							$save_headers = array(
 
-								'accept' => 'application/json',
+// 								'accept' => 'application/json',
 
-								'Content-Type' => 'application/json',
+// 								'Content-Type' => 'application/json',
 
-								'apikey' => $save_api_key,
+// 								'apikey' => $save_api_key,
 
-							);
+// 							);
 
-							$save_merchant_args = array(
+// 							$save_merchant_args = array(
 
-								'method' => 'PUT',
+// 								'method' => 'PUT',
 
-								'headers' => $save_headers,
+// 								'headers' => $save_headers,
 
-								'body' => $save_merchant_details_json
+// 								'body' => $save_merchant_details_json
 
-							);
+// 							);
 
-							$save_merch_response = wp_remote_request($save_api_url . 'v1/merchants/' . $save_merchant_id, $save_merchant_args);
+// 							$save_merch_response = wp_remote_request($save_api_url . 'v1/merchants/' . $save_merchant_id, $save_merchant_args);
 							
 							
 
-							if (!is_wp_error($save_merch_response))
-							{
+// 							if (!is_wp_error($save_merch_response))
+// 							{
 
-								if ($save_merch_response['body'] == 'Forbidden')
-								{
+// 								if ($save_merch_response['body'] == 'Forbidden')
+// 								{
 
-									echo '<div class="error"><p>'
- . __('The Merchant ID was invalid, please try again', 'layup-gateway')
- . '</p></div>';
+// 									echo '<div class="error"><p>'
+//  . __('The Merchant ID was invalid, please try again', 'layup-gateway')
+//  . '</p></div>';
 
-								}
+// 								}
 
-							}
-							else
-							{
+// 							}
+// 							else
+// 							{
 
-								echo '<div class="error"><p>'
- . __('There was an error, please try again', 'layup-gateway')
- . '</p></div>';
+// 								echo '<div class="error"><p>'
+//  . __('There was an error, please try again', 'layup-gateway')
+//  . '</p></div>';
 								
 
-							}
+// 							}
 
-						}
+// 						}
 
-					}
-					else
-					{
+// 					}
+// 					else
+// 					{
 
-						echo '<div class="error"><p>'
- . __('There was an error, please try again', 'layup-gateway')
- . '</p></div>';
+// 						echo '<div class="error"><p>'
+//  . __('There was an error, please try again', 'layup-gateway')
+//  . '</p></div>';
 						
 
-					}
+// 					}
 
-				}
+// 				}
 
-				$settings = $this->layup_get_settings();
+// 				$settings = $this->layup_get_settings();
 
-				WC_Admin_Settings::save_fields($settings);
+// 				WC_Admin_Settings::save_fields($settings);
 
-			}
+// 			}
 
-			/**
-			 *  Show possible admin notices
-			 */
+// 			/**
+// 			 *  Show possible admin notices
+// 			 */
 
-			public function layup_admin_notices($merch_response)
-			{
+// 			public function layup_admin_notices($merch_response)
+// 			{
 
-				if ($merch_response)
-				{
+// 				if ($merch_response)
+// 				{
 
-					if ($merch_response['body'] == 'Forbidden')
-					{
+// 					if ($merch_response['body'] == 'Forbidden')
+// 					{
 
-						echo '<div class="error"><p>'
- . __('The Merchant ID was invalid, please try again', 'layup-gateway')
- . '</p></div>';
+// 						echo '<div class="error"><p>'
+//  . __('The Merchant ID was invalid, please try again', 'layup-gateway')
+//  . '</p></div>';
 
-					}
-					else
-					{
+// 					}
+// 					else
+// 					{
 
-						return;
+// 						return;
 
-					}
+// 					}
 
-				}
+// 				}
 
-			}
+// 			}
 
-		}
+// 		}
 
-		return new WC_Settings_LayUp();
+// 		return new WC_Settings_LayUp();
 
-	}
+// 	}
 
-	add_filter('woocommerce_get_settings_pages', 'layup_add_settings', 15);
+// 	add_filter('woocommerce_get_settings_pages', 'layup_add_settings', 15);
 
-}
+// }
 
 /**
  * Create the date LayUp checkbox field on product admin page
