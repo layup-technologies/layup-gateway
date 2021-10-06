@@ -95,7 +95,7 @@ function layup_payment_plans_shortcode() {
 
             </div></a>
 
-            <p class="pp-ref">'.esc_attr($ref).'</p>
+            <p class="pp-ref">ref: '.esc_attr($ref).'</p>
 
             </article>';
 
