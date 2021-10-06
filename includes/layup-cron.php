@@ -149,15 +149,15 @@ function layup_check_payments() {
 
 
 
-                update_post_meta( $order->get_order_number(), 'layup_pp_id_'.$pp, $plans['_id'] );
+                update_post_meta( $order->get_id(), 'layup_pp_id_'.$pp, $plans['_id'] );
 
 
 
-                update_post_meta( $order->get_order_number(), 'layup_pp_freq_'.$pp, strtolower($plans['frequency']) );
+                update_post_meta( $order->get_id(), 'layup_pp_freq_'.$pp, strtolower($plans['frequency']) );
 
 
 
-                update_post_meta( $order->get_order_number(), 'layup_pp_quant_'.$pp, $plans['quantity'] );
+                update_post_meta( $order->get_id(), 'layup_pp_quant_'.$pp, $plans['quantity'] );
 
 
 
@@ -214,11 +214,11 @@ function layup_check_payments() {
 
 
 
-                update_post_meta( $order->get_order_number(), 'layup_pp_outstanding_'.$pp, $outstanding );
+                update_post_meta( $order->get_id(), 'layup_pp_outstanding_'.$pp, $outstanding );
 
 
 
-                update_post_meta( $order->get_order_number(), 'layup_pp_monthly_'.$pp, $monthly_payment );
+                update_post_meta( $order->get_id(), 'layup_pp_monthly_'.$pp, $monthly_payment );
 
 
 
