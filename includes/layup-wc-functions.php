@@ -1679,10 +1679,17 @@ add_action('woocommerce_after_shop_loop_item_title', 'layup_display_estimate', 2
 
 function my_error_notice()
 {
+	global $post;
 
-	$merchant_id = get_option('layup_merchant_id');
+	global $woocommerce;
 
-	if ($merchant_id == '')
+	$gateway_id = 'layup';
+
+	$gateways = WC_Payment_Gateways::instance();
+
+	$gateway = $gateways->payment_gateways() [$gateway_id];
+
+	if ($gateway->api_key == '')
 	{
 
 ?>
@@ -1701,7 +1708,7 @@ function my_error_notice()
 
 
 
-        <a href="<?php echo admin_url('admin.php?page=wc-settings&tab=layup-merchant'); ?>"><?php _e('here.', 'woocommerce'); ?></a></p>
+        <a href="<?php echo admin_url('admin.php?page=wc-settings&tab=checkout&section=layup'); ?>"><?php _e('here.', 'woocommerce'); ?></a></p>
 
 
 
