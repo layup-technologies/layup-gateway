@@ -187,9 +187,17 @@ function layup_check_payments() {
 
                 }
 
+                $paid = 0;
 
+                foreach( $plans['payments'] as $payment) {
 
-                $amount = 0;
+                    if ($payment['paid'] == true){
+
+                        $paid += $payment['amount'];
+
+                    }
+
+                }
 
 
                 //convert cents to rands
@@ -197,16 +205,16 @@ function layup_check_payments() {
 
                 $monthly_rands = $monthly/100;
 
+                $outstanding = $plans['amountDue'] - $paid;
 
-                $amount_rands = $plans['amountDue']/100; 
-
+                $outstanding_rands = $outstanding/100; 
 
 
                 //formate numbers to work with WC
 
 
 
-                $outstanding = number_format($amount_rands, 2, '.', '');
+                $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
 
 
 
@@ -214,7 +222,7 @@ function layup_check_payments() {
 
 
 
-                update_post_meta( $order->get_id(), 'layup_pp_outstanding_'.$pp, $outstanding );
+                update_post_meta( $order->get_id(), 'layup_pp_outstanding_'.$pp, $outstanding_foramted );
 
 
 
