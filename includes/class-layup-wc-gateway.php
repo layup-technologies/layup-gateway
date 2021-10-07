@@ -1071,7 +1071,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         'meta_value'     => $layup_order_id,
 
-        'post_status' => array('wc-pending', 'wc-on-hold')
+        'post_status' => array('wc-pending', 'wc-on-hold', 'wc-cancelled')
 
         ) );
     
