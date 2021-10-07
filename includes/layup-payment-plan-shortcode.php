@@ -60,6 +60,8 @@ function layup_payment_plans_shortcode() {
 
             $order_id = $order->get_id();
 
+            $order_number = $order->get_order_number();
+
             $outstanding = get_post_meta( $order_id, 'layup_pp_outstanding_0', true );
 
             $quant = get_post_meta( $order_id, 'layup_pp_quant_0', true );
@@ -81,7 +83,7 @@ function layup_payment_plans_shortcode() {
 
             $html .= '<article class="pp-entry">
 
-            <h2 class="pp-entry-title">'.esc_attr($blog_title).' #'.esc_attr($order_id).'</h2>
+            <h2 class="pp-entry-title">'.esc_attr($blog_title).' #'.esc_attr($order_number).'</h2>
 
             <p class="pp-content"><strong>Outstanding:</strong> R '.esc_attr($outstanding).'</p>
 
