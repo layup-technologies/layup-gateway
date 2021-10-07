@@ -240,21 +240,11 @@ function layup_check_payments() {
 
 
 
-            } else {
-                return;
-            }
+            } 
 
 
 
-       } else {
-
-
-
-           return;
-
-
-
-       }
+       } 
 
 
 
