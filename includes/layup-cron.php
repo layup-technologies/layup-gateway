@@ -61,6 +61,8 @@ function layup_check_payments() {
 
     ) );
 
+    file_put_contents('test-cron.txt', json_encode($orders));
+
 
 
     if (empty($orders)) {
