@@ -1972,7 +1972,7 @@ function layup_display_cart()
         if ($cart_inarray)
 	{ //product is in the cart
 
-        echo '<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
+        echo '<div style="display:inline-block;font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
 		<p style="color:red">You currently have the following items in your cart that do not allow you to use LayUp as a payment method: '.$product_names.'please remove them if you wish to use the LayUp payment method.</p>
 		</div>';
 
