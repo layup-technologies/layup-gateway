@@ -2297,7 +2297,9 @@ function layup_display_cart()
 
 	} else {
 
-        echo 'Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.';
+        echo '<div style="display:inline-block;font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
+		<p style="color:red">Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.</p>
+		</div>';
 
     }
 }
