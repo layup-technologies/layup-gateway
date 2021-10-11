@@ -2295,7 +2295,11 @@ function layup_display_cart()
 
 		
 
-	}
+	} else {
+
+        echo 'Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.';
+
+    }
 }
 
 }
