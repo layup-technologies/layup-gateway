@@ -121,6 +121,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
         $this->payplan_disp = 'yes' === $this->get_option( 'payplan_disp' );
+        $this->payplan_disp_cart = 'yes' === $this->get_option( 'payplan_disp_cart' );
 
 
 
@@ -434,6 +435,30 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
                 'description' => 'Show payment plan example under each product and on single product page',
+
+
+
+                'default'     => 'yes'
+
+
+
+            ),
+
+            'payplan_disp_cart' => array(
+
+
+
+
+
+                'title'       => 'Show payment plan on cart page',
+
+
+
+                'type'        => 'checkbox',
+
+
+
+                'description' => 'Show payment plan example under the checkout button on the cart page',
 
 
 
