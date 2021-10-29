@@ -2074,7 +2074,7 @@ function layup_display_cart()
 				$formatInstalment = number_format($newInstalment, 2);
 
 			echo '<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
-				<p style="margin-top: 0px; "><span class="btn-layup-text"><strong>PAY IT OFF</strong> with <span style="color:#1295a5;">LayUp</span></span> From R<span class="layup-installment-amount">' . esc_attr($formatInstalment) . '</span>/month for <span class="layup-months-amount">' . esc_attr($months) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . ' </span><span id="lumodallink" style="color:#1295a5;">Learn More</span></p>
+				<p style="margin-top: 0px; "><span class="btn-layup-text"><strong>PAY IT OFF</strong> with <em style="color:#1295a5;">LayUp</em></span> From R<span class="layup-installment-amount">' . esc_attr($formatInstalment) . '</span>/month for <span class="layup-months-amount">' . esc_attr($months) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . ' </span><span id="lumodallink" style="color:#1295a5;">Learn More</span></p>
 				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 				<style>
 					/* The Modal (background) */
