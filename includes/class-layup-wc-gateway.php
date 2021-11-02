@@ -462,7 +462,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
 
-                'default'     => 'yes'
+                'default'     => 'no'
 
 
 
