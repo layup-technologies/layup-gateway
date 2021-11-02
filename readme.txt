@@ -205,7 +205,7 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 * Webhook able to change a cancelled order to placed (on hold)
 * Removed merchant settings
-* Customer view of [ayment plan updates more often
+* Customer view of payment plan updates more often
 * Added a paymenplan estimate to the cart
 
 = v1.7.11 =
