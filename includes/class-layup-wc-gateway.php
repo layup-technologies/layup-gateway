@@ -121,7 +121,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
 
         $this->payplan_disp = 'yes' === $this->get_option( 'payplan_disp' );
-        $this->payplan_disp_cart = 'no' === $this->get_option( 'payplan_disp_cart' );
+        $this->payplan_disp_cart = 'yes' === $this->get_option( 'payplan_disp_cart' );
 
 
 
