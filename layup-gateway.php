@@ -54,7 +54,7 @@ function layup_activation() {
 
 
 
-		wp_schedule_event(time(), 'weekly', 'layup_order_check');
+		wp_schedule_event(time(), 'layup10min', 'layup_order_check');
 
 
 

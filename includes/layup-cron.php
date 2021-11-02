@@ -61,8 +61,6 @@ function layup_check_payments() {
 
     ) );
 
-
-
     if (empty($orders)) {
 
 
@@ -83,7 +81,7 @@ function layup_check_payments() {
 
 
 
-        $layup_order_id = get_post_meta( $order->get_order_number(), 'layup_order_id', true );
+        $layup_order_id = get_post_meta( $order->get_id(), 'layup_order_id', true );
 
 
 
@@ -149,21 +147,21 @@ function layup_check_payments() {
 
 
 
-                update_post_meta( $order->get_order_number(), 'layup_pp_id_'.$pp, $plans['_id'] );
+                update_post_meta( $order->get_id(), 'layup_pp_id_'.$pp, $plans['_id'] );
 
 
 
-                update_post_meta( $order->get_order_number(), 'layup_pp_freq_'.$pp, strtolower($plans['frequency']) );
+                update_post_meta( $order->get_id(), 'layup_pp_freq_'.$pp, strtolower($plans['frequency']) );
 
 
 
-                update_post_meta( $order->get_order_number(), 'layup_pp_quant_'.$pp, $plans['quantity'] );
+                update_post_meta( $order->get_id(), 'layup_pp_quant_'.$pp, $plans['quantity'] );
 
 
 
                 //get monthly amount
 
-
+                $due = '';
 
                 foreach( $plans['payments'] as $payment) {
 
@@ -172,7 +170,7 @@ function layup_check_payments() {
                     if ($payment['paid'] == false){
 
 
-
+                        $due = $payment['due'];
                         $monthly = $payment['amount'];
 
 
@@ -187,9 +185,17 @@ function layup_check_payments() {
 
                 }
 
+                $paid = 0;
 
+                foreach( $plans['payments'] as $payment) {
 
-                $amount = 0;
+                    if ($payment['paid'] == true){
+
+                        $paid += $payment['amount'];
+
+                    }
+
+                }
 
 
                 //convert cents to rands
@@ -197,28 +203,28 @@ function layup_check_payments() {
 
                 $monthly_rands = $monthly/100;
 
+                $outstanding = $plans['amountDue'] + $plans['depositDue'] - $paid;
 
-                $amount_rands = $plans['amountDue']/100; 
+                $outstanding_rands = $outstanding/100; 
 
-
-
+                $due_str = strstr($due, '(', true);
                 //formate numbers to work with WC
 
+                $due_date = date("Y/m/d", strtotime($due_str));
 
-
-                $outstanding = number_format($amount_rands, 2, '.', '');
+                $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
 
 
 
                 $monthly_payment = number_format($monthly_rands, 2, '.', '');
 
+                update_post_meta( $order->get_id(), 'layup_pp_due_date_'.$pp, $due_date );
+
+                update_post_meta( $order->get_id(), 'layup_pp_outstanding_'.$pp, $outstanding_foramted );
 
 
-                update_post_meta( $order->get_order_number(), 'layup_pp_outstanding_'.$pp, $outstanding );
 
-
-
-                update_post_meta( $order->get_order_number(), 'layup_pp_monthly_'.$pp, $monthly_payment );
+                update_post_meta( $order->get_id(), 'layup_pp_monthly_'.$pp, $monthly_payment );
 
 
 
@@ -230,21 +236,11 @@ function layup_check_payments() {
 
 
 
-            } else {
-                return;
-            }
+            } 
 
 
 
-       } else {
-
-
-
-           return;
-
-
-
-       }
+       } 
 
 
 
