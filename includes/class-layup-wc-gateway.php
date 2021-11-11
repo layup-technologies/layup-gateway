@@ -1,312 +1,186 @@
 <?php
 
+class WC_Layup_Gateway extends WC_Payment_Gateway
+{
 
+    /**
+     * Class constructor
+     */
 
-class WC_Layup_Gateway extends WC_Payment_Gateway {
-
-
-
-
-
-     /**
-
-      * Class constructor
-
-      */
-
-
-
-     public function __construct() {
-
-
+    public function __construct()
+    {
 
         $this->version = WC_GATEWAY_LAYUP_VERSION;
 
-
-
         $this->id = 'layup'; // payment gateway plugin ID
+        
 
-
-
-
-
-        $this->icon = plugin_dir_url( dirname( __FILE__ ) ) . 'img/logo-color.168d4abe.png';  // URL of the icon that will be displayed on checkout page near your gateway name
-
-
+        $this->icon = plugin_dir_url(dirname(__FILE__)) . 'img/logo-color.168d4abe.png'; // URL of the icon that will be displayed on checkout page near your gateway name
+        
 
         $this->has_fields = false; // in case of custom credit card form
+        
 
-
-
-        $this->method_title = __( 'LayUp', 'layup-gateway' );
-
-
+        $this->method_title = __('LayUp', 'layup-gateway');
 
         $this->method_description = 'Activate your payment plan with a small deposit and break down the total cost into more affordable monthly payments.'; // will be displayed on the options page
+        
 
+        $this->available_countries = array(
+            'ZA'
+        );
 
-
-        $this->available_countries  = array( 'ZA' );
-
-
-
-        $this->available_currencies = (array)apply_filters('layup_gateway_available_currencies', array( 'ZAR' ) );
-
-
+        $this->available_currencies = (array)apply_filters('layup_gateway_available_currencies', array(
+            'ZAR'
+        ));
 
         // gateways can support products, subscriptions, refunds, saved payment methods,
-
-
+        
 
         $this->supports = array(
 
-
-
             'products'
-
-
 
         );
 
-
-
-
-
         // Method with all the options fields
-
-
+        
 
         $this->init_form_fields();
 
-
-
         // Load the settings.
-
-
+        
 
         $this->init_settings();
 
+        $this->title = $this->get_option('title');
 
+        $this->description = $this->get_option('description');
 
-        $this->title = $this->get_option( 'title' );
+        $this->enabled = $this->get_option('enabled');
 
+        $this->lu_max_end_date = $this->get_option('lu_max_end_date') + 1;
 
+        $this->lu_min_end_date = $this->get_option('lu_min_end_date');
 
-        $this->description = $this->get_option( 'description' );
+        $this->btn_bg_color = $this->get_option('btn_bg_color');
 
+        $this->btn_text_color = $this->get_option('btn_text_color');
 
+        $this->testmode = 'yes' === $this->get_option('lu_testmode');
 
-        $this->enabled = $this->get_option( 'enabled' );
+        $this->payplan_disp = 'yes' === $this->get_option('payplan_disp');
+        $this->payplan_disp_cart = 'yes' === $this->get_option('payplan_disp_cart');
 
+        $this->layup_dep = (int)$this->get_option('layup_dep');
 
+        $this->layup_dep_type = $this->get_option('layup_dep_type');
 
-        $this->lu_max_end_date = $this->get_option( 'lu_max_end_date') + 1;
-
-
-
-        $this->lu_min_end_date = $this->get_option( 'lu_min_end_date');
-
-
-
-        $this->btn_bg_color = $this->get_option( 'btn_bg_color' );
-
-
-
-        $this->btn_text_color = $this->get_option( 'btn_text_color' );
-
-
-
-        $this->testmode = 'yes' === $this->get_option( 'lu_testmode' );
-
-
-
-        $this->payplan_disp = 'yes' === $this->get_option( 'payplan_disp' );
-        $this->payplan_disp_cart = 'yes' === $this->get_option( 'payplan_disp_cart' );
-
-
-
-        $this->layup_dep = (int)$this->get_option( 'layup_dep' );
-
-        $this->layup_dep_type = $this->get_option( 'layup_dep_type' );
-
-
-		if ($this->get_option( 'lu_api_key' ) != ''){
-			$this->api_key = $this->get_option( 'lu_api_key' );
-		} else {
-			$this->api_key = "myApiKey";
-		}
-        
+        if ($this->get_option('lu_api_key') != '')
+        {
+            $this->api_key = $this->get_option('lu_api_key');
+        }
+        else
+        {
+            $this->api_key = "myApiKey";
+        }
 
         $this->api_url = $this->testmode ? "https://sandbox-api.layup.co.za/v1/orders" : "https://api.layup.co.za/v1/orders";
 
         // This action hook saves the settings
+        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array(
+            $this,
+            'process_admin_options'
+        ));
 
-        add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+        add_action('woocommerce_api_wc_layup_gateway', array(
+            $this,
+            'layup_callback'
+        ));
 
-        add_action('woocommerce_api_wc_layup_gateway', array($this, 'layup_callback'));
+        add_action('admin_notices', array(
+            $this,
+            'admin_notices'
+        ));
 
-        add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-
-
-
-     }
-
-
-
-
+    }
 
     /**
+     * Plugin admin options
+     */
 
-      * Plugin admin options
-
-      */
-
-
-
-     public function init_form_fields(){
-
-
+    public function init_form_fields()
+    {
 
         $this->form_fields = array(
 
-
-
             'enabled' => array(
 
+                'title' => 'Enable/Disable',
 
+                'label' => 'Enable LayUp Gateway',
 
-                'title'       => 'Enable/Disable',
-
-
-
-                'label'       => 'Enable LayUp Gateway',
-
-
-
-                'type'        => 'checkbox',
-
-
+                'type' => 'checkbox',
 
                 'description' => '',
 
+                'default' => 'no'
 
-
-                'default'     => 'no'
-
-
-
-            ),
-
-
-
-
+            ) ,
 
             'lu_api_key' => array(
 
+                'title' => 'Live API Key',
 
-
-                'title'       => 'Live API Key',
-
-
-
-                'type'        => 'password',
-
-
+                'type' => 'password',
 
                 'description' => 'The API Key for your Merchant Account provided by LayUp.'
 
-
-
-            ),
-
-
+            ) ,
 
             'title' => array(
 
+                'title' => 'Title',
 
-
-                'title'       => 'Title',
-
-
-
-                'type'        => 'text',
-
-
+                'type' => 'text',
 
                 'description' => 'This controls the title which the user sees during checkout.',
 
+                'default' => 'LayUp'
 
-
-                'default'     => 'LayUp'
-
-
-
-            ),
-
-
+            ) ,
 
             'description' => array(
 
+                'title' => 'Description',
 
-
-                'title'       => 'Description',
-
-
-
-                'type'        => 'text',
-
-
+                'type' => 'text',
 
                 'description' => 'This controls the description which the user sees during checkout.',
 
+                'default' => 'Interest Free Lay-By | Safe & Easy Instalments | No Credit Checks | Instant Sign Up',
 
-
-                'default'     => 'Interest Free Lay-By | Safe & Easy Instalments | No Credit Checks | Instant Sign Up',
-
-
-
-            ),
-
-
+            ) ,
 
             'lu_testmode' => array(
 
+                'title' => 'Test mode',
 
+                'label' => 'Enable Test Mode',
 
-                'title'       => 'Test mode',
-
-
-
-                'label'       => 'Enable Test Mode',
-
-
-
-                'type'        => 'checkbox',
-
-
+                'type' => 'checkbox',
 
                 'description' => 'Place the payment gateway in test mode using test API keys.',
 
+                'default' => 'yes'
 
-
-                'default'     => 'yes'
-
-
-
-            ),
-
-
+            ) ,
 
             'layup_dep_type' => array(
 
+                'title' => 'Deposit Type',
 
-
-                'title'       => 'Deposit Type',
-
-
-                'type'        => 'select',
-
-
+                'type' => 'select',
 
                 'description' => 'Select one of the following deposit types, required to initiate a payment plan and activate an order, applicable to all payment plans created by this Merchant Account.<br>
                 Percentage: Define a percentage of the total order value e.g. 10%.<br>
@@ -317,196 +191,103 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
                     'PERCENTAGE' => 'Percentage',
                     'INSTALMENT' => 'First instalment',
                     'FLAT' => 'Flat fee'
-                ),
+                ) ,
 
-               
-                'default'     => 'PERCENTAGE'
+                'default' => 'PERCENTAGE'
 
-            ),
+            ) ,
 
             'layup_dep' => array(
 
+                'title' => 'Deposit Amount',
 
-
-                'title'       => 'Deposit Amount',
-
-
-
-                'type'        => 'number',
-
-
+                'type' => 'number',
 
                 'description' => 'The deposit amount based on what was chosen as the deposit type.<br>(only applicable if pecentage or flat fee is chosen for the deposit type.)',
 
+                'default' => '20'
 
-
-                'default'     => '20'
-
-
-
-            ),
-
-
+            ) ,
 
             'lu_min_end_date' => array(
 
+                'title' => 'Min months',
 
-
-                'title'       => 'Min months',
-
-
-
-                'type'        => 'number',
-
-
+                'type' => 'number',
 
                 'description' => 'The minimum number of months a customer can choose to pay off an order',
 
-
-
-                'default'     => '1',
-
-
+                'default' => '1',
 
                 'custom_attributes' => array(
 
-
-
-                    'min'	=> '1'
-
-
+                    'min' => '1'
 
                 )
 
-
-
-            ),
-
-
+            ) ,
 
             'lu_max_end_date' => array(
 
+                'title' => 'Max months',
 
-
-                'title'       => 'Max months',
-
-
-
-                'type'        => 'number',
-
-
+                'type' => 'number',
 
                 'description' => 'The maximum number of months a customer can choose to pay off an order',
 
-
-
-                'default'     => '6',
-
-
+                'default' => '6',
 
                 'custom_attributes' => array(
 
-
-
-                    'min'	=> '1'
-
-
+                    'min' => '1'
 
                 )
 
-
-
-            ),
-
-
+            ) ,
 
             'payplan_disp' => array(
 
+                'title' => 'Show payment plan example',
 
-
-
-
-                'title'       => 'Show payment plan example',
-
-
-
-                'type'        => 'checkbox',
-
-
+                'type' => 'checkbox',
 
                 'description' => 'Show payment plan example under each product and on single product page',
 
+                'default' => 'yes'
 
-
-                'default'     => 'yes'
-
-
-
-            ),
+            ) ,
 
             'payplan_disp_cart' => array(
 
+                'title' => 'Show payment plan on cart page',
 
-
-
-
-                'title'       => 'Show payment plan on cart page',
-
-
-
-                'type'        => 'checkbox',
-
-
+                'type' => 'checkbox',
 
                 'description' => 'Show payment plan example under the checkout button on the cart page',
 
+                'default' => 'no'
 
-
-                'default'     => 'no'
-
-
-
-            ),
-
-
-
-
+            ) ,
 
         );
 
-
-
-     }
-
-
+    }
 
     /**
-
      * Check if this gateway is enabled and available in the base currency being traded with.
-
      */
 
+    public function is_valid_for_use()
+    {
 
+        $is_available = false;
 
-    public function is_valid_for_use() {
+        $is_available_currency = in_array(get_woocommerce_currency() , $this->available_currencies);
 
-
-
-        $is_available          = false;
-
-
-
-        $is_available_currency = in_array( get_woocommerce_currency(), $this->available_currencies );
-
-
-
-        if ( $is_available_currency && $this->merchant_id && $this->merchant_key ) {
-
-
+        if ($is_available_currency && $this->merchant_id && $this->merchant_key)
+        {
 
             $is_available = true;
-
-
 
         }
 
@@ -514,92 +295,76 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
     }
 
+    public function admin_options()
+    {
 
-
-
-
-    public function admin_options() {
-
-
-
-        if ( in_array( get_woocommerce_currency(), $this->available_currencies ) ) {
-
-
+        if (in_array(get_woocommerce_currency() , $this->available_currencies))
+        {
 
             parent::admin_options();
 
+        }
+        else
+        {
 
-
-        } else {
-
-
-
-        ?>
-
-
-
-            <h3><?php _e( 'LayUp', 'layup-gateway' ); ?></h3>
+?>
 
 
 
-            <div class="inline error"><p><strong><?php _e( 'Gateway Disabled', 'layup-gateway' ); ?></strong> <?php /* translators: 1: a href link 2: closing href */ echo sprintf( __( 'Choose South African Rands as your store currency in %1$sGeneral Settings%2$s to enable the LayUp Gateway.', 'layup-gateway' ), '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=general' ) ) . '">', '</a>' ); ?></p></div>
+            <h3><?php _e('LayUp', 'layup-gateway'); ?></h3>
+
+
+
+            <div class="inline error"><p><strong><?php _e('Gateway Disabled', 'layup-gateway'); ?></strong> <?php /* translators: 1: a href link 2: closing href */
+            echo sprintf(__('Choose South African Rands as your store currency in %1$sGeneral Settings%2$s to enable the LayUp Gateway.', 'layup-gateway') , '<a href="' . esc_url(admin_url('admin.php?page=wc-settings&tab=general')) . '">', '</a>'); ?></p></div>
 
 
 
             <?php
 
-
-
         }
-
-
 
     }
 
-
-
     /*
-
+    
      * Processing the order and redirecting to layup
+    
+    */
 
-     */
-
-
-
-    public function process_payment( $order_id ) {
+    public function process_payment($order_id)
+    {
 
         global $woocommerce;
 
         $cart_inarray = false;
         $product_names = '';
-        $cart_products = $woocommerce->cart->cart_contents;
+        $cart_products = $woocommerce
+            ->cart->cart_contents;
 
         foreach ($cart_products as $cart_product)
         { //enumerate over all cart contents
-    
-                $layup_disable_meta = get_post_meta($cart_product['data']->get_id(), 'layup_disable', true);
-    
-                if (!empty($layup_disable_meta))
-                {
-    
-                    $cart_inarray = true; //set inarray to true
-                    $product_names .= $cart_product['data']->get_title().', ';
-    
-                }
-    
+            $layup_disable_meta = get_post_meta($cart_product['data']->get_id() , 'layup_disable', true);
+
+            if (!empty($layup_disable_meta))
+            {
+
+                $cart_inarray = true; //set inarray to true
+                $product_names .= $cart_product['data']->get_title() . ', ';
+
             }
 
+        }
+
         if ($cart_inarray)
-	{ //product is in the cart
+        { //product is in the cart
+            wc_add_notice('You currently have the following items in your cart that do not allow you to use LayUp as a payment method: ' . $product_names . 'please remove them if you wish to use the LayUp payment method.', 'error');
 
-        wc_add_notice(  'You currently have the following items in your cart that do not allow you to use LayUp as a payment method: '.$product_names.'please remove them if you wish to use the LayUp payment method.', 'error' );
-
-        return;
-    }
+            return;
+        }
 
         // we need it to get any order detailes
-
-        $order = wc_get_order( $order_id );
+        $order = wc_get_order($order_id);
 
         $unid = md5(uniqid($order_id, true));
 
@@ -607,10 +372,11 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
         $blog_title = get_bloginfo();
 
-        $order_items = $order->get_items( array('line_item') );
+        $order_items = $order->get_items(array(
+            'line_item'
+        ));
 
         // Build product array
-
         $custom_dep_inarray = false;
 
         $check_dep_type = [];
@@ -618,494 +384,386 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
         $check_dep_months_min = [];
         $check_dep_months_max = [];
 
-        foreach( $order_items as $cd_item_id => $cd_order_item ) {
+        foreach ($order_items as $cd_item_id => $cd_order_item)
+        {
 
             $cd_product = $cd_order_item->get_product();
-            
-            if ( $cd_product->is_type( 'variation' ) ) {
-                $cd_product = wc_get_product( $cd_product->get_parent_id() );
-                
+
+            if ($cd_product->is_type('variation'))
+            {
+                $cd_product = wc_get_product($cd_product->get_parent_id());
+
             }
 
-            if(!empty(get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_type', true ))){
-                array_push($check_dep_type, get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_type', true ));
-            } else {
+            if (!empty(get_post_meta($cd_product->get_id() , 'layup_preview_deposit_type', true)))
+            {
+                array_push($check_dep_type, get_post_meta($cd_product->get_id() , 'layup_preview_deposit_type', true));
+            }
+            else
+            {
                 array_push($check_dep_type, $this->layup_dep_type);
             }
-            if(!empty(get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_amount', true ))){
-                array_push($check_dep_amount, get_post_meta( $cd_product->get_id(), 'layup_preview_deposit_amount', true ));
-            } else {
+            if (!empty(get_post_meta($cd_product->get_id() , 'layup_preview_deposit_amount', true)))
+            {
+                array_push($check_dep_amount, get_post_meta($cd_product->get_id() , 'layup_preview_deposit_amount', true));
+            }
+            else
+            {
                 array_push($check_dep_amount, $this->layup_dep);
             }
-            if(!empty(get_post_meta( $cd_product->get_id(), 'layup_preview_min_months', true ))){
-                array_push($check_dep_months_min, get_post_meta( $cd_product->get_id(), 'layup_preview_min_months', true ));
-            } else {
+            if (!empty(get_post_meta($cd_product->get_id() , 'layup_preview_min_months', true)))
+            {
+                array_push($check_dep_months_min, get_post_meta($cd_product->get_id() , 'layup_preview_min_months', true));
+            }
+            else
+            {
                 array_push($check_dep_months_min, $this->lu_min_end_date);
             }
-            if(!empty(get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ))){
-                array_push($check_dep_months_max, get_post_meta( $cd_product->get_id(), 'layup_preview_months', true ));
-            } else {
+            if (!empty(get_post_meta($cd_product->get_id() , 'layup_preview_months', true)))
+            {
+                array_push($check_dep_months_max, get_post_meta($cd_product->get_id() , 'layup_preview_months', true));
+            }
+            else
+            {
                 array_push($check_dep_months_max, $this->lu_max_end_date - 1);
-            } 
+            }
 
         }
 
-        if (count(array_unique($check_dep_type)) <= 1 && count(array_unique($check_dep_amount)) <= 1 && count(array_unique($check_dep_months_min)) <= 1 && count(array_unique($check_dep_months_max)) <= 1) {
+        if (count(array_unique($check_dep_type)) <= 1 && count(array_unique($check_dep_amount)) <= 1 && count(array_unique($check_dep_months_min)) <= 1 && count(array_unique($check_dep_months_max)) <= 1)
+        {
 
-            
-        
-            if(!empty($check_dep_amount[0])){
-            $this->layup_dep = $check_dep_amount[0];
-            settype($this->layup_dep, 'float');
+            if (!empty($check_dep_amount[0]))
+            {
+                $this->layup_dep = $check_dep_amount[0];
+                settype($this->layup_dep, 'float');
             }
 
-            if(!empty($check_dep_type[0])){
-            $this->layup_dep_type = $check_dep_type[0];
+            if (!empty($check_dep_type[0]))
+            {
+                $this->layup_dep_type = $check_dep_type[0];
             }
 
-            if(!empty($check_dep_months_min[0])){
-            $this->lu_min_end_date = $check_dep_months_min[0] + 1;
+            if (!empty($check_dep_months_min[0]))
+            {
+                $this->lu_min_end_date = $check_dep_months_min[0] + 1;
             }
 
-            if(!empty($check_dep_months_max[0])){
-            $this->lu_max_end_date = $check_dep_months_max[0] + 1;
+            if (!empty($check_dep_months_max[0]))
+            {
+                $this->lu_max_end_date = $check_dep_months_max[0] + 1;
             }
 
+            $woo_thank_you = $order->get_checkout_order_received_url();
 
-        $woo_thank_you = $order->get_checkout_order_received_url();
+            // Build product array
+            $products = array();
+            $i = 0;
 
+            foreach ($order_items as $item_id => $order_item)
+            {
 
+                $product = $order_item->get_product();
 
-        // Build product array
+                $price = (float)$order_item->get_total() * 100;
 
-        $products = array();
-        $i = 0;
-        
-        foreach( $order_items as $item_id => $order_item ) {
+                if ($product->get_sku() != '')
+                {
+                    $product_sku = $product->get_sku();
+                }
+                else
+                {
+                    $product_sku = $this->generate_layup_sku($product->get_title());
+                }
 
+                $products[$i] = array(
 
+                    'amount' => (int)$price,
 
-            $product = $order_item->get_product();
+                    'link' => get_permalink($product->get_id()) ,
 
-            $price = (float)$order_item->get_total() * 100;
+                    'sku' => $product_sku
 
-            if($product->get_sku() != ''){
-                $product_sku = $product->get_sku();
-            } else {
-                $product_sku = $this->generate_layup_sku($product->get_title());
-            }
+                );
 
-            $products[$i] = array(
-
-
-
-                'amount'=> (int)$price,
-
-
-
-                'link'=> get_permalink( $product->get_id() ),
-
-
-
-                'sku'=> $product_sku
-
-
-
-            );
-
-
-
-        // Format and add min and max dates
-
-
-
-        $date_sel = get_post_meta( $order_id, 'layup_date_sel', true );
-
-
-
-        if (!empty($date_sel)) {
-
-
-
-            $curr_date = date('c');
-
-
-
-            $min_date = date('c', strtotime("+" . $this->lu_min_end_date . " months", strtotime($curr_date)));
-
-
-
-            $max_date = date('c', strtotime($date_sel));
-
-
-
-        } else {
-
-
-
-            $curr_date = date('c');
-
-
-
-            $min_date = date('c', strtotime("+" . $this->lu_min_end_date . " months", strtotime($curr_date)));
-
-
-
-            $max_date = date('c', strtotime("+" . $this->lu_max_end_date . " months", strtotime($curr_date)));
-
-
-
-        }
-
-
-
-
-
-            if($i == 0){
-
-                if ( $product->is_type( 'variation' ) ) {
-                	$parent_product = wc_get_product( $product->get_parent_id() );
-					$product_id = $parent_product->get_id();
+                // Format and add min and max dates
                 
-            	} else {
-					$product_id = $product->get_id();
-				}
 
-                $featured_image = wp_get_attachment_image_src( get_post_thumbnail_id($product_id));
+                $date_sel = get_post_meta($order_id, 'layup_date_sel', true);
 
+                if (!empty($date_sel))
+                {
 
+                    $curr_date = date('c');
 
-                if($featured_image) {
+                    $min_date = date('c', strtotime("+" . $this->lu_min_end_date . " months", strtotime($curr_date)));
 
+                    $max_date = date('c', strtotime($date_sel));
 
+                }
+                else
+                {
 
-                    $order_image = $featured_image;
+                    $curr_date = date('c');
 
+                    $min_date = date('c', strtotime("+" . $this->lu_min_end_date . " months", strtotime($curr_date)));
 
-
-                } else {
-
-
-
-                    $order_image[0] = wc_placeholder_img_src();
-
-
+                    $max_date = date('c', strtotime("+" . $this->lu_max_end_date . " months", strtotime($curr_date)));
 
                 }
 
+                if ($i == 0)
+                {
 
+                    if ($product->is_type('variation'))
+                    {
+                        $parent_product = wc_get_product($product->get_parent_id());
+                        $product_id = $parent_product->get_id();
+
+                    }
+                    else
+                    {
+                        $product_id = $product->get_id();
+                    }
+
+                    $featured_image = wp_get_attachment_image_src(get_post_thumbnail_id($product_id));
+
+                    if ($featured_image)
+                    {
+
+                        $order_image = $featured_image;
+
+                    }
+                    else
+                    {
+
+                        $order_image[0] = wc_placeholder_img_src();
+
+                    }
+
+                }
+
+                $i++;
 
             }
 
+            // Check for shipping total
+            
 
+            $order_shipping_total = $order->get_total_shipping();
 
-            $i++;
+            $shipping_price = (float)$order_shipping_total * 100;
 
+            if ($order_shipping_total != '')
+            {
 
+                $products[$i] = array(
 
-        }
+                    'amount' => (int)$shipping_price,
 
+                    'link' => get_site_url() ,
 
+                    'sku' => 'Shipping'
 
-        // Check for shipping total
+                );
 
+                $i++;
 
+            }
 
-        $order_shipping_total = $order->get_total_shipping();
+            // Check for tax total
+            
 
-        $shipping_price = (float)$order_shipping_total * 100;
+            $order_tax_total = $order->get_total_tax();
 
-        if ($order_shipping_total != '') {
+            $tax_price = (float)$order_tax_total * 100;
 
+            if ($order_tax_total != '')
+            {
 
+                $products[$i] = array(
 
-            $products[$i] = array(
+                    'amount' => (int)$tax_price,
 
+                    'link' => get_site_url() ,
 
+                    'sku' => 'VAT'
 
-                'amount'=> (int)$shipping_price,
+                );
 
+            }
 
+            // Build and send LayUp order request
+            
 
-                'link'=> get_site_url(),
+            $order_details = array(
 
+                'depositAmount' => (int)$this->layup_dep * 100,
 
+                'products' => $products,
 
-                'sku'=> 'Shipping'
+                'endDateMax' => $max_date,
 
+                'endDateMin' => $min_date,
 
+                'depositPerc' => (int)$this->layup_dep,
 
-            );
+                'absorbsFee' => true,
 
+                'reference' => $ref,
 
+                'name' => $blog_title . ' #' . $order->get_order_number() ,
 
-            $i++;
+                'imageUrl' => $order_image[0],
 
-
-
-        }
-
-
-
-// Check for tax total
-
-
-
-        $order_tax_total = $order->get_total_tax();
-
-        $tax_price = (float)$order_tax_total * 100;
-
-        if ($order_tax_total != '') {
-
-
-
-            $products[$i] = array(
-
-
-
-                'amount'=> (int)$tax_price,
-
-
-
-                'link'=> get_site_url(),
-
-
-
-                'sku'=> 'VAT'
-
-
+                'depositType' => $this->layup_dep_type,
 
             );
 
+            $headers = array(
 
+                'Content-Type' => 'application/json',
 
-        }
-
-
-
-        // Build and send LayUp order request
-
-
-
-        $order_details = array(
-
-            'depositAmount' => (int)$this->layup_dep * 100,
-
-            'products' => $products,
-
-
-            'endDateMax' => $max_date,
-
-
-            'endDateMin' => $min_date,
-
-
-            'depositPerc' => (int)$this->layup_dep,
-
-
-            'absorbsFee' => true,
-
-
-            'reference' => $ref,
-
-
-            'name' => $blog_title.' #'.$order->get_order_number(),
-
-
-            'imageUrl' => $order_image[0],
-
-            'depositType' => $this->layup_dep_type,
-
-
-
-        );
-
-
-        $headers = array(
-
-
-
-             'Content-Type' => 'application/json',
-
-
-
-             'apikey' => $this->api_key,
-
-
-
-        );
-
-
-
-
-
-        $order_details_json = json_encode( $order_details , JSON_UNESCAPED_SLASHES );
-
-
-
-        $args = array(
-
-
-
-            'headers' => $headers,
-
-
-
-            'body' => $order_details_json
-
-
+                'apikey' => $this->api_key,
 
             );
 
+            $order_details_json = json_encode($order_details, JSON_UNESCAPED_SLASHES);
 
+            $args = array(
 
-        $response = wp_remote_post( $this->api_url, $args);
+                'headers' => $headers,
 
+                'body' => $order_details_json
 
+            );
 
+            $response = wp_remote_post($this->api_url, $args);
 
+            if (!is_wp_error($response))
+            {
 
-        if( !is_wp_error( $response ) ) {
+                $body = json_decode($response['body'], true);
 
+                // Check if order was created successfully
+                
 
+                if ($body['state'] == 'PARTIAL')
+                {
 
-            $body = json_decode( $response['body'], true );
+                    // Link LayUp Order to Woocommerce order
+                    
 
+                    update_post_meta($order_id, 'layup_order_id', $body['_id']);
 
+                    update_post_meta($order_id, 'layup_order_ref', $body['reference']);
 
-            // Check if order was created successfully 
+                    // some notes added to Woocommerce order on admin dashboard
+                    
 
+                    $order->update_status('wc-pending', __('Order created with LayUp', 'layup-gateway'));
 
+                    //reduce stock and empty cart
+                    
 
-            if ( $body['state'] == 'PARTIAL' ) {
+                    //wc_reduce_stock_levels($order_id);
+                    
 
+                    $woocommerce
+                        ->cart
+                        ->empty_cart();
 
+                    // Redirect to LayUp
+                    
 
-                // Link LayUp Order to Woocommerce order
+                    return array(
 
+                        'result' => 'success',
 
+                        'redirect' => ($this->testmode) ? 'https://sandbox.layup.co.za/order/' . $body['_id'] . '?notifyUrl=' . $woo_thank_you : 'https://shopper.layup.co.za/order/' . $body['_id'] . '?notifyUrl=' . $woo_thank_you
 
-                update_post_meta( $order_id, 'layup_order_id', $body['_id'] );
+                    );
 
+                }
+                else
+                {
 
+                    wc_add_notice($response['body'], 'error');
 
-                update_post_meta( $order_id, 'layup_order_ref', $body['reference'] );
+                    return;
 
+                }
 
+            }
+            else
+            {
 
-                // some notes added to Woocommerce order on admin dashboard
+                wc_add_notice('LayUp service is unreachable. Please try again', 'error');
 
+                return;
 
+            }
 
-                $order->update_status('wc-pending', __('Order created with LayUp', 'layup-gateway'));
+        }
+        else
+        {
 
-
-
-                //reduce stock and empty cart
-
-
-
-                //wc_reduce_stock_levels($order_id);
-
-
-
-			    $woocommerce->cart->empty_cart();
-
-
-
-               // Redirect to LayUp
-
-
-
-               return array(
-
-
-
-                   'result' => 'success',
-
-
-
-                   'redirect' => ($this->testmode) ? 'https://sandbox.layup.co.za/order/'. $body['_id'] . '?notifyUrl='. $woo_thank_you : 'https://shopper.layup.co.za/order/'. $body['_id'] . '?notifyUrl='. $woo_thank_you
-
-
-
-               );
-
-
-
-            } else {
-
-               wc_add_notice( $response['body'], 'error' );
-
-               return;
-
-           }
-
-
-
-       } else {
-
-           wc_add_notice(  'LayUp service is unreachable. Please try again', 'error' );
-
-           return;
-
-
-
-       }
-
-    } else {
-
-        wc_add_notice(  'Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.', 'error' );
+            wc_add_notice('Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.', 'error');
 
             return;
+        }
+
     }
 
-     }
-
-     
-        function generate_layup_sku($str){
-            $acronym;
-            $word;
-            $words = preg_split("/(\s|\-|\.)/", $str);
-            $i = 0;
-            foreach($words as $w) {
-                $acronym .= substr($w,0,1);
-                if ($i++ == 3) break;
-            }
-            $word = $word . $acronym ;
-            $digits = 3;
-            $rand_num = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
-            $word = $word . $rand_num ;
-            return $word;
+    function generate_layup_sku($str)
+    {
+        $acronym;
+        $word;
+        $words = preg_split("/(\s|\-|\.)/", $str);
+        $i = 0;
+        foreach ($words as $w)
+        {
+            $acronym .= substr($w, 0, 1);
+            if ($i++ == 3) break;
         }
-    
-
+        $word = $word . $acronym;
+        $digits = 3;
+        $rand_num = str_pad(rand(0, pow(10, $digits) - 1) , $digits, '0', STR_PAD_LEFT);
+        $word = $word . $rand_num;
+        return $word;
+    }
 
     // Handles the callbacks received from the payment backend. give this url to your payment processing comapny as the ipn response URL:
     // USAGE:  http://myurl.com/?wc-api=WC_Layup_Gateway
-    function layup_callback() {
+    function layup_callback()
+    {
         $inputJSON = file_get_contents('php://input');
-        $_POST = json_decode($inputJSON, TRUE);
+        $_POST = json_decode($inputJSON, true);
         $layup_order_id = $_POST['body']['orderId'];
 
-         $orders = new WP_Query( array(
+        $orders = new WP_Query(array(
 
-        'post_type'   => wc_get_order_types(),
+            'post_type' => wc_get_order_types() ,
 
-        'meta_key'     => 'layup_order_id',
+            'meta_key' => 'layup_order_id',
 
-        'meta_value'     => $layup_order_id,
+            'meta_value' => $layup_order_id,
 
-        'post_status' => array('wc-pending', 'wc-on-hold', 'wc-cancelled')
+            'post_status' => array(
+                'wc-pending',
+                'wc-on-hold',
+                'wc-cancelled'
+            )
 
-        ) );
-    
-        if ($orders->have_posts()) {
+        ));
 
-        $first_post = $orders->posts[0];
-        $order = wc_get_order( $first_post->ID );
+        if ($orders->have_posts())
+        {
 
-            if ($_POST['type'] == 'ORDERPLACED') 
+            $first_post = $orders->posts[0];
+            $order = wc_get_order($first_post->ID);
+
+            if ($_POST['type'] == 'ORDERPLACED')
             {
                 $headers = array(
                     'accept' => 'application/json',
@@ -1114,170 +772,159 @@ class WC_Layup_Gateway extends WC_Payment_Gateway {
 
                 $order_args = array(
                     'headers' => $headers,
-                    );
-        
-                $order_response = wp_remote_get($this->api_url.'/'.$layup_order_id.'?populate=plans,plans.payments', $order_args);
+                );
 
-                if( !is_wp_error( $order_response ) ) {
+                $order_response = wp_remote_get($this->api_url . '/' . $layup_order_id . '?populate=plans,plans.payments', $order_args);
 
-                    $body = json_decode( $order_response['body'], true );
-error_log( print_r( $body, true ) );
-                    $pp=0;
+                if (!is_wp_error($order_response))
+                {
+
+                    $body = json_decode($order_response['body'], true);
+                    error_log(print_r($body, true));
+                    $pp = 0;
 
                     // Save LayUp payment plans to Woocommerce order
-    
-                    foreach( $body['plans'] as $plans ) {
-    
-                    update_post_meta( $order->get_id(), 'layup_pp_id_'.$pp, $plans['_id'] );
-                    update_post_meta( $order->get_id(), 'layup_pp_freq_'.$pp, strtolower($plans['frequency']) );
-                    update_post_meta( $order->get_id(), 'layup_pp_quant_'.$pp, $plans['quantity'] );
-    
+
+                    foreach ($body['plans'] as $plans)
+                {
+
+                    update_post_meta($order->get_id() , 'layup_pp_id_' . $pp, $plans['_id']);
+
+                    update_post_meta($order->get_id() , 'layup_pp_freq_' . $pp, strtolower($plans['frequency']));
+
+                    update_post_meta($order->get_id() , 'layup_pp_quant_' . $pp, $plans['quantity']);
+
                     //get monthly amount
-                    
-                    $monthly = $plans['payments'][2]['amount'];
+                    $due = '';
 
-                    $due = $plans['payments'][2]['due'];
-    
-                    $amount = 0;
-    
-                    //convert cents to rands
-    
-                    $monthly_rands = $monthly/100;
-                    $amount_rands = $plans['amountDue']/100; 
+                    foreach ($plans['payments'] as $payment)
+                    {
 
-    
-                    //format numbers to work with WC
+                        if ($payment['paid'] == false)
+                        {
 
-                    $outstanding = number_format($amount_rands, 2, '.', '');
-    
-                    $monthly_payment = number_format($monthly_rands, 2, '.', '');
+                            $due = $payment['due'];
+                            $monthly = $payment['amount'];
 
-                    update_post_meta( $order->get_id(), 'layup_pp_due_date_'.$pp, $due );
-    
-                    update_post_meta( $order->get_id(), 'layup_pp_outstanding_'.$pp, $outstanding );
-                    update_post_meta( $order->get_id(), 'layup_pp_monthly_'.$pp, $monthly_payment );
-    
-                    $pp++;
-    
+                            break;
+                        }
                     }
 
-                    if ( $order->get_status() == "pending" ) {
+                    $paid = 0;
+
+                    foreach ($plans['payments'] as $payment)
+                    {
+
+                        if ($payment['paid'] == true)
+                        {
+
+                            $paid += $payment['amount'];
+                        }
+                    }
+
+                    //convert cents to rands
+                    
+
+                    $monthly_rands = $monthly / 100;
+
+                    $outstanding = $plans['amountDue'] + $plans['depositDue'] - $paid;
+
+                    $outstanding_rands = $outstanding / 100;
+
+                    $due_str = strstr($due, '(', true);
+                    //formate numbers to work with WC
+                    $due_date = date("Y/m/d", strtotime($due_str));
+
+                    $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
+
+                    $monthly_payment = number_format($monthly_rands, 2, '.', '');
+
+                    update_post_meta($order->get_id() , 'layup_pp_due_date_' . $pp, $due_date);
+
+                    update_post_meta($order->get_id() , 'layup_pp_outstanding_' . $pp, $outstanding_foramted);
+
+                    update_post_meta($order->get_id() , 'layup_pp_monthly_' . $pp, $monthly_payment);
+
+                    $pp++;
+                }
+
+                    if ($order->get_status() == "pending")
+                    {
 
                         $order->update_status('wc-on-hold', __('Deposit paid to LayUp.', 'layup-gateway'));
-        
+
                     }
                 }
 
-            } elseif ($_POST['type'] == 'ORDERCOMPLETED') {
-                
+            }
+            elseif ($_POST['type'] == 'ORDERCOMPLETED')
+            {
 
                 $order->payment_complete();
 
-                $order->add_order_note( __('LayUp order paid in full.', 'layup-gateway') );
-                update_post_meta( $order->get_id(), 'layup_pp_outstanding_0', '0' );
+                $order->add_order_note(__('LayUp order paid in full.', 'layup-gateway'));
+                update_post_meta($order->get_id() , 'layup_pp_outstanding_0', '0');
 
-            } elseif ($_POST['type'] == 'ORDERCANCELLED') {
+            }
+            elseif ($_POST['type'] == 'ORDERCANCELLED')
+            {
 
                 $order->update_status('wc-cancelled', __('Order cancelled by LayUp.', 'layup-gateway'));
 
-            } elseif ($_POST['type'] == 'ORDEREXPIRED') {
+            }
+            elseif ($_POST['type'] == 'ORDEREXPIRED')
+            {
 
                 $order->update_status('wc-cancelled', __('Order expired by LayUp.', 'layup-gateway'));
 
-            } else {
+            }
+            else
+            {
                 return;
             }
         }
-        
+
     }
 
-
-
     /**
+     *  Show possible admin notices
+     */
 
-	*  Show possible admin notices
+    public function admin_notices()
+    {
 
-	*/
-
-
-
-     public function admin_notices() {
-
-
-
-		if ( 'yes' !== $this->get_option( 'enabled' )
-
-
-
-			|| 'yes' !== $this->get_option( 'lu_testmode' ) ) {
-
-
+        if ('yes' !== $this->get_option('enabled')
+ || 'yes' !== $this->get_option('lu_testmode'))
+        {
 
             return;
 
-            
-
         }
-
-
 
         $settings_url = add_query_arg(
 
+        array(
 
+            'page' => 'wc-settings',
 
-            array(
+            'tab' => 'checkout',
 
+            'section' => 'wc_layup_gateway',
 
+        ) ,
 
-                'page' => 'wc-settings',
-
-
-
-                'tab' => 'checkout',
-
-
-
-                'section' => 'wc_layup_gateway',
-
-
-
-            ),
-
-
-
-            admin_url( 'admin.php' )
-
-
-
-        );
-
-
+        admin_url('admin.php')
+);
 
         echo '<div class="error"><p>'
-
-        
-
-			. __( 'LayUp is currently in test mode and requires additional configuration to function correctly. Complete setup ', 'layup-gateway' )
-
-
-
-            . '<a href="' . esc_url( $settings_url ) . '">'. __( 'here.', 'layup-gateway' ) . '</a>
+ . __('LayUp is currently in test mode and requires additional configuration to function correctly. Complete setup ', 'layup-gateway')
+ . '<a href="' . esc_url($settings_url) . '">' . __('here.', 'layup-gateway') . '</a>
 
 
 
 			</p></div>';
 
+    }
 
-
-	}
-
-
-
- }
-
-
-
-
-
-
+}
 
