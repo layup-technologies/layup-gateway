@@ -211,6 +211,7 @@ function layup_check_canceled_order()
         ) ,
 
         'post_status' => array(
+            'wc-pending',
             'wc-cancelled'
         )
 
