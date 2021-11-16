@@ -465,7 +465,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 $product = $order_item->get_product();
 
-                $price = $order_item->get_total() * 100;
+                $price = (float)$order_item->get_total() * 100;
 
                 if ($product->get_sku() != '')
                 {

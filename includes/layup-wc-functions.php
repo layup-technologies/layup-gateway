@@ -1939,6 +1939,14 @@ inlineEditPost.edit = function( post_id ) {
                     }
                     $formatInstalment = number_format($newInstalment, 2);
 
+                    $order = wc_get_order(3441);
+                    $order_items = $order->get_items(array(
+                        'line_item'
+                    ));
+
+                    print_r($order_items);
+                    
+
                     echo '<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
 				<p style="margin-top: 0px; "><span class="btn-layup-text"><strong>PAY IT OFF</strong> with <em style="color:#1295a5;">LayUp</em></span> From R<span class="layup-installment-amount">' . esc_attr($formatInstalment) . '</span>/month for <span class="layup-months-amount">' . esc_attr($months-1) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . ' </span><span id="lumodallink" style="color:#1295a5;">Learn More</span></p>
 				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
