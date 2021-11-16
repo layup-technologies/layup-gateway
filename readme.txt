@@ -7,8 +7,8 @@ Author: LayUp Dev Team
 Tags: woocommerce, payment gateway, South Africa, LayUp
 Requires at least: 4.6
 Tested up to: 5.7
-Stable tag: 1.7.14
-Version: 1.7.14
+Stable tag: 1.7.15
+Version: 1.7.15
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -198,6 +198,10 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 
 == Changelog ==
+
+= v1.7.15 =
+
+* Changed how first instalment deposit type displays on product and cart page.
 
 = v1.7.14 =
 
