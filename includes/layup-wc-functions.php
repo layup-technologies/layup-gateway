@@ -1923,13 +1923,13 @@ inlineEditPost.edit = function( post_id ) {
                     {
                         $deposit = $gateway->layup_dep;
                         $priceNoDep = $price - $gateway->layup_dep;
-                        $newInstalment = $priceNoDep / $months;
+                        $newInstalment = $priceNoDep / ($months-1);
                     }
                     else if ($gateway->layup_dep_type == 'PERCENTAGE')
                     {
                         $deposit = $gateway->layup_dep / 100 * $price;
                         $priceNoDep = $price - $deposit;
-                        $newInstalment = $priceNoDep / $months;
+                        $newInstalment = $priceNoDep / ($months-1);
                     }
                     else if ($gateway->layup_dep_type == 'INSTALMENT')
                     {
