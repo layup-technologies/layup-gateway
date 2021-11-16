@@ -1939,7 +1939,7 @@ inlineEditPost.edit = function( post_id ) {
                     }
                     $formatInstalment = number_format($newInstalment, 2);
 
-                    $order = wc_get_order(3441);
+                    $order = wc_get_order(3447);
                     $order_items = $order->get_items(array(
                         'line_item'
                     ));
