@@ -1149,7 +1149,8 @@ function layup_display_icon()
             }
             elseif ($layup_preview_deposit_type == 'INSTALMENT')
             {
-                $layup_preview_deposit = 'Deposit: First instalment';
+                $layup_preview_deposit = '';
+                $layup_preview_months = $layup_preview_months + 1;
             }
 
             if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0)
@@ -1401,7 +1402,7 @@ function layup_display_icon()
 					  deposit = deposit / 100 * price;
 					  priceNoDep = price - deposit;
 					  newInstalment = priceNoDep / months;
-					} else if(deposit.startsWith("Deposit: First")) {
+					} else if(deposit == "") {
 						deposit = deposit.slice(0, -1);
 						newInstalment = price / months;
 					}
@@ -1907,7 +1908,7 @@ inlineEditPost.edit = function( post_id ) {
                 }
                 elseif ($gateway->layup_dep_type == 'INSTALMENT')
                 {
-                    $layup_preview_deposit = 'Deposit: First instalment';
+                    $layup_preview_deposit = '';
                 }
 
                 if ($gateway->lu_max_end_date != 0)
@@ -1917,28 +1918,37 @@ inlineEditPost.edit = function( post_id ) {
                         ->cart->total;
                     $priceNoDep = 0;
                     $newInstalment = 0;
-                    $months = $gateway->lu_max_end_date - 1;
+                    $months = $gateway->lu_max_end_date;
                     if ($gateway->layup_dep_type == 'FLAT')
                     {
                         $deposit = $gateway->layup_dep;
                         $priceNoDep = $price - $gateway->layup_dep;
-                        $newInstalment = $priceNoDep / $months;
+                        $newInstalment = $priceNoDep / ($months-1);
                     }
                     else if ($gateway->layup_dep_type == 'PERCENTAGE')
                     {
                         $deposit = $gateway->layup_dep / 100 * $price;
                         $priceNoDep = $price - $deposit;
-                        $newInstalment = $priceNoDep / $months;
+                        $newInstalment = $priceNoDep / ($months-1);
                     }
                     else if ($gateway->layup_dep_type == 'INSTALMENT')
                     {
                         $deposit = $gateway->layup_dep;
                         $newInstalment = $price / $months;
+                        $months = $months + 1;
                     }
                     $formatInstalment = number_format($newInstalment, 2);
 
+                    $order = wc_get_order(3447);
+                    $order_items = $order->get_items(array(
+                        'line_item'
+                    ));
+
+                    print_r($order_items);
+                    
+
                     echo '<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
-				<p style="margin-top: 0px; "><span class="btn-layup-text"><strong>PAY IT OFF</strong> with <em style="color:#1295a5;">LayUp</em></span> From R<span class="layup-installment-amount">' . esc_attr($formatInstalment) . '</span>/month for <span class="layup-months-amount">' . esc_attr($months) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . ' </span><span id="lumodallink" style="color:#1295a5;">Learn More</span></p>
+				<p style="margin-top: 0px; "><span class="btn-layup-text"><strong>PAY IT OFF</strong> with <em style="color:#1295a5;">LayUp</em></span> From R<span class="layup-installment-amount">' . esc_attr($formatInstalment) . '</span>/month for <span class="layup-months-amount">' . esc_attr($months-1) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . ' </span><span id="lumodallink" style="color:#1295a5;">Learn More</span></p>
 				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 				<style>
 					/* The Modal (background) */
