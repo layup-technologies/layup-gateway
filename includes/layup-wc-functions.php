@@ -1149,7 +1149,8 @@ function layup_display_icon()
             }
             elseif ($layup_preview_deposit_type == 'INSTALMENT')
             {
-                $layup_preview_deposit = 'Deposit: First instalment';
+                $layup_preview_deposit = '';
+                $layup_preview_months = $layup_preview_months + 1;
             }
 
             if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0)
@@ -1401,7 +1402,7 @@ function layup_display_icon()
 					  deposit = deposit / 100 * price;
 					  priceNoDep = price - deposit;
 					  newInstalment = priceNoDep / months;
-					} else if(deposit.startsWith("Deposit: First")) {
+					} else if(deposit == "") {
 						deposit = deposit.slice(0, -1);
 						newInstalment = price / months;
 					}
