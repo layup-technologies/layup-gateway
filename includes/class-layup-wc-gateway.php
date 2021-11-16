@@ -465,7 +465,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 $product = $order_item->get_product();
 
-                $price = (float)$order_item->get_total() * 100;
+                $price = $order_item->get_total() * 100;
 
                 if ($product->get_sku() != '')
                 {
@@ -478,7 +478,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 $products[$i] = array(
 
-                    'amount' => $price,
+                    'amount' => (int)$price,
 
                     'link' => get_permalink($product->get_id()) ,
 
