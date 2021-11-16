@@ -478,7 +478,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 $products[$i] = array(
 
-                    'amount' => (int)$price,
+                    'amount' => $price,
 
                     'link' => get_permalink($product->get_id()) ,
 
