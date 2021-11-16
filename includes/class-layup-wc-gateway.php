@@ -464,8 +464,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
             {
 
                 $product = $order_item->get_product();
-
-                $price = (float)$order_item->get_total() * 100;
+                $price_rounded = round($order_item->get_total(),2);
+                $price = (float)$price_rounded * 100;
 
                 if ($product->get_sku() != '')
                 {
@@ -549,8 +549,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
             // Check for shipping total
             
-
-            $order_shipping_total = $order->get_total_shipping();
+            
+            $order_shipping_total = round($order->get_total_shipping(),2);
 
             $shipping_price = (float)$order_shipping_total * 100;
 
@@ -574,7 +574,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
             // Check for tax total
             
 
-            $order_tax_total = $order->get_total_tax();
+            $order_tax_total = round($order->get_total_tax(),2);
 
             $tax_price = (float)$order_tax_total * 100;
 
