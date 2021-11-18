@@ -1157,8 +1157,9 @@ function layup_display_icon()
             {
                 $url = "https://layup.co.za/learn-more-popup/";
                 $DOM = new DOMDocument();
-                $popup_content = $DOM->loadHTMLFile($url);
-                $html = $DOM->getElementsByTagName('html');
+                $html = $DOM->loadHTMLFile($url);
+                //$html = $DOM->getElementsByTagName('html');
+
 
                 echo '<div style="display:flex;align-items: center;max-width: 100%;">
 			<div style="font-family:Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 30px 10px 20px;margin-top: 15px;margin-bottom: 15px;color: #000000;text-align: center;"
