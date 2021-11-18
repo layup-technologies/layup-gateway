@@ -1298,8 +1298,6 @@ function layup_display_icon()
 						border-radius: 5px;
 						border: #808080 solid 1px;
 						line-height: 0;
-                        margin-right: 10px;
-                        margin-top: 10px;
 						padding: 14px 10px 14px 10px;
 					}
 		
