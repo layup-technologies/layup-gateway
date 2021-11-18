@@ -75,6 +75,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         $this->layup_dep = (int)$this->get_option('layup_dep');
 
         $this->layup_dep_type = $this->get_option('layup_dep_type');
+        $this->learn_more_style = $this->get_option('learn_more_style');
 
         if ($this->get_option('lu_api_key') != '')
         {
@@ -268,6 +269,23 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 'default' => 'no'
 
             ) ,
+
+            'learn_more_style' => array(
+
+                'title' => 'Learn more popup style',
+
+                'type' => 'select',
+
+                'description' => 'Change between a Layby style or a Subscription style depending on product offering',
+
+                'options' => array(
+                    'layby' => 'Layby',
+                    'subscription' => 'Subscription'
+                ) ,
+
+                'default' => 'layby'
+
+            ) 
 
         );
 
