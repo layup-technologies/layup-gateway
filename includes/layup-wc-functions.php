@@ -1156,6 +1156,8 @@ function layup_display_icon()
             if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0)
             {
 
+                $html = '<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br><iframe id="layup-iframe" title="LayUp - How it works" src="https://layup.co.za/learn-more-popup/" width="100%" scrolling="no"></iframe><script type="text/javascript">let iframe=document.querySelector("#layup-iframe");window.addEventListener("message",function(e){let t=e.data;iframe.style.height=t.height+"px"; e.data;iframe.style.border="none";},false);</script></div></div>';
+
                 echo '<div style="display:flex;align-items: center;max-width: 100%;">
 			<div style="font-family:Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 30px 10px 20px;margin-top: 15px;margin-bottom: 15px;color: #000000;text-align: center;"
 				class="btn-layup">
@@ -1329,8 +1331,7 @@ function layup_display_icon()
 		
 					// When the user clicks the button, open the modal 
 					btn.onclick = function () {
-                        var html = /'<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br><iframe id="layup-iframe" title="LayUp - How it works" src="https://layup.co.za/learn-more-popup/" width="100%" scrolling="no"></iframe><script type="text/javascript">let iframe=document.querySelector("#layup-iframe");window.addEventListener("message",function(e){let t=e.data;iframe.style.height=t.height+"px"; e.data;iframe.style.border="none";},false);</script></div></div>/';
-                        jQuery( "body" ).prepend( html );
+                        jQuery( "body" ).prepend( '.$html.' );
                         modal.style.display = "block";
 					}
 		
