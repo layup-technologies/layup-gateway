@@ -1171,6 +1171,9 @@ function layup_display_icon()
 		
 				<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>
 				<span id="lumodallink" style="color:#1295a5;">Learn More</span>
+
+            </div>
+		</div>
 				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 				<style>
 					/* The Modal (background) */
@@ -1410,11 +1413,7 @@ function layup_display_icon()
 							modal.style.display = "none";
 						}
 					}
-				</script>
-		
-		
-			</div>
-		</div>';
+				</script>';
             }
 
         }
