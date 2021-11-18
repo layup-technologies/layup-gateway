@@ -1155,6 +1155,8 @@ function layup_display_icon()
 
             if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0)
             {
+                $DOM = new DOMDocument();
+                $popup_content = $DOM->loadHTMLFile($url);
 
                 echo '<div style="display:flex;align-items: center;max-width: 100%;">
 			<div style="font-family:Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 30px 10px 20px;margin-top: 15px;margin-bottom: 15px;color: #000000;text-align: center;"
@@ -1317,8 +1319,7 @@ function layup_display_icon()
 					<!-- Modal content -->
 					<div class="lumodal-content">
 						<span class="luclose">×</span>
-						<iframe id="layup-iframe" title="LayUp - How it works" src="https://layup.co.za/learn-more-popup/" width="100%" scrolling="no"></iframe>
-                            <script type="text/javascript">let iframe=document.querySelector("#layup-iframe");window.addEventListener("message",function(e){let t=e.data;iframe.style.height=t.height+"px"; e.data;iframe.style.border="none";},false);</script>
+						' . $popup_content . '
 					</div>
 		
 				</div>
