@@ -1318,6 +1318,8 @@ function layup_display_icon()
 
                 jQuery(document).ready(function(){
 
+                    jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br></div></div>` );
+
                     // Get the modal
 					var modal = document.getElementById("lumyModal");
 		
@@ -1329,7 +1331,7 @@ function layup_display_icon()
 		
 					// When the user clicks the button, open the modal 
 					btn.onclick = function () {
-                        jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br><iframe id="layup-iframe" title="LayUp - How it works" src="https://layup.co.za/learn-more-popup/" width="100%" scrolling="no"></iframe></div></div>` );
+                        jQuery( "#lumyModal .lumodal-content" ).append( `<iframe id="layup-iframe" title="LayUp - How it works" src="https://layup.co.za/learn-more-popup/" width="100%" scrolling="no"></iframe>` );
                         modal.style.display = "block";
 					}
 		
