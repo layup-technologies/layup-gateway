@@ -1314,17 +1314,6 @@ function layup_display_icon()
 					}
 				</style>
 		
-				<!-- The Modal -->
-				<div id="lumyModal" class="lumodal">
-		
-					<!-- Modal content -->
-					<div class="lumodal-content">
-						<span class="luclose">×</span>
-						
-					</div>
-		
-				</div>
-		
 				<script>
 
                 jQuery(document).ready(function(){
