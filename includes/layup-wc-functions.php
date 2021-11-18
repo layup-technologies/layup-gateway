@@ -1243,7 +1243,7 @@ function layup_display_icon()
 					.lumodal-content {
 						background-color: #f7f9fc;
 						margin: auto;
-						padding: 20px;
+						padding: 10px;
 						border: 1px solid #888;
 						width: 60%;
 						text-align: center;
@@ -1298,7 +1298,9 @@ function layup_display_icon()
 						border-radius: 5px;
 						border: #808080 solid 1px;
 						line-height: 0;
-						padding: 10px 10px 14px 10px;
+                        margin-right: 10px;
+                        margin-top: 10px;
+						padding: 14px 10px 14px 10px;
 					}
 		
 					.luclose:hover,
@@ -1317,7 +1319,7 @@ function layup_display_icon()
 				<script>
 
                 jQuery(document).ready(function(){
-                    jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><div class="lupagecontent"></div></div></div>` );
+                    jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><div class="lupagecontent"></div></div></div>` );
    
                     jQuery("#lumyModal .lumodal-content .lupagecontent").load("https://layup.co.za/learn-more-popup/");
 
