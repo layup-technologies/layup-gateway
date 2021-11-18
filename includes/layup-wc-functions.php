@@ -1317,41 +1317,8 @@ function layup_display_icon()
 					<!-- Modal content -->
 					<div class="lumodal-content">
 						<span class="luclose">×</span>
-						<img alt="Layup Logo" class="center" style="width:250px !important;height:auto !important;"
-							src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-color.png">
-						<p style="color:#0c4152;font-weight: 700;">Simple, Smart, Instalments</p>
-						<h2 style="font-family: Quicksand !important; color:#0c4152;font-weight: 700;font-size: 2em;">How it
-							<span style="color:#1295a5;">works?</span></h2>
-						<p style="color:#151a30;font-weight: 700;">No credit checks | Interest free payments | No ID required
-						</p>
-						<div style="margin: 0 auto;display: table;width: 100%;">
-							<div class="lu-modal-col">
-								<img alt="activate" style="width:131px !important;height:auto !important;" class="center"
-									src="' . plugin_dir_url(dirname(__FILE__)) . 'img/modal-imageAsset 2.png">
-								<h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Activate</h3>
-								<p style="color:#151a30;font-weight: 500;font-size: 1em;">Select to <strong>pay it off with
-										LayUp,</strong> using your debit/credit card or instant EFT</p>
-							</div>
-							<div class="lu-modal-col">
-								<img alt="activate" style="width:131px !important;height:auto !important;" class="center"
-									src="' . plugin_dir_url(dirname(__FILE__)) . 'img/modal-imageAsset 4.png">
-								<h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Payment Plan</h3>
-								<p style="color:#151a30;font-weight: 500;font-size: 1em;">Pay over time, on your terms,
-									<strong>interest free</strong></p>
-							</div>
-							<div class="lu-modal-col">
-								<img alt="activate" style="width:131px !important;height:auto !important;" class="center"
-									src="' . plugin_dir_url(dirname(__FILE__)) . 'img/modal-imageAsset 3.png">
-								<h3 style="font-family: Quicksand !important;color:#0c4152;font-weight: 700;">Complete</h3>
-								<p style="color:#151a30;font-weight: 500;font-size: 1em;">Receive the purchase once <strong>paid
-										in full</strong></p>
-							</div>
-						</div>
-						<hr style="color:#aaaaaa;background-color: #d0d0d0;height: 1px;border: none;">
-						<p style="color:#151a30;font-weight: 500;font-size: 1em;">To see LayUp complete terms visit:</p>
-						<p style="color:#151a30;font-weight: 700;font-size: 1em;"><a target="_blank"
-								href="https://layup.co.za/terms-and-conditions/">https://layup.co.za/terms-and-conditions/</a>
-						</p>
+						<iframe id="layup-iframe" title="LayUp - How it works" src="https://layup.co.za/learn-more-popup/" width="100%" scrolling="no"></iframe>
+                            <script type="text/javascript">let iframe=document.querySelector("#layup-iframe");window.addEventListener("message",function(e){let t=e.data;iframe.style.height=t.height+"px"; e.data;iframe.style.border="none";},false);</script>
 					</div>
 		
 				</div>
