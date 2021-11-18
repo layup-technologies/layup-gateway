@@ -1160,7 +1160,7 @@ function layup_display_icon()
                 {
                     $learn_more_url = "https://layup.co.za/learn-more-popup-subscription/";
                 } else {
-                    $learn_more_url = "https://layup.co.za/learn-more-popup/";
+                    $learn_more_url = "https://layup.co.za/learn-more-popup-layby/";
                 }
 
                 echo '<div style="display:flex;align-items: center;max-width: 100%;">
@@ -1920,7 +1920,7 @@ inlineEditPost.edit = function( post_id ) {
                 {
                     $learn_more_url = "https://layup.co.za/learn-more-popup-subscription/";
                 } else {
-                    $learn_more_url = "https://layup.co.za/learn-more-popup/";
+                    $learn_more_url = "https://layup.co.za/learn-more-popup-layby/";
                 }
                     
                     echo '<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
