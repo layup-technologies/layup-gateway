@@ -1155,6 +1155,7 @@ function layup_display_icon()
 
             if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0)
             {
+                $url = "https://layup.co.za/learn-more-popup/";
                 $DOM = new DOMDocument();
                 $popup_content = $DOM->loadHTMLFile($url);
 
