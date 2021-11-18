@@ -1477,6 +1477,7 @@ function layup_display_estimate()
     {
 
         $layup_disable_meta = $product->get_meta('layup_disable');
+        $layup_preview_deposit_type = $product->get_meta('layup_preview_deposit_type');
 
         if ($gateway->payplan_disp == 'yes')
         {
@@ -1493,6 +1494,10 @@ function layup_display_estimate()
 
                 if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0)
                 {
+                    if ($layup_preview_deposit_type == 'INSTALMENT')
+                    {
+                        $layup_preview_months = $layup_preview_months + 1;
+                    }
 
                     echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">
 	
