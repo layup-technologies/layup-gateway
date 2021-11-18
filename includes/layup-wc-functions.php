@@ -1317,9 +1317,6 @@ function layup_display_icon()
 				<script>
 
                 jQuery(document).ready(function(){
-                    jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br><div class="lupagecontent"></div></div></div>` );
-   
-                    jQuery("#lumyModal .lumodal-content .lupagecontent").load("https://layup.co.za/learn-more-popup/");
 
                     // Get the modal
 					var modal = document.getElementById("lumyModal");
@@ -1332,18 +1329,21 @@ function layup_display_icon()
 		
 					// When the user clicks the button, open the modal 
 					btn.onclick = function () {
+                        jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br><iframe id="layup-iframe" title="LayUp - How it works" src="https://layup.co.za/learn-more-popup/" width="100%" scrolling="no"></iframe><script type="text/javascript">let iframe=document.querySelector("#layup-iframe");window.addEventListener("message",function(e){let t=e.data;iframe.style.height=t.height+"px"; e.data;iframe.style.border="none";},false);</script></div></div>` );
 						modal.style.display = "block";
 					}
 		
 					// When the user clicks on <span> (x), close the modal
 					span.onclick = function () {
 						modal.style.display = "none";
+                        jQuery("#lumyModal").remove();
 					}
 		
 					// When the user clicks anywhere outside of the modal, close it
 					window.onclick = function (event) {
 						if (event.target == modal) {
 							modal.style.display = "none";
+                            jQuery("#lumyModal").remove();
 						}
 					}
 
