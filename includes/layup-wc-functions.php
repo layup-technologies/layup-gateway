@@ -1319,7 +1319,7 @@ function layup_display_icon()
 				<script>
 
                 jQuery(document).ready(function(){
-                    jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><div class="lupagecontent"></div></div></div>` );
+                    jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br><div class="lupagecontent"></div></div></div>` );
    
                     jQuery("#lumyModal .lumodal-content .lupagecontent").load("https://layup.co.za/learn-more-popup/");
 
