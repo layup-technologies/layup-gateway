@@ -1158,7 +1158,7 @@ function layup_display_icon()
                 
                 if ($gateway->learn_more_style == 'subscription')
                 {
-                    $learn_more_url = "https://layup.co.za/learn-more-subscription-popup/";
+                    $learn_more_url = "https://layup.co.za/learn-more-popup-subscription/";
                 } else {
                     $learn_more_url = "https://layup.co.za/learn-more-popup/";
                 }
@@ -1918,7 +1918,7 @@ inlineEditPost.edit = function( post_id ) {
 
                     if ($gateway->learn_more_style == 'subscription')
                 {
-                    $learn_more_url = "https://layup.co.za/learn-more-subscription-popup/";
+                    $learn_more_url = "https://layup.co.za/learn-more-popup-subscription/";
                 } else {
                     $learn_more_url = "https://layup.co.za/learn-more-popup/";
                 }
