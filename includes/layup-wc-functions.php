@@ -1223,7 +1223,7 @@ function layup_display_icon()
 						/* Stay in place */
 						z-index: 99999;
 						/* Sit on top */
-						padding-top: 100px;
+						padding-top: 150px;
 						/* Location of the box */
 						left: 0;
 						top: 0;
@@ -1281,7 +1281,7 @@ function layup_display_icon()
 						}
 		
 						.lumodal {
-							padding-top: 0px;
+							padding-top: 100px;
 						}
 					}
 		
@@ -1328,8 +1328,9 @@ function layup_display_icon()
 				<script>
 
                 jQuery(document).ready(function(){
+                    jQuery( "body" ).prepend( "<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><div class="lupagecontent"></div></div></div>" );
    
-                    jQuery("#lumyModal .lumodal-content").load("https://layup.co.za/learn-more-popup/");
+                    jQuery("#lumyModal .lumodal-content .lupagecontent").load("https://layup.co.za/learn-more-popup/");
 
                 });
 
