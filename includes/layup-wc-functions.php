@@ -852,6 +852,8 @@ function save_layup_disable_field($post_id)
 
     $price = (float)$product->get_price() * 100;
 
+    if($price > 0) {
+
     if ($_POST['layup_date'] != '')
     {
 
@@ -1079,6 +1081,8 @@ function save_layup_disable_field($post_id)
         $product->update_meta_data('layup_preview_deposit_amount', $deposit_amount);
 
     }
+
+}
 
     $product->save();
 
@@ -1453,7 +1457,7 @@ function layup_display_estimate()
 
                 $layup_preview_months = $product->get_meta('layup_preview_months');
 
-                if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0 || $layup_preview_months != null)
+                if ($layup_preview_months != 0 && $layup_preview_months != null)
                 {
                     if ($layup_preview_deposit_type == 'INSTALMENT')
                     {
