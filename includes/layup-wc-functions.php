@@ -880,20 +880,9 @@ function save_layup_disable_field($post_id)
 
     $lu_curr_date = date('c');
 
-    $api_key = $gateway->api_key;
+    $api_key = "myApiKey";
 
-    if ($gateway->testmode == 'yes')
-    {
-
-        $preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
-
-    }
-    else
-    {
-
-        $preview_api_url = "https://api.layup.co.za/v1/payment-plan/preview";
-
-    }
+    $preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
 
     if ($dates == '')
     {
@@ -1464,7 +1453,7 @@ function layup_display_estimate()
 
                 $layup_preview_months = $product->get_meta('layup_preview_months');
 
-                if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0)
+                if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0 || $layup_preview_months != null)
                 {
                     if ($layup_preview_deposit_type == 'INSTALMENT')
                     {

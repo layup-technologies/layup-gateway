@@ -426,6 +426,8 @@ function layup_check_prod()
 
             $product = wc_get_product($prod->ID);
 
+            if ($product->get_price() != 0 || $product->get_price() != null) {
+
             $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
             $layup_preview_months = $product->get_meta('layup_preview_months');
             $layup_preview_months_min = $product->get_meta('layup_preview_min_months');
@@ -538,6 +540,7 @@ function layup_check_prod()
 
                 $product->save();
             }
+        }
         }
 
         return;
