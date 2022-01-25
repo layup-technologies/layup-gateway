@@ -12,7 +12,7 @@
 
  * Author URI: https://layup.co.za
 
- * Version: 1.7.19
+ * Version: 1.7.20
 
  *
 
@@ -116,7 +116,7 @@ function layup_init_gateway_class()
 
     }
 
-    define('WC_GATEWAY_LAYUP_VERSION', '1.7.19');
+    define('WC_GATEWAY_LAYUP_VERSION', '1.7.20');
 
     if (!wp_next_scheduled('layup_canceled_order_check'))
     {
