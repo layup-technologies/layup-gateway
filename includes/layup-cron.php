@@ -365,8 +365,14 @@ function layup_check_prod()
 
         'meta_query' => array(
 
+            'relation' => 'AND',
+            array(
+                'key'       => '_price',
+                'value'     => 0,
+                'compare'   => '>'
+            ),
+            array(
             'relation' => 'OR',
-
             array(
 
                 'key' => 'layup_preview_months',
@@ -400,6 +406,7 @@ function layup_check_prod()
                 'compare' => '!=',
 
             )
+            )
 
         )
 
@@ -425,8 +432,6 @@ function layup_check_prod()
         {
 
             $product = wc_get_product($prod->ID);
-
-            if ($product->get_price() != 0 || $product->get_price() != null) {
 
             $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
             $layup_preview_months = $product->get_meta('layup_preview_months');
@@ -540,7 +545,7 @@ function layup_check_prod()
 
                 $product->save();
             }
-        }
+        
         }
 
         return;
