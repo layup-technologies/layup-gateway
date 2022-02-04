@@ -39,27 +39,6 @@ add_filter('cron_schedules', 'layup_cron_schedules');
  *  register WP cron event on activation
 */
 
-register_activation_hook(__FILE__, 'layup_activation');
-
-function layup_activation()
-{
-
-    if (!wp_next_scheduled('layup_order_check'))
-    {
-
-        wp_schedule_event(time() , 'layup10min', 'layup_order_check');
-
-    }
-
-    if (!wp_next_scheduled('layup_prod_check'))
-    {
-
-        wp_schedule_event(time() , 'layup10min', 'layup_prod_check');
-
-    }
-
-}
-
 /*
 
  *  deregister WP cron event on deactivation
@@ -72,8 +51,8 @@ function layup_deactivation()
 {
 
     wp_clear_scheduled_hook('layup_order_check');
-
     wp_clear_scheduled_hook('layup_prod_check');
+    wp_clear_scheduled_hook('layup_canceled_order_check');
 
 }
 
@@ -120,9 +99,22 @@ function layup_init_gateway_class()
 
     if (!wp_next_scheduled('layup_canceled_order_check'))
     {
-
         wp_schedule_event(time() , 'layup10min', 'layup_canceled_order_check');
+    }
 
+    if (!wp_next_scheduled('layup_order_check'))
+    {
+        wp_schedule_event(time() , 'layup10min', 'layup_order_check');
+    }
+
+    if (!wp_next_scheduled('layup_prod_check'))
+    {
+        wp_schedule_event(time() , 'layup10min', 'layup_prod_check');
+    }
+
+    if (!wp_next_scheduled('layup_api_key_check'))
+    {
+        wp_schedule_event(time() , 'daily', 'layup_api_key_check');
     }
 
     require_once (plugin_basename('includes/layup-payment-plan-shortcode.php'));

@@ -2116,3 +2116,18 @@ inlineEditPost.edit = function( post_id ) {
 
     add_action('woocommerce_after_cart_totals', 'layup_display_cart', 10);
     
+    function general_admin_notice(){
+
+        global $woocommerce;
+        $gateway_id = 'layup';
+        $gateways = WC_Payment_Gateways::instance();
+        $gateway = $gateways->payment_gateways() [$gateway_id];
+
+       if ( $gateway->api_key_error == "1" ) {
+             echo '<div class="notice notice-error">
+                 <p>Your LayUp API key is incorrect, this will cause errors when customers try to checkout using the LayUp Payment Method.</p>
+                 <p><stong>Please check that you have entered the correct API key.</stong></p>
+             </div>';
+        }
+    }
+    add_action('admin_notices', 'general_admin_notice');

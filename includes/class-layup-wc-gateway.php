@@ -9,6 +9,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
     public function __construct()
     {
+        $this->errors = [];
 
         $this->version = WC_GATEWAY_LAYUP_VERSION;
 
@@ -76,6 +77,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
         $this->layup_dep_type = $this->get_option('layup_dep_type');
         $this->learn_more_style = $this->get_option('learn_more_style');
+
+        $this->api_key_error = $this->get_option('api_key_error');
 
         if ($this->get_option('lu_api_key') != '')
         {
@@ -285,11 +288,25 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 'default' => 'layby'
 
-            ) 
+            ) ,
+
+            'api_key_error' => array(
+
+                'type' => 'hidden',
+
+                'default' => 0
+
+            )
 
         );
 
     }
+
+    function process_admin_options()
+ {
+    $_POST['woocommerce_layup_api_key_error'] = "0";
+    parent::process_admin_options();
+ }
 
     /**
      * Check if this gateway is enabled and available in the base currency being traded with.
@@ -343,6 +360,66 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         }
 
     }
+
+    public function validate_lu_api_key_field( $key, $value){
+                $status = $this->validate_merchant_api_key($value);
+
+                if( $status["status"] ){
+                    if( $status["env"] == "Production" ){
+                    array_push($this->errors, '<div class="notice notice-warning"><p>'. __('Your API Key is for our production environment please make sure you have disabled test mode.', 'layup-gateway'). '</p></div>');
+                    return $value;
+                    } elseif( $status["env"] == "Sandbox" ){
+                        array_push($this->errors, '<div class="notice notice-warning"><p>'. __('Your API Key is for our sandbox environment please make sure you have enabled test mode.', 'layup-gateway'). '</p></div>');
+                        return $value;
+                    }
+        
+                } else{
+                    array_push($this->errors, '<div class="notice notice-error"><p>'. __('Your API key seems to be incorrect, please check that you have entered the correct API key and try again.', 'layup-gateway'). '</p></div>');
+                    return $value;
+                }
+        
+            }
+
+            
+            private function validate_merchant_api_key($value) {
+                $status["status"] = false;
+                $status["env"] = "";
+                $headers = array(
+
+                    'Content-Type' => 'application/json',
+    
+                    'apikey' => $value,
+    
+                );
+    
+    
+                $args = array(
+    
+                    'headers' => $headers,
+    
+                );
+
+                $api_url_sandbox = "https://sandbox-api.layup.co.za/v1/auth/me";
+                $api_url_prod = "https://api.layup.co.za/v1/auth/me";
+    
+                $response_prod = wp_remote_get($api_url_prod, $args);
+                $response_sandbox = wp_remote_get($api_url_sandbox, $args);
+    
+                if (!is_wp_error($response_prod) && !is_wp_error($response_sandbox)) {
+
+                    if ($response_prod['body'] != "Unauthorized") {
+                        $status["status"] = true;
+                        $status["env"] = "Production";
+                    } elseif ($response_sandbox['body'] != "Unauthorized") {
+                        $status["status"] = true;
+                        $status["env"] = "Sandbox";
+                    }
+                    
+                } else {
+                    array_push($this->errors, '<div class="notice notice-error"><p>'. __('There seems to be a problem contacting the LayUp Servers, Please try again.', 'layup-gateway'). '</p></div>');
+                }
+                return $status;
+            }
 
     /*
     
@@ -906,6 +983,13 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
     public function admin_notices()
     {
 
+        if(count($this->errors) > 0){
+            foreach($this->errors as $err){
+                echo $err;
+            }
+        }
+
+
         if ('yes' !== $this->get_option('enabled')
  || 'yes' !== $this->get_option('lu_testmode'))
         {
@@ -922,20 +1006,35 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
             'tab' => 'checkout',
 
-            'section' => 'wc_layup_gateway',
+            'section' => 'layup',
 
         ) ,
 
         admin_url('admin.php')
 );
 
-        echo '<div class="error"><p>'
+    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'){ 
+         $url = "https://";   
+    }else {
+         $url = "http://";   
+    }
+    // Append the host(domain name, ip) to the URL.   
+    $url.= $_SERVER['HTTP_HOST'];   
+    
+    // Append the requested resource location to the URL   
+    $url.= $_SERVER['REQUEST_URI'];    
+       
+
+    if ($url != $settings_url) {
+
+        echo '<div class="notice notice-warning"><p>'
  . __('LayUp is currently in test mode and requires additional configuration to function correctly. Complete setup ', 'layup-gateway')
  . '<a href="' . esc_url($settings_url) . '">' . __('here.', 'layup-gateway') . '</a>
 
 
 
 			</p></div>';
+    }
 
     }
 
