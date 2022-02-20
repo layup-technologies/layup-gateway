@@ -967,6 +967,93 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 $order->update_status('wc-cancelled', __('Order expired by LayUp.', 'layup-gateway'));
 
+            } elseif ($_POST['type'] == 'PAYMENTSUCCESSFUL')
+            {
+                $headers = array(
+                    'accept' => 'application/json',
+                    'apikey' => $this->api_key,
+                );
+
+                $order_args = array(
+                    'headers' => $headers,
+                );
+
+                $order_response = wp_remote_get($this->api_url . '/' . $layup_order_id . '?populate=plans,plans.payments', $order_args);
+
+                if (!is_wp_error($order_response))
+                {
+
+                    $body = json_decode($order_response['body'], true);
+                    error_log(print_r($body, true));
+                    $pp = 0;
+
+                    // Save LayUp payment plans to Woocommerce order
+
+                    foreach ($body['plans'] as $plans)
+                {
+
+                    update_post_meta($order->get_id() , 'layup_pp_id_' . $pp, $plans['_id']);
+
+                    update_post_meta($order->get_id() , 'layup_pp_freq_' . $pp, strtolower($plans['frequency']));
+
+                    update_post_meta($order->get_id() , 'layup_pp_quant_' . $pp, $plans['quantity']);
+
+                    //get monthly amount
+                    $due = '';
+
+                    foreach ($plans['payments'] as $payment)
+                    {
+
+                        if ($payment['paid'] == false)
+                        {
+
+                            $due = $payment['due'];
+                            $monthly = $payment['amount'];
+
+                            break;
+                        }
+                    }
+
+                    $paid = 0;
+
+                    foreach ($plans['payments'] as $payment)
+                    {
+
+                        if ($payment['paid'] == true)
+                        {
+
+                            $paid += $payment['amount'];
+                        }
+                    }
+
+                    //convert cents to rands
+                    
+
+                    $monthly_rands = $monthly / 100;
+
+                    $outstanding = $plans['amountDue'] + $plans['depositDue'] - $paid;
+
+                    $outstanding_rands = $outstanding / 100;
+
+                    $due_str = strstr($due, '(', true);
+                    //formate numbers to work with WC
+                    $due_date = date("Y/m/d", strtotime($due_str));
+
+                    $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
+
+                    $monthly_payment = number_format($monthly_rands, 2, '.', '');
+
+                    update_post_meta($order->get_id() , 'layup_pp_due_date_' . $pp, $due_date);
+
+                    update_post_meta($order->get_id() , 'layup_pp_outstanding_' . $pp, $outstanding_foramted);
+
+                    update_post_meta($order->get_id() , 'layup_pp_monthly_' . $pp, $monthly_payment);
+
+                    $pp++;
+                }
+
+                }
+
             }
             else
             {

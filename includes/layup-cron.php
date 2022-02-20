@@ -497,7 +497,7 @@ function layup_check_prod()
 
                     'endDateMin' => $lu_min_date,
 
-                    'absorbsFee' => false,
+                    'absorbsFee' => true,
 
                     'depositType' => $deposit_type
 

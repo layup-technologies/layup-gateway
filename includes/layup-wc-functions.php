@@ -937,7 +937,7 @@ function save_layup_disable_field($post_id)
 
             'endDateMin' => $lu_min_date,
 
-            'absorbsFee' => false,
+            'absorbsFee' => true,
 
             'depositType' => $deposit_type
 
@@ -1034,7 +1034,7 @@ function save_layup_disable_field($post_id)
 
             'endDateMin' => $lu_min_date,
 
-            'absorbsFee' => false,
+            'absorbsFee' => true,
 
             'depositType' => $deposit_type
 
