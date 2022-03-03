@@ -1180,7 +1180,7 @@ function layup_display_icon()
                     $finalString = str_replace('{months}', '<span class="layup-months-amount">'.esc_attr($layup_preview_months).'</span>', $finalString);
                     
                     $finalString = str_replace('{deposit}', '<span class="layup-deposit-amount">'.esc_attr($layupDepositFormat).'</span>', $finalString);
-                    $finalString = "<p>".$finalString."</p>";
+                    $finalString = "<p style='margin-top: 0px;'>".$finalString."</p>";
                 }
 
                 echo '<div style="display:flex;align-items: center;max-width: 100%;">
@@ -1509,7 +1509,7 @@ function layup_display_estimate()
                         $finalString = str_replace('{deposit}', 'R'.esc_attr($layup_preview_amount), $finalString);
                     }
 
-                    echo $finalString;
+                    echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">'.$finalString.'</div>';
                         
                     }
 
