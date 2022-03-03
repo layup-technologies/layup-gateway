@@ -79,6 +79,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         $this->learn_more_style = $this->get_option('learn_more_style');
 
         $this->api_key_error = $this->get_option('api_key_error');
+        $this->payment_plan_template = $this->get_option('payment_plan_template');
 
         if ($this->get_option('lu_api_key') != '')
         {
@@ -270,6 +271,18 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 'description' => 'Show payment plan example under the checkout button on the cart page',
 
                 'default' => 'no'
+
+            ) ,
+
+            'payment_plan_template' => array(
+
+                'title' => 'Payment plan preview',
+
+                'type' => 'text',
+
+                'description' => 'Configure your own payment plan preview. You can make use the following variables: "{amount}", "{months}", "{deposit}". ie "Pay only {deposit} and {amount}/pm for {months} months". For default leave blank.',
+
+                'default' => '',
 
             ) ,
 
