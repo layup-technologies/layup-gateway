@@ -1196,7 +1196,7 @@ function layup_display_icon()
 		
 			<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;border-left:#808080 1px solid;" class="btn-est-layup">
 		
-				' . esc_attr($finalString) . '
+				' .$finalString. '
 				<span id="lumodallink" style="color:#1295a5;">Learn More</span>
 
             </div>
