@@ -12,7 +12,7 @@
 
  * Author URI: https://layup.co.za
 
- * Version: 1.7.21
+ * Version: 1.8.0
 
  *
 
