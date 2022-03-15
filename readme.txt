@@ -201,7 +201,7 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 = v1.8.0 =
 
-* Fixed issue with payment plan not being generated becuase of API change.
+* Fixed issue with payment plan not being generated because of API change.
 * Added ability for merchant to construct there own custom payment plan wording
 * Added check for API keys and alerts for when an API key has become incorrect
 * Added Payment webhook process
