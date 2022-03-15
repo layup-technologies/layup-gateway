@@ -497,7 +497,7 @@ function layup_check_prod()
 
                     'endDateMin' => $lu_min_date,
 
-                    'absorbsFee' => false,
+                    'absorbsFee' => true,
 
                     'depositType' => $deposit_type
 
@@ -552,3 +552,40 @@ function layup_check_prod()
     }
 }
 
+add_action('layup_api_key_check', 'layup_check_api_key');
+
+function layup_check_api_key()
+{
+    global $woocommerce;
+
+    $gateway_id = 'layup';
+    $gateways = WC_Payment_Gateways::instance();
+    $gateway = $gateways->payment_gateways() [$gateway_id];
+    $api_key = $gateway->api_key;
+    
+    if ($gateway->testmode == 'yes')
+    {
+        $api_url = "https://sandbox-api.layup.co.za/v1/auth/me";
+    } else {
+        $api_url = "https://api.layup.co.za/v1/auth/me";
+    }
+
+    $headers = array(
+        'Content-Type' => 'application/json',
+        'apikey' => $api_key,
+    );
+
+    $args = array(
+        'headers' => $headers,
+    );
+
+    $response = wp_remote_get($api_url, $args);
+
+    if (!is_wp_error($response)) {
+        if ($response['body'] == "Unauthorized") {
+            $gateway->update_option( 'api_key_error', '1' );
+        } else {
+            $gateway->update_option( 'api_key_error', '0' );
+        }
+    }
+}

@@ -937,7 +937,7 @@ function save_layup_disable_field($post_id)
 
             'endDateMin' => $lu_min_date,
 
-            'absorbsFee' => false,
+            'absorbsFee' => true,
 
             'depositType' => $deposit_type
 
@@ -1034,7 +1034,7 @@ function save_layup_disable_field($post_id)
 
             'endDateMin' => $lu_min_date,
 
-            'absorbsFee' => false,
+            'absorbsFee' => true,
 
             'depositType' => $deposit_type
 
@@ -1156,6 +1156,33 @@ function layup_display_icon()
                     $learn_more_url = "https://layup.co.za/learn-more-popup-layby/";
                 }
 
+                $finalString = "";
+
+                if ($gateway->payment_plan_template == "") {
+
+                    $finalString = '<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
+                } else {
+
+                    if ($layup_preview_deposit_type == 'PERCENTAGE')
+                    {
+                        $layupDepositFormat = $layup_preview_deposit_amount . '%';
+                    }
+                    elseif ($layup_preview_deposit_type == 'FLAT')
+                    {
+                        $layupDepositFormat = 'R' . $layup_preview_deposit_amount;
+                    }
+                    elseif ($layup_preview_deposit_type == 'INSTALMENT')
+                    {
+                        $layupDepositFormat = 'R'.$layup_preview_amount;
+                    }
+
+                    $finalString = str_replace('{amount}', 'R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>', $gateway->payment_plan_template);
+                    $finalString = str_replace('{months}', '<span class="layup-months-amount">'.esc_attr($layup_preview_months).'</span>', $finalString);
+                    
+                    $finalString = str_replace('{deposit}', '<span class="layup-deposit-amount">'.esc_attr($layupDepositFormat).'</span>', $finalString);
+                    $finalString = "<p style='margin-top: 0px;'>".$finalString."</p>";
+                }
+
                 echo '<div style="display:flex;align-items: center;max-width: 100%;">
 			<div style="font-family:Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 30px 10px 20px;margin-top: 15px;margin-bottom: 15px;color: #000000;text-align: center;"
 				class="btn-layup">
@@ -1169,7 +1196,7 @@ function layup_display_icon()
 		
 			<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;border-left:#808080 1px solid;" class="btn-est-layup">
 		
-				<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>
+				' .$finalString. '
 				<span id="lumodallink" style="color:#1295a5;">Learn More</span>
 
             </div>
@@ -1443,6 +1470,7 @@ function layup_display_estimate()
 
         $layup_disable_meta = $product->get_meta('layup_disable');
         $layup_preview_deposit_type = $product->get_meta('layup_preview_deposit_type');
+        $layup_preview_deposit = $product->get_meta('layup_preview_deposit_amount');
 
         if ($gateway->payplan_disp == 'yes')
         {
@@ -1464,11 +1492,26 @@ function layup_display_estimate()
                         $layup_preview_months = $layup_preview_months + 1;
                     }
 
-                    echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">
-	
-		  From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months
-	
-		  </div>';
+                    if ($gateway->payment_plan_template == "") {
+
+                        echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">
+	                    From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months
+                        </div>';
+                    } else {
+                        $finalString = str_replace('{amount}', 'R' . esc_attr($layup_preview_amount), $gateway->payment_plan_template);
+                        $finalString = str_replace('{months}', esc_attr($layup_preview_months), $finalString);
+                        if ($layup_preview_deposit_type == 'PERCENTAGE')
+                    {
+                        $finalString = str_replace('{deposit}', esc_attr($layup_preview_deposit).'%', $finalString);
+                    } elseif($layup_preview_deposit_type == 'FLAT'){
+                        $finalString = str_replace('{deposit}', 'R'.esc_attr($layup_preview_deposit), $finalString);
+                    } elseif($layup_preview_deposit_type == 'INSTALMENT'){
+                        $finalString = str_replace('{deposit}', 'R'.esc_attr($layup_preview_amount), $finalString);
+                    }
+
+                    echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">'.$finalString.'</div>';
+                        
+                    }
 
                 }
 
@@ -2116,3 +2159,18 @@ inlineEditPost.edit = function( post_id ) {
 
     add_action('woocommerce_after_cart_totals', 'layup_display_cart', 10);
     
+    function general_admin_notice(){
+
+        global $woocommerce;
+        $gateway_id = 'layup';
+        $gateways = WC_Payment_Gateways::instance();
+        $gateway = $gateways->payment_gateways() [$gateway_id];
+
+       if ( $gateway->api_key_error == "1" ) {
+             echo '<div class="notice notice-error">
+                 <p>Your LayUp API key is incorrect, this will cause errors when customers try to checkout using the LayUp Payment Method.</p>
+                 <p><stong>Please check that you have entered the correct API key.</stong></p>
+             </div>';
+        }
+    }
+    add_action('admin_notices', 'general_admin_notice');

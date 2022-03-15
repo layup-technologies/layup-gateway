@@ -7,8 +7,8 @@ Author: LayUp Dev Team
 Tags: woocommerce, payment gateway, South Africa, LayUp
 Requires at least: 4.6
 Tested up to: 5.9
-Stable tag: 1.7.21
-Version: 1.7.21
+Stable tag: 1.8.0
+Version: 1.8.0
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -198,6 +198,13 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 
 == Changelog ==
+
+= v1.8.0 =
+
+* Fixed issue with payment plan not being generated becuase of API change.
+* Added ability for merchant to construct there own custom payment plan wording
+* Added check for API keys and alerts for when an API key has become incorrect
+* Added Payment webhook process
 
 = v1.7.21 =
 
