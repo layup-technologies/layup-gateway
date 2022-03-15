@@ -95,7 +95,7 @@ function layup_init_gateway_class()
 
     }
 
-    define('WC_GATEWAY_LAYUP_VERSION', '1.7.21');
+    define('WC_GATEWAY_LAYUP_VERSION', '1.8.0');
 
     if (!wp_next_scheduled('layup_canceled_order_check'))
     {
