@@ -424,8 +424,6 @@ function layup_check_prod()
 
         $lu_curr_date = date('c');
 
-        $api_key = 'myApiKey';
-
         $preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
 
         foreach ($products as $prod)
@@ -505,9 +503,7 @@ function layup_check_prod()
 
                 $preview_headers = array(
 
-                    'Content-Type' => 'application/json',
-
-                    'apikey' => $api_key,
+                    'Content-Type' => 'application/json'
 
                 );
 

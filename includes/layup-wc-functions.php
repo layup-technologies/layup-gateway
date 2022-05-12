@@ -882,8 +882,6 @@ function save_layup_disable_field($post_id)
 
     $lu_curr_date = date('c');
 
-    $api_key = "myApiKey";
-
     $preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
 
     if ($dates == '')
@@ -945,9 +943,7 @@ function save_layup_disable_field($post_id)
 
         $preview_headers = array(
 
-            'Content-Type' => 'application/json',
-
-            'apikey' => $api_key,
+            'Content-Type' => 'application/json'
 
         );
 
