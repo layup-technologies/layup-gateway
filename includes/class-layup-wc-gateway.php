@@ -74,7 +74,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         $this->payplan_disp_cart = 'yes' === $this->get_option('payplan_disp_cart');
 
         $this->layup_dep = (int)$this->get_option('layup_dep');
-
+        $this->absorb_fee = 'yes' === $this->get_option('absorb_fee');
         $this->layup_dep_type = $this->get_option('layup_dep_type');
         $this->learn_more_style = $this->get_option('learn_more_style');
 
@@ -247,6 +247,18 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                     'min' => '1'
 
                 )
+
+            ) ,
+
+            'absorb_fee' => array(
+
+                'title' => 'Absorb Fee',
+
+                'type' => 'checkbox',
+
+                'description' => 'Disabling this option will charge LayUp`s fee to your customers',
+
+                'default' => 'yes'
 
             ) ,
 
@@ -711,7 +723,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 'depositPerc' => (int)$this->layup_dep,
 
-                'absorbsFee' => true,
+                'absorbsFee' => $this->layup_dep_type,
 
                 'reference' => $ref,
 

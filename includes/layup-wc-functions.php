@@ -1481,6 +1481,24 @@ function layup_display_estimate()
 
                 $layup_preview_months = $product->get_meta('layup_preview_months');
 
+                $layup_preview_deposit_type = $product->get_meta('layup_preview_deposit_type');
+
+                $layup_preview_deposit_amount = $product->get_meta('layup_preview_deposit_amount');
+
+                if ($layup_preview_deposit_type == 'PERCENTAGE')
+                {
+                    $layup_preview_deposit = 'Deposit: ' . $layup_preview_deposit_amount . '%';
+                }
+                elseif ($layup_preview_deposit_type == 'FLAT')
+                {
+                    $layup_preview_deposit = 'Deposit: R' . $layup_preview_deposit_amount;
+                }
+                elseif ($layup_preview_deposit_type == 'INSTALMENT')
+                {
+                    $layup_preview_deposit = '';
+                    $layup_preview_months = $layup_preview_months + 1;
+                }
+
                 if ($layup_preview_months != 0 && $layup_preview_months != null)
                 {
                     if ($layup_preview_deposit_type == 'INSTALMENT')
@@ -1491,7 +1509,7 @@ function layup_display_estimate()
                     if ($gateway->payment_plan_template == "") {
 
                         echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">
-	                    From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months
+	                    From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' months.  Interest-free. ' . esc_attr($layup_preview_deposit) .'
                         </div>';
                     } else {
                         $finalString = str_replace('{amount}', 'R' . esc_attr($layup_preview_amount), $gateway->payment_plan_template);
