@@ -1509,7 +1509,7 @@ function layup_display_estimate()
                     if ($gateway->payment_plan_template == "") {
 
                         echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">
-	                    From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' months.  Interest-free. ' . esc_attr($layup_preview_deposit) .'
+	                    From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' months. ' . esc_attr($layup_preview_deposit) .'
                         </div>';
                     } else {
                         $finalString = str_replace('{amount}', 'R' . esc_attr($layup_preview_amount), $gateway->payment_plan_template);
