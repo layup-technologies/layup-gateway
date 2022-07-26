@@ -405,6 +405,16 @@ function layup_check_prod()
 
                 'compare' => '!=',
 
+            ),
+
+            array(
+
+                'key' => 'layup_preview_deposit_amount',
+
+                'value' => $gateway->layup_dep,
+
+                'compare' => '!=',
+
             )
             )
 

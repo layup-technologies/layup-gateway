@@ -723,7 +723,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 'depositPerc' => (int)$this->layup_dep,
 
-                'absorbsFee' => $this->layup_dep_type,
+                'absorbsFee' => $this->absorb_fee,
 
                 'reference' => $ref,
 
