@@ -1092,13 +1092,13 @@ function layup_display_icon()
             if ($layup_preview_deposit_type == 'FLAT')
             {
                 $priceNoDep = $price - $layup_preview_deposit_amount;
-                $newInstalment = $priceNoDep / ($months-1);
+                $newInstalment = $priceNoDep / $months;
             }
             else if ($layup_preview_deposit_type == 'PERCENTAGE')
             {
                 $deposit = $layup_preview_deposit_amount / 100 * $price;
                 $priceNoDep = $price - $deposit;
-                $newInstalment = $priceNoDep / ($months-1);
+                $newInstalment = $priceNoDep / $months;
             }
             else if ($layup_preview_deposit_type == 'INSTALMENT')
             {
@@ -1390,7 +1390,7 @@ function layup_display_icon()
 					let newInstalment = 0;
 					let deposit = document.querySelector(".layup-deposit-amount").innerHTML;
 					let months = parseInt(document.querySelector(".layup-months-amount").innerHTML);
-					if (deposit.startsWith("Deposit: R")) {
+					if (deposit.startsWith("R")) {
 						deposit = deposit.substring(1).replace(/[^\d.-]/g, "");
 						priceNoDep = price - deposit;
 						newInstalment = priceNoDep / months;
@@ -1491,13 +1491,13 @@ function layup_display_estimate()
             if ($layup_preview_deposit_type == 'FLAT')
             {
                 $priceNoDep = $price - $layup_preview_deposit_amount;
-                $newInstalment = $priceNoDep / ($months-1);
+                $newInstalment = $priceNoDep / $months;
             }
             else if ($layup_preview_deposit_type == 'PERCENTAGE')
             {
                 $deposit = $layup_preview_deposit_amount / 100 * $price;
                 $priceNoDep = $price - $deposit;
-                $newInstalment = $priceNoDep / ($months-1);
+                $newInstalment = $priceNoDep / $months;
             }
             else if ($layup_preview_deposit_type == 'INSTALMENT')
             {
@@ -1934,12 +1934,12 @@ inlineEditPost.edit = function( post_id ) {
 
                 if (!empty($check_dep_months_min[0]))
                 {
-                    $gateway->lu_min_end_date = $check_dep_months_min[0] + 1;
+                    $gateway->lu_min_end_date = $check_dep_months_min[0];
                 }
 
                 if (!empty($check_dep_months_max[0]))
                 {
-                    $gateway->lu_max_end_date = $check_dep_months_max[0] + 1;
+                    $gateway->lu_max_end_date = $check_dep_months_max[0];
                 }
 
                 if ($gateway->layup_dep_type == 'PERCENTAGE')
@@ -1967,13 +1967,13 @@ inlineEditPost.edit = function( post_id ) {
                     {
                         $deposit = $gateway->layup_dep;
                         $priceNoDep = $price - $gateway->layup_dep;
-                        $newInstalment = $priceNoDep / ($months-1);
+                        $newInstalment = $priceNoDep / $months;
                     }
                     else if ($gateway->layup_dep_type == 'PERCENTAGE')
                     {
                         $deposit = $gateway->layup_dep / 100 * $price;
                         $priceNoDep = $price - $deposit;
-                        $newInstalment = $priceNoDep / ($months-1);
+                        $newInstalment = $priceNoDep / $months;
                     }
                     else if ($gateway->layup_dep_type == 'INSTALMENT')
                     {
@@ -1991,7 +1991,7 @@ inlineEditPost.edit = function( post_id ) {
                 }
                     
                     echo '<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
-				<p style="margin-top: 0px; "><span class="btn-layup-text"><strong>PAY IT OFF</strong> with <em style="color:#1295a5;">LayUp</em></span> From R<span class="layup-installment-amount">' . esc_attr($formatInstalment) . '</span>/month for <span class="layup-months-amount">' . esc_attr($months-1) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . ' </span><span id="lumodallink" style="color:#1295a5;">Learn More</span></p>
+				<p style="margin-top: 0px; "><span class="btn-layup-text"><strong>PAY IT OFF</strong> with <em style="color:#1295a5;">LayUp</em></span> From R<span class="layup-installment-amount">' . esc_attr($formatInstalment) . '</span>/month for <span class="layup-months-amount">' . esc_attr($months) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . ' </span><span id="lumodallink" style="color:#1295a5;">Learn More</span></p>
 				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 				<style>
 					/* The Modal (background) */

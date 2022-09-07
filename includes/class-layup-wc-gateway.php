@@ -60,7 +60,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
         $this->enabled = $this->get_option('enabled');
 
-        $this->lu_max_end_date = $this->get_option('lu_max_end_date') + 1;
+        $this->lu_max_end_date = $this->get_option('lu_max_end_date');
 
         $this->lu_min_end_date = $this->get_option('lu_min_end_date');
 
@@ -541,7 +541,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
             else
             {
                 array_push($check_dep_months_min, $this->lu_min_end_date);
-                array_push($check_dep_months_max, $this->lu_max_end_date - 1);
+                array_push($check_dep_months_max, $this->lu_max_end_date);
             }
             
 
@@ -563,7 +563,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
             if (!empty($check_dep_months_min[0]))
             {
-                $this->lu_min_end_date = $check_dep_months_min[0] + 1;
+                $this->lu_min_end_date = $check_dep_months_min[0];
             }
 
             if (!empty($check_dep_months_max[0]))
