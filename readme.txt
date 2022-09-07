@@ -7,8 +7,8 @@ Author: LayUp Dev Team
 Tags: woocommerce, payment gateway, South Africa, LayUp
 Requires at least: 4.6
 Tested up to: 6.0.1
-Stable tag: 1.8.3
-Version: 1.8.3
+Stable tag: 1.9.0
+Version: 1.9.0
 Requires PHP: 5.6
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -198,6 +198,11 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 
 == Changelog ==
+
+= v1.9.0 =
+
+* Added product level payment plan preview templates and learn more popup styles.
+* Removed API calls to save the payment plan preview values, these values are now calculated in the plugin instead.
 
 = v1.8.3 =
 

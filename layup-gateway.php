@@ -12,7 +12,7 @@
 
  * Author URI: https://layup.co.za
 
- * Version: 1.8.3
+ * Version: 1.9.0
 
  *
 
@@ -51,7 +51,6 @@ function layup_deactivation()
 {
 
     wp_clear_scheduled_hook('layup_order_check');
-    wp_clear_scheduled_hook('layup_prod_check');
     wp_clear_scheduled_hook('layup_canceled_order_check');
 
 }
@@ -95,7 +94,7 @@ function layup_init_gateway_class()
 
     }
 
-    define('WC_GATEWAY_LAYUP_VERSION', '1.8.3');
+    define('WC_GATEWAY_LAYUP_VERSION', '1.9.0');
 
     if (!wp_next_scheduled('layup_canceled_order_check'))
     {
@@ -105,11 +104,6 @@ function layup_init_gateway_class()
     if (!wp_next_scheduled('layup_order_check'))
     {
         wp_schedule_event(time() , 'layup10min', 'layup_order_check');
-    }
-
-    if (!wp_next_scheduled('layup_prod_check'))
-    {
-        wp_schedule_event(time() , 'layup10min', 'layup_prod_check');
     }
 
     if (!wp_next_scheduled('layup_api_key_check'))
