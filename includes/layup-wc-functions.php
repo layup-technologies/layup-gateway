@@ -1485,18 +1485,26 @@ function layup_display_estimate()
                 $layup_preview_payment_plan_template = $gateway->payment_plan_template;
             }
 
-            if ($layup_preview_deposit_type == 'PERCENTAGE')
+            $priceNoDep = 0;
+            $newInstalment = 0;
+            $months = $layup_preview_months;
+            if ($layup_preview_deposit_type == 'FLAT')
             {
-                $layup_preview_amount = (float)(($price - (($layup_preview_deposit_amount/100) * $price)) / $layup_preview_months)/100;
+                $priceNoDep = $price - $layup_preview_deposit_amount;
+                $newInstalment = $priceNoDep / ($months-1);
             }
-            elseif ($layup_preview_deposit_type == 'FLAT')
+            else if ($layup_preview_deposit_type == 'PERCENTAGE')
             {
-                $layup_preview_amount = (float)(($price - $layup_preview_deposit_amount) / $layup_preview_months)/100;
+                $deposit = $layup_preview_deposit_amount / 100 * $price;
+                $priceNoDep = $price - $deposit;
+                $newInstalment = $priceNoDep / ($months-1);
             }
-            elseif ($layup_preview_deposit_type == 'INSTALMENT')
+            else if ($layup_preview_deposit_type == 'INSTALMENT')
             {
-                $layup_preview_amount = (float)($price / ($layup_preview_months + 1))/100;
+                $newInstalment = $price / $months;
+                $months = $months + 1;
             }
+            $layup_preview_amount = number_format($newInstalment, 2);
 
                 if ($layup_preview_deposit_type == 'PERCENTAGE')
                 {
