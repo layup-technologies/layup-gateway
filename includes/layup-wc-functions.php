@@ -1068,7 +1068,7 @@ function layup_display_icon()
             }
 
             if ($layup_custom_months == 'yes' && $layup_custom_months_max != ""){
-                $layup_preview_months = $layup_custom_months_max + 1;
+                $layup_preview_months = $layup_custom_months_max;
             } else {
                 $layup_preview_months = $gateway->lu_max_end_date;
             }
@@ -1474,7 +1474,7 @@ function layup_display_estimate()
             }
 
             if ($layup_custom_months == 'yes' && $layup_custom_months_max != ""){
-                $layup_preview_months = $layup_custom_months_max + 1;
+                $layup_preview_months = $layup_custom_months_max;
             } else {
                 $layup_preview_months = $gateway->lu_max_end_date;
             }
