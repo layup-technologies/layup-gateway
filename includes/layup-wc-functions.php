@@ -1035,7 +1035,7 @@ function layup_display_icon()
 
     $product = wc_get_product($post->ID);
 
-    $price = (float)$product->get_price() * 100;
+    $price = (float)$product->get_price();
 
     $layup_disable_meta = $product->get_meta('layup_disable');
 
