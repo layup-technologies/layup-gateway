@@ -1914,7 +1914,7 @@ inlineEditPost.edit = function( post_id ) {
             if (count(array_flip($check_dep_type)) > 1 || count(array_flip($check_dep_amount)) > 1) {
                 $combine_amount = [];
                 foreach($cart_products as $combine_cart_item_id => $combine_cart_item) {
-                    $combine_cart_product = $cart_item['data'];
+                    $combine_cart_product = $combine_cart_item['data'];
                     if ($combine_cart_product->is_type('variation')) {
                         $combine_cart_product = wc_get_product($combine_cart_product->get_parent_id());
                     }
