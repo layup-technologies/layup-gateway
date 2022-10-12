@@ -585,7 +585,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 
             }
             $check_dep_amount = array(array_sum($combine_amount));
-            file_put_contents("combine_test.txt", array_sum($combine_amount));
+            file_put_contents("combine_test.txt", json_encode($combine_amount));
             $check_dep_type = array("FLAT");
         }
 
