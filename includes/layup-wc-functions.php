@@ -1906,7 +1906,7 @@ inlineEditPost.edit = function( post_id ) {
                 else
                 {
                     array_push($check_dep_months_min, $gateway->lu_min_end_date);
-                    array_push($check_dep_months_max, $gateway->lu_max_end_date - 1);
+                    array_push($check_dep_months_max, $gateway->lu_max_end_date);
                 }
 
             }
