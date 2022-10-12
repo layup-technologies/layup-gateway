@@ -553,12 +553,17 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
             $combine_amount = [];
             foreach($order_items as $combine_item_id => $combine_order_item) {
                 $combine_product = $combine_order_item->get_product();
+                if ($combine_product->is_type('variation'))
+                {
+                    $combine_product = wc_get_product($combine_product->get_parent_id());
+                }
                 $combine_product_price = $combine_order_item->get_total();
-                $layup_custom_deposit_combine = get_post_meta($combine_product->get_id() , 'layup_custom_deposit', true);
-                $layup_custom_deposit_type_combine = get_post_meta($combine_product->get_id() , 'layup_custom_deposit_type', true);
-                $layup_custom_deposit_amount_combine = get_post_meta($combine_product->get_id() , 'layup_custom_deposit_amount', true);
+                $combine_product_id = $combine_product->get_id();
+                $layup_custom_deposit_combine = get_post_meta($combine_product_id , 'layup_custom_deposit', true);
+                $layup_custom_deposit_type_combine = get_post_meta($combine_product_id , 'layup_custom_deposit_type', true);
+                $layup_custom_deposit_amount_combine = get_post_meta($combine_product_id, 'layup_custom_deposit_amount', true);
                 file_put_contents("combine_test".$combine_item_id.".txt", $layup_custom_deposit_amount_combine);
-                $layup_custom_months_max_combine = get_post_meta($combine_product->get_id() , 'layup_custom_months_max', true);
+                $layup_custom_months_max_combine = get_post_meta($combine_product_id , 'layup_custom_months_max', true);
                 if ($layup_custom_deposit_combine == "yes")
                 {
                     if ($layup_custom_deposit_type_combine == "FLAT") {
