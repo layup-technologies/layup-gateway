@@ -570,9 +570,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                         $instal_flat_amount = $combine_product_price / ($layup_custom_months_max_combine + 1);
                         array_push($combine_amount, $instal_flat_amount);
                     }
-                }
-                else
-                {
+                } else {
                     if ($layup_custom_deposit_type_combine == "FLAT")
                     {
                         array_push($combine_amount, $this->layup_dep);
@@ -580,13 +578,14 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                         $perc_flat_amount = $this->layup_dep/100 * $combine_product_price;
                         array_push($combine_amount, $perc_flat_amount);
                     } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
-                        $instal_flat_amount = $combine_product_price / $this->lu_max_end_date;
+                        $instal_flat_amount = $combine_product_price / ($this->lu_max_end_date + 1);
                         array_push($combine_amount, $instal_flat_amount);
                     }
                 }
                 
             }
             $check_dep_amount = array(array_sum($combine_amount));
+            file_put_contents("combine_test.txt", array_sum($combine_amount));
             $check_dep_type = array("FLAT");
         }
 
