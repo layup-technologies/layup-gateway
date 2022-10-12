@@ -1911,6 +1911,51 @@ inlineEditPost.edit = function( post_id ) {
 
             }
 
+            if (count(array_flip($check_dep_type)) > 1 || count(array_flip($check_dep_amount)) > 1) {
+                $combine_amount = [];
+                foreach($cart_products as $combine_cart_item_id => $combine_cart_item) {
+                    $combine_cart_product = $cart_item['data'];
+                    if ($combine_cart_product->is_type('variation')) {
+                        $combine_cart_product = wc_get_product($combine_cart_product->get_parent_id());
+                    }
+                    $combine_product_price = WC()->cart->get_product_price( $combine_cart_product );
+                    $combine_product_id = $combine_cart_product->get_id();
+                    $layup_custom_deposit_combine = get_post_meta($combine_product_id , 'layup_custom_deposit', true);
+                    $layup_custom_deposit_type_combine = get_post_meta($combine_product_id , 'layup_custom_deposit_type', true);
+                    $layup_custom_deposit_amount_combine = get_post_meta($combine_product_id, 'layup_custom_deposit_amount', true);
+                    $layup_custom_months_max_combine = get_post_meta($combine_product_id , 'layup_custom_months_max', true);
+                    if ($layup_custom_deposit_combine == "yes")
+                    {
+                        if ($layup_custom_deposit_type_combine == "FLAT") {
+                            array_push($combine_amount, $layup_custom_deposit_amount_combine);
+                        } elseif ($layup_custom_deposit_type_combine == "PERCENTAGE") {
+                            $perc_flat_amount = $layup_custom_deposit_amount_combine/100 * $combine_product_price;
+                            array_push($combine_amount, $perc_flat_amount);
+                        } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
+                            $instal_flat_amount = $combine_product_price / ($layup_custom_months_max_combine + 1);
+                            array_push($combine_amount, $instal_flat_amount);
+                        }
+                    } else {
+                        if ($this->layup_dep_type == "FLAT") {
+                            array_push($combine_amount, $this->layup_dep);
+                        } elseif ($this->layup_dep_type == "PERCENTAGE") {
+                            $perc_flat_amount = $this->layup_dep/100 * $combine_product_price;
+                            array_push($combine_amount, $perc_flat_amount);
+                        } elseif ($this->layup_dep_type == "INSTALMENT") {
+                            $instal_flat_amount = $combine_product_price / ($this->lu_max_end_date + 1);
+                            array_push($combine_amount, $instal_flat_amount);
+                        }
+                    }
+                }
+                $check_dep_amount = array(array_sum($combine_amount));
+                $check_dep_type = array("FLAT");
+            }
+    
+            if (count(array_flip($check_dep_months_min)) > 1 || count(array_flip($check_dep_months_max)) > 1) {
+                $check_dep_months_min = array(max($check_dep_months_min));
+                $check_dep_months_max = array(min($check_dep_months_max));
+            }
+
             if (count(array_unique($check_dep_type)) <= 1 && count(array_unique($check_dep_amount)) <= 1 && count(array_unique($check_dep_months_min)) <= 1 && count(array_unique($check_dep_months_max)) <= 1)
             {
 
