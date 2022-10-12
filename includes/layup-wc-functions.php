@@ -1939,13 +1939,13 @@ inlineEditPost.edit = function( post_id ) {
                             array_push($combine_amount, $instal_flat_amount);
                         }
                     } else {
-                        if ($this->layup_dep_type == "FLAT") {
-                            array_push($combine_amount, $this->layup_dep);
-                        } elseif ($this->layup_dep_type == "PERCENTAGE") {
-                            $perc_flat_amount = $this->layup_dep/100 * $combine_product_price;
+                        if ($gateway->layup_dep_type == "FLAT") {
+                            array_push($combine_amount, $gateway->layup_dep);
+                        } elseif ($gateway->layup_dep_type == "PERCENTAGE") {
+                            $perc_flat_amount = $gateway->layup_dep/100 * $combine_product_price;
                             array_push($combine_amount, $perc_flat_amount);
-                        } elseif ($this->layup_dep_type == "INSTALMENT") {
-                            $instal_flat_amount = $combine_product_price / ($this->lu_max_end_date + 1);
+                        } elseif ($gateway->layup_dep_type == "INSTALMENT") {
+                            $instal_flat_amount = $combine_product_price / ($gateway->lu_max_end_date + 1);
                             array_push($combine_amount, $instal_flat_amount);
                         }
                     }
