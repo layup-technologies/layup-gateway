@@ -1440,7 +1440,7 @@ function layup_display_estimate()
 
     // Check for the Disable LayUp field value
     $product = wc_get_product($post->ID);
-
+    $price = (float)$product->get_price();
     if (is_object($product))
     {
 
@@ -1501,18 +1501,18 @@ function layup_display_estimate()
             }
             else if ($layup_preview_deposit_type == 'INSTALMENT')
             {
-                $newInstalment = $price / $months;
                 $months = $months + 1;
+                $newInstalment = $price / $months;
             }
             $layup_preview_amount = number_format($newInstalment, 2);
 
                 if ($layup_preview_deposit_type == 'PERCENTAGE')
                 {
-                    $layup_preview_deposit = 'Deposit: ' . $layup_preview_deposit_amount . '%';
+                    $layup_preview_deposit = $layup_preview_deposit_amount . '%';
                 }
                 elseif ($layup_preview_deposit_type == 'FLAT')
                 {
-                    $layup_preview_deposit = 'Deposit: R' . $layup_preview_deposit_amount;
+                    $layup_preview_deposit = 'R' . $layup_preview_deposit_amount;
                 }
                 elseif ($layup_preview_deposit_type == 'INSTALMENT')
                 {
@@ -1522,10 +1522,6 @@ function layup_display_estimate()
 
                 if ($layup_preview_months != 0 && $layup_preview_months != null)
                 {
-                    if ($layup_preview_deposit_type == 'INSTALMENT')
-                    {
-                        $layup_preview_months = $layup_preview_months + 1;
-                    }
 
                     if ($layup_preview_payment_plan_template == "") {
 
@@ -1537,9 +1533,9 @@ function layup_display_estimate()
                         $finalString = str_replace('{months}', esc_attr($layup_preview_months), $finalString);
                         if ($layup_preview_deposit_type == 'PERCENTAGE')
                     {
-                        $finalString = str_replace('{deposit}', esc_attr($layup_preview_deposit).'%', $finalString);
+                        $finalString = str_replace('{deposit}', esc_attr($layup_preview_deposit), $finalString);
                     } elseif($layup_preview_deposit_type == 'FLAT'){
-                        $finalString = str_replace('{deposit}', 'R'.esc_attr($layup_preview_deposit), $finalString);
+                        $finalString = str_replace('{deposit}', esc_attr($layup_preview_deposit), $finalString);
                     } elseif($layup_preview_deposit_type == 'INSTALMENT'){
                         $finalString = str_replace('{deposit}', 'R'.esc_attr($layup_preview_amount), $finalString);
                     }
