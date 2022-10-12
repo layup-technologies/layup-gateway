@@ -560,8 +560,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 $layup_custom_months_max_combine = get_post_meta($combine_product->get_id() , 'layup_custom_months_max', true);
                 if ($layup_custom_deposit_combine == "yes")
                 {
-                    if ($layup_custom_deposit_type_combine == "FLAT")
-                    {
+                    if ($layup_custom_deposit_type_combine == "FLAT") {
                         array_push($combine_amount, $layup_custom_deposit_amount_combine);
                     } elseif ($layup_custom_deposit_type_combine == "PERCENTAGE") {
                         $perc_flat_amount = $layup_custom_deposit_amount_combine/100 * $combine_product_price;
@@ -571,13 +570,12 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                         array_push($combine_amount, $instal_flat_amount);
                     }
                 } else {
-                    if ($layup_custom_deposit_type_combine == "FLAT")
-                    {
+                    if ($this->layup_dep_type == "FLAT") {
                         array_push($combine_amount, $this->layup_dep);
-                    } elseif ($layup_custom_deposit_type_combine == "PERCENTAGE") {
+                    } elseif ($this->layup_dep_type == "PERCENTAGE") {
                         $perc_flat_amount = $this->layup_dep/100 * $combine_product_price;
                         array_push($combine_amount, $perc_flat_amount);
-                    } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
+                    } elseif ($this->layup_dep_type == "INSTALMENT") {
                         $instal_flat_amount = $combine_product_price / ($this->lu_max_end_date + 1);
                         array_push($combine_amount, $instal_flat_amount);
                     }
