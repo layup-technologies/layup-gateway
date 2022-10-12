@@ -1954,8 +1954,6 @@ inlineEditPost.edit = function( post_id ) {
             }
     
             if (count(array_flip($check_dep_months_min)) > 1 || count(array_flip($check_dep_months_max)) > 1) {
-                var_dump($check_dep_months_min);
-                var_dump($check_dep_months_max);
                 $check_dep_months_min = array(max($check_dep_months_min));
                 $check_dep_months_max = array(min($check_dep_months_max));
             }
