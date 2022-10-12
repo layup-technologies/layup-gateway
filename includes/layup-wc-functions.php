@@ -1920,7 +1920,7 @@ inlineEditPost.edit = function( post_id ) {
                     }
                     $combine_product_price = WC()->cart->get_product_price( $combine_cart_product );
                     $combine_product_id = $combine_cart_product->get_id();
-                    file_put_contents("test_combine_cart.txt", $combine_product_price);
+                    file_put_contents("test_combine_cart.txt", json_encode($combine_cart_product));
                     $layup_custom_deposit_combine = get_post_meta($combine_product_id , 'layup_custom_deposit', true);
                     $layup_custom_deposit_type_combine = get_post_meta($combine_product_id , 'layup_custom_deposit_type', true);
                     $layup_custom_deposit_amount_combine = get_post_meta($combine_product_id, 'layup_custom_deposit_amount', true);
