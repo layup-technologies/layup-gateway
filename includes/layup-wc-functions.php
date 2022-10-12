@@ -788,7 +788,7 @@ function create_layup_custom_months_min_field()
 add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_months_min_field');
 
 /**
- * Create the custom months min LayUp field on product admin page
+ * Create the custom months max LayUp field on product admin page
  */
 
 function create_layup_custom_months_max_field()
@@ -813,6 +813,120 @@ function create_layup_custom_months_max_field()
 }
 
 add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_months_max_field');
+
+/**
+ * Create the custom Payment plan preview LayUp checkbox field on product admin page
+ */
+
+function create_layup_custom_payment_plan_field()
+{
+
+    $args = array(
+
+        'id' => 'layup_custom_payment_plan',
+
+        'label' => __('Use custom layup payment plan preview for this product', 'layup-gateway') ,
+
+        'class' => 'lu-custom-payment-plan',
+
+        'desc_tip' => true,
+
+        'description' => __('Check this box if you want this product to use its own payment plan preview on the product page.', 'layup-gateway') ,
+
+    );
+
+    woocommerce_wp_checkbox($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_payment_plan_field');
+
+/**
+ * Create the custom Payment plan preview LayUp field on product admin page
+ */
+
+function create_layup_custom_payment_plan_template_field()
+{
+
+    $args = array(
+
+        'id' => 'layup_custom_payment_plan_template',
+
+        'label' => __('Payment plan preview', 'layup-gateway') ,
+
+        'class' => 'lu-custom-payment-plan-template',
+
+        'desc_tip' => true,
+
+        'description' => __('Configure your own payment plan preview. You can make use the following variables: "{amount}", "{months}", "{deposit}". ie "Pay only {deposit} and {amount}/pm for {months} months". For default leave blank.', 'layup-gateway') ,
+
+    );
+
+    woocommerce_wp_text_input($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_payment_plan_template_field');
+
+/**
+ * Create the custom Payment plan preview LayUp checkbox field on product admin page
+ */
+
+function create_layup_custom_learn_more_field()
+{
+
+    $args = array(
+
+        'id' => 'layup_custom_learn_more',
+
+        'label' => __('Use custom layup Learn more popup style for this product', 'layup-gateway') ,
+
+        'class' => 'lu-custom-learn-more',
+
+        'desc_tip' => true,
+
+        'description' => __('Check this box if you want this product to use its own Learn more popup style on the product page.', 'layup-gateway') ,
+
+    );
+
+    woocommerce_wp_checkbox($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_learn_more_field');
+
+/**
+ * Create the custom Learn more popup style LayUp field on product admin page
+ */
+
+function create_layup_custom_learn_more_popup_field()
+{
+
+    $args = array(
+
+        'id' => 'layup_custom_learn_more_popup',
+
+        'label' => __('Learn more popup style', 'layup-gateway') ,
+
+        'options' => array(
+            'layby' => 'Layby',
+            'subscription' => 'Subscription'
+        ) ,
+
+        'class' => 'lu-custom-learn-more-popup',
+
+        'desc_tip' => false,
+
+        'description' => __('Change between a Layby style or a Subscription style depending on product offering', 'layup-gateway') ,
+
+        'default' => 'layby'
+    );
+
+    woocommerce_wp_select($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_learn_more_popup_field');
 
 /**
  * Save the LayUp product fields
@@ -840,6 +954,13 @@ function save_layup_disable_field($post_id)
     $layup_custom_months = isset($_POST['layup_custom_months']) ? sanitize_text_field($_POST['layup_custom_months']) : '';
     $layup_custom_months_min = isset($_POST['layup_custom_months_min']) ? sanitize_text_field($_POST['layup_custom_months_min']) : '';
     $layup_custom_months_max = isset($_POST['layup_custom_months_max']) ? sanitize_text_field($_POST['layup_custom_months_max']) : '';
+
+    $layup_custom_payment_plan_template = isset($_POST['layup_custom_payment_plan_template']) ? sanitize_text_field($_POST['layup_custom_payment_plan_template']) : '';
+    $layup_custom_learn_more_popup = isset($_POST['layup_custom_learn_more_popup']) ? sanitize_text_field($_POST['layup_custom_learn_more_popup']) : '';
+
+    $layup_custom_payment_plan = isset($_POST['layup_custom_payment_plan']) ? sanitize_text_field($_POST['layup_custom_payment_plan']) : '';
+    $layup_custom_learn_more = isset($_POST['layup_custom_learn_more']) ? sanitize_text_field($_POST['layup_custom_learn_more']) : '';
+
     settype($layup_custom_months_max, 'int');
     $product->update_meta_data('layup_disable', $layup_disable);
     $product->update_meta_data('layup_custom_deposit', $layup_custom_deposit);
@@ -850,9 +971,13 @@ function save_layup_disable_field($post_id)
     $product->update_meta_data('layup_custom_months_min', $layup_custom_months_min);
     $product->update_meta_data('layup_custom_months_max', $layup_custom_months_max);
 
-    $price = (float)$product->get_price() * 100;
+    $product->update_meta_data('layup_custom_payment_plan_template', $layup_custom_payment_plan_template);
+    $product->update_meta_data('layup_custom_learn_more_popup', $layup_custom_learn_more_popup);
 
-    if($price > 0) {
+    $product->update_meta_data('layup_custom_payment_plan', $layup_custom_payment_plan);
+    $product->update_meta_data('layup_custom_learn_more', $layup_custom_learn_more);
+
+    $price = (float)$product->get_price() * 100;
 
     if ($_POST['layup_date'] != '')
     {
@@ -882,204 +1007,6 @@ function save_layup_disable_field($post_id)
 
     $lu_curr_date = date('c');
 
-    $preview_api_url = "https://sandbox-api.layup.co.za/v1/payment-plan/preview";
-
-    if ($dates == '')
-    {
-
-        if ($layup_custom_months == 'yes')
-        {
-            $min_months = $layup_custom_months_min + 1;
-            $max_months = $layup_custom_months_max + 1;
-
-        }
-        else
-        {
-
-            $min_months = $gateway->lu_min_end_date;
-            $max_months = $gateway->lu_max_end_date;
-
-        }
-
-        $lu_min_date = date('Y-m-d', strtotime("+" . $min_months . " months", strtotime($lu_curr_date)));
-
-        $lu_max_date = date('Y-m-d', strtotime("+" . $max_months . " months", strtotime($lu_curr_date)));
-
-        if ($layup_custom_deposit == 'yes')
-        {
-
-            $deposit_amount = $layup_custom_deposit_amount;
-
-            $deposit_type = $layup_custom_deposit_type;
-
-        }
-        else
-        {
-
-            $deposit_amount = $gateway->layup_dep;
-
-            $deposit_type = $gateway->layup_dep_type;
-        }
-
-        settype($deposit_amount, 'float');
-
-        $preview_details = array(
-
-            'depositAmount' => (int)$deposit_amount * 100,
-
-            'amountDue' => (int)$price,
-
-            'depositPerc' => (int)$deposit_amount,
-
-            'endDateMax' => $lu_max_date,
-
-            'endDateMin' => $lu_min_date,
-
-            'absorbsFee' => true,
-
-            'depositType' => $deposit_type
-
-        );
-
-        $preview_headers = array(
-
-            'Content-Type' => 'application/json'
-
-        );
-
-        $preview_details_json = json_encode($preview_details, JSON_UNESCAPED_SLASHES);
-
-        $preview_args = array(
-
-            'headers' => $preview_headers,
-
-            'body' => $preview_details_json
-
-        );
-
-        $preview_response = wp_remote_post($preview_api_url, $preview_args);
-
-        $preview_body = json_decode($preview_response['body'], true);
-
-        $max_payments = count($preview_body['paymentPlans']);
-
-        $amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
-        $max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
-        $min_payment_months = $preview_body['paymentPlans'][0]['quantity'];
-
-        $amount_monthly_form = number_format(($amount_monthly / 100) , 2, '.', ' ');
-
-        $product->update_meta_data('layup_preview_months', $max_payment_months);
-        $product->update_meta_data('layup_preview_min_months', $min_payment_months);
-
-        $product->update_meta_data('layup_preview_amount', $amount_monthly_form);
-
-        $product->update_meta_data('layup_preview_deposit_type', $deposit_type);
-
-        $product->update_meta_data('layup_preview_deposit_amount', $deposit_amount);
-
-    }
-    else
-    {
-
-        if ($layup_custom_months == 'yes')
-        {
-            $min_months = $layup_custom_months_min;
-
-        }
-        else
-        {
-
-            $min_months = $gateway->lu_min_end_date;
-
-        }
-
-        $lu_min_date = date('Y-m-d', strtotime("+" . $min_months . " months", strtotime($lu_curr_date)));
-
-        if ($layup_custom_deposit == 'yes')
-        {
-
-            $deposit_amount = $layup_custom_deposit_amount;
-
-            $deposit_type = $layup_custom_deposit_type;
-
-        }
-        else
-        {
-
-            $deposit_amount = $gateway->layup_dep;
-
-            $deposit_type = $gateway->layup_dep_type;
-        }
-
-        settype($deposit_amount, 'float');
-
-        $max_date = max($dates);
-
-        $lu_max_date = date('c', strtotime($max_date));
-
-        $preview_details = array(
-
-            'depositAmount' => (int)$deposit_amount * 100,
-
-            'amountDue' => (int)$price,
-
-            'depositPerc' => (int)$deposit_amount,
-
-            'endDateMax' => $lu_max_date,
-
-            'endDateMin' => $lu_min_date,
-
-            'absorbsFee' => true,
-
-            'depositType' => $deposit_type
-
-        );
-
-        $preview_headers = array(
-
-            'Content-Type' => 'application/json',
-
-            'apikey' => $api_key,
-
-        );
-
-        $preview_details_json = json_encode($preview_details, JSON_UNESCAPED_SLASHES);
-
-        $preview_args = array(
-
-            'headers' => $preview_headers,
-
-            'body' => $preview_details_json
-
-        );
-
-        $preview_response = wp_remote_post($preview_api_url, $preview_args);
-
-        $preview_body = json_decode($preview_response['body'], true);
-
-        $max_payments = count($preview_body['paymentPlans']);
-
-        $amount_monthly = $preview_body['paymentPlans'][$max_payments - 1]['payments'][1]['amount'];
-        $max_payment_months = $preview_body['paymentPlans'][$max_payments - 1]['quantity'];
-        $min_payment_months = $preview_body['paymentPlans'][0]['quantity'];
-
-        $amount_monthly_form = number_format(($amount_monthly / 100) , 2, '.', ',');
-
-        $product->update_meta_data('layup_preview_months', $max_payment_months);
-
-        $product->update_meta_data('layup_preview_min_months', $min_payment_months);
-
-        $product->update_meta_data('layup_preview_amount', $amount_monthly_form);
-
-        $product->update_meta_data('layup_preview_deposit_type', $deposit_type);
-
-        $product->update_meta_data('layup_preview_deposit_amount', $deposit_amount);
-
-    }
-
-}
-
     $product->save();
 
 }
@@ -1108,7 +1035,8 @@ function layup_display_icon()
 
     $product = wc_get_product($post->ID);
 
-    $layup_disable_meta = $product->get_meta('layup_disable');
+    $price = (float)$product->get_price();
+
     $layup_disable_meta = $product->get_meta('layup_disable');
 
     if ($gateway->payplan_disp == 'yes')
@@ -1118,15 +1046,67 @@ function layup_display_icon()
         {
 
             // Only display LayUp icon if Disable LayUp field is not checked
+
+
+            $layup_custom_deposit = $product->get_meta('layup_custom_deposit');
+            $layup_custom_deposit_type = $product->get_meta('layup_custom_deposit_type');
+            $layup_custom_deposit_amount = $product->get_meta('layup_custom_deposit_amount');
+            $layup_custom_months = $product->get_meta('layup_custom_months');
+            $layup_custom_months_min = $product->get_meta('layup_custom_months_min');
+            $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
+            $layup_custom_payment_plan = $product->get_meta('layup_custom_payment_plan');
+            $layup_custom_payment_plan_template = $product->get_meta('layup_custom_payment_plan_template');
+            $layup_custom_learn_more = $product->get_meta('layup_custom_learn_more');
+            $layup_custom_learn_more_popup = $product->get_meta('layup_custom_learn_more_popup');
+
+            if ($layup_custom_deposit == 'yes' && $layup_custom_deposit_type != "" && $layup_custom_deposit_amount != ""){
+                $layup_preview_deposit_type = $layup_custom_deposit_type;
+                $layup_preview_deposit_amount = $layup_custom_deposit_amount;
+            } else {
+                $layup_preview_deposit_type = $gateway->layup_dep_type;
+                $layup_preview_deposit_amount = $gateway->layup_dep;
+            }
+
+            if ($layup_custom_months == 'yes' && $layup_custom_months_max != ""){
+                $layup_preview_months = $layup_custom_months_max;
+            } else {
+                $layup_preview_months = $gateway->lu_max_end_date;
+            }
+
+            if ($layup_custom_payment_plan == 'yes' && $layup_custom_payment_plan_template != ""){
+                $layup_preview_payment_plan_template = $layup_custom_payment_plan_template;
+            } else {
+                $layup_preview_payment_plan_template = $gateway->payment_plan_template;
+            }
+
+            if ($layup_custom_learn_more == 'yes' && $layup_custom_learn_more_popup != ""){
+                $layup_preview_learn_more_popup = $layup_custom_learn_more_popup;
+            } else {
+                $layup_preview_learn_more_popup = $gateway->learn_more_style;
+            }
+
+
+            $priceNoDep = 0;
+            $newInstalment = 0;
+            $months = $layup_preview_months;
+            if ($layup_preview_deposit_type == 'FLAT')
+            {
+                $priceNoDep = $price - $layup_preview_deposit_amount;
+                $newInstalment = $priceNoDep / $months;
+            }
+            else if ($layup_preview_deposit_type == 'PERCENTAGE')
+            {
+                $deposit = $layup_preview_deposit_amount / 100 * $price;
+                $priceNoDep = $price - $deposit;
+                $newInstalment = $priceNoDep / $months;
+            }
+            else if ($layup_preview_deposit_type == 'INSTALMENT')
+            {
+                $newInstalment = $price / $months;
+                $months = $months + 1;
+            }
+            $layup_preview_amount = number_format($newInstalment, 2);
             
-
-            $layup_preview_amount = $product->get_meta('layup_preview_amount');
-
-            $layup_preview_months = $product->get_meta('layup_preview_months');
-
-            $layup_preview_deposit_type = $product->get_meta('layup_preview_deposit_type');
-
-            $layup_preview_deposit_amount = $product->get_meta('layup_preview_deposit_amount');
 
             if ($layup_preview_deposit_type == 'PERCENTAGE')
             {
@@ -1142,10 +1122,10 @@ function layup_display_icon()
                 $layup_preview_months = $layup_preview_months + 1;
             }
 
-            if (metadata_exists('product', $post->ID, 'layup_preview_months') || $layup_preview_months != 0)
+            if ($layup_preview_months != 0)
             {
                 
-                if ($gateway->learn_more_style == 'subscription')
+                if ($layup_preview_learn_more_popup == 'subscription')
                 {
                     $learn_more_url = "https://layup.co.za/learn-more-popup-subscription/";
                 } else {
@@ -1154,9 +1134,9 @@ function layup_display_icon()
 
                 $finalString = "";
 
-                if ($gateway->payment_plan_template == "") {
+                if ($layup_preview_payment_plan_template == "") {
 
-                    $finalString = '<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
+                    $finalString = '<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
                 } else {
 
                     if ($layup_preview_deposit_type == 'PERCENTAGE')
@@ -1172,7 +1152,7 @@ function layup_display_icon()
                         $layupDepositFormat = 'R'.$layup_preview_amount;
                     }
 
-                    $finalString = str_replace('{amount}', 'R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>', $gateway->payment_plan_template);
+                    $finalString = str_replace('{amount}', 'R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>', $layup_preview_payment_plan_template);
                     $finalString = str_replace('{months}', '<span class="layup-months-amount">'.esc_attr($layup_preview_months).'</span>', $finalString);
                     
                     $finalString = str_replace('{deposit}', '<span class="layup-deposit-amount">'.esc_attr($layupDepositFormat).'</span>', $finalString);
@@ -1410,7 +1390,7 @@ function layup_display_icon()
 					let newInstalment = 0;
 					let deposit = document.querySelector(".layup-deposit-amount").innerHTML;
 					let months = parseInt(document.querySelector(".layup-months-amount").innerHTML);
-					if (deposit.startsWith("Deposit: R")) {
+					if (deposit.startsWith("R")) {
 						deposit = deposit.substring(1).replace(/[^\d.-]/g, "");
 						priceNoDep = price - deposit;
 						newInstalment = priceNoDep / months;
@@ -1465,8 +1445,6 @@ function layup_display_estimate()
     {
 
         $layup_disable_meta = $product->get_meta('layup_disable');
-        $layup_preview_deposit_type = $product->get_meta('layup_preview_deposit_type');
-        $layup_preview_deposit = $product->get_meta('layup_preview_deposit_amount');
 
         if ($gateway->payplan_disp == 'yes')
         {
@@ -1477,9 +1455,70 @@ function layup_display_estimate()
                 // Only display LayUp icon if Disable LayUp field is not checked
                 
 
-                $layup_preview_amount = $product->get_meta('layup_preview_amount');
+            $layup_custom_deposit = $product->get_meta('layup_custom_deposit');
+            $layup_custom_deposit_type = $product->get_meta('layup_custom_deposit_type');
+            $layup_custom_deposit_amount = $product->get_meta('layup_custom_deposit_amount');
+            $layup_custom_months = $product->get_meta('layup_custom_months');
+            $layup_custom_months_min = $product->get_meta('layup_custom_months_min');
+            $layup_custom_months_max = $product->get_meta('layup_custom_months_max');
+            $layup_custom_payment_plan = $product->get_meta('layup_custom_payment_plan');
+            $layup_custom_payment_plan_template = $product->get_meta('layup_custom_payment_plan_template');
 
-                $layup_preview_months = $product->get_meta('layup_preview_months');
+
+            if ($layup_custom_deposit == 'yes' && $layup_custom_deposit_type != "" && $layup_custom_deposit_amount != ""){
+                $layup_preview_deposit_type = $layup_custom_deposit_type;
+                $layup_preview_deposit_amount = $layup_custom_deposit_amount;
+            } else {
+                $layup_preview_deposit_type = $gateway->layup_dep_type;
+                $layup_preview_deposit_amount = $gateway->layup_dep;
+            }
+
+            if ($layup_custom_months == 'yes' && $layup_custom_months_max != ""){
+                $layup_preview_months = $layup_custom_months_max;
+            } else {
+                $layup_preview_months = $gateway->lu_max_end_date;
+            }
+
+            if ($layup_custom_payment_plan == 'yes' && $layup_custom_payment_plan_template != ""){
+                $layup_preview_payment_plan_template = $layup_custom_payment_plan_template;
+            } else {
+                $layup_preview_payment_plan_template = $gateway->payment_plan_template;
+            }
+
+            $priceNoDep = 0;
+            $newInstalment = 0;
+            $months = $layup_preview_months;
+            if ($layup_preview_deposit_type == 'FLAT')
+            {
+                $priceNoDep = $price - $layup_preview_deposit_amount;
+                $newInstalment = $priceNoDep / $months;
+            }
+            else if ($layup_preview_deposit_type == 'PERCENTAGE')
+            {
+                $deposit = $layup_preview_deposit_amount / 100 * $price;
+                $priceNoDep = $price - $deposit;
+                $newInstalment = $priceNoDep / $months;
+            }
+            else if ($layup_preview_deposit_type == 'INSTALMENT')
+            {
+                $newInstalment = $price / $months;
+                $months = $months + 1;
+            }
+            $layup_preview_amount = number_format($newInstalment, 2);
+
+                if ($layup_preview_deposit_type == 'PERCENTAGE')
+                {
+                    $layup_preview_deposit = 'Deposit: ' . $layup_preview_deposit_amount . '%';
+                }
+                elseif ($layup_preview_deposit_type == 'FLAT')
+                {
+                    $layup_preview_deposit = 'Deposit: R' . $layup_preview_deposit_amount;
+                }
+                elseif ($layup_preview_deposit_type == 'INSTALMENT')
+                {
+                    $layup_preview_deposit = '';
+                    $layup_preview_months = $layup_preview_months + 1;
+                }
 
                 if ($layup_preview_months != 0 && $layup_preview_months != null)
                 {
@@ -1488,13 +1527,13 @@ function layup_display_estimate()
                         $layup_preview_months = $layup_preview_months + 1;
                     }
 
-                    if ($gateway->payment_plan_template == "") {
+                    if ($layup_preview_payment_plan_template == "") {
 
                         echo '<div style="font-size: 12px;margin-bottom: 10px;" class="est-layup">
-	                    From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' Months
+	                    From R' . esc_attr($layup_preview_amount) . '/month for ' . esc_attr($layup_preview_months) . ' months. ' . esc_attr($layup_preview_deposit) .'
                         </div>';
                     } else {
-                        $finalString = str_replace('{amount}', 'R' . esc_attr($layup_preview_amount), $gateway->payment_plan_template);
+                        $finalString = str_replace('{amount}', 'R' . esc_attr($layup_preview_amount), $layup_preview_payment_plan_template);
                         $finalString = str_replace('{months}', esc_attr($layup_preview_months), $finalString);
                         if ($layup_preview_deposit_type == 'PERCENTAGE')
                     {
@@ -1845,36 +1884,32 @@ inlineEditPost.edit = function( post_id ) {
 
                 }
 
-                if (!empty(get_post_meta($cart_product->get_id() , 'layup_preview_deposit_type', true)))
+                $layup_custom_deposit = get_post_meta($cart_product->get_id() , 'layup_custom_deposit', true);
+                $layup_custom_deposit_type = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_type', true);
+                $layup_custom_deposit_amount = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_amount', true);
+                $layup_custom_months = get_post_meta($cart_product->get_id() , 'layup_custom_months', true);
+                $layup_custom_months_min = get_post_meta($cart_product->get_id() , 'layup_custom_months_min', true);
+                $layup_custom_months_max = get_post_meta($cart_product->get_id() , 'layup_custom_months_max', true);
+
+                if ($layup_custom_deposit == "yes")
                 {
-                    array_push($check_dep_type, get_post_meta($cart_product->get_id() , 'layup_preview_deposit_type', true));
+                    array_push($check_dep_type, $layup_custom_deposit_type);
+                    array_push($check_dep_amount, $layup_custom_deposit_amount);
                 }
                 else
                 {
                     array_push($check_dep_type, $gateway->layup_dep_type);
-                }
-                if (!empty(get_post_meta($cart_product->get_id() , 'layup_preview_deposit_amount', true)))
-                {
-                    array_push($check_dep_amount, get_post_meta($cart_product->get_id() , 'layup_preview_deposit_amount', true));
-                }
-                else
-                {
                     array_push($check_dep_amount, $gateway->layup_dep);
                 }
-                if (!empty(get_post_meta($cart_product->get_id() , 'layup_preview_min_months', true)))
+                
+                if ($layup_custom_months == "yes")
                 {
-                    array_push($check_dep_months_min, get_post_meta($cart_product->get_id() , 'layup_preview_min_months', true));
+                    array_push($check_dep_months_min, $layup_custom_months_min);
+                    array_push($check_dep_months_max, $layup_custom_months_max);
                 }
                 else
                 {
                     array_push($check_dep_months_min, $gateway->lu_min_end_date);
-                }
-                if (!empty(get_post_meta($cart_product->get_id() , 'layup_preview_months', true)))
-                {
-                    array_push($check_dep_months_max, get_post_meta($cart_product->get_id() , 'layup_preview_months', true));
-                }
-                else
-                {
                     array_push($check_dep_months_max, $gateway->lu_max_end_date - 1);
                 }
 
@@ -1899,12 +1934,12 @@ inlineEditPost.edit = function( post_id ) {
 
                 if (!empty($check_dep_months_min[0]))
                 {
-                    $gateway->lu_min_end_date = $check_dep_months_min[0] + 1;
+                    $gateway->lu_min_end_date = $check_dep_months_min[0];
                 }
 
                 if (!empty($check_dep_months_max[0]))
                 {
-                    $gateway->lu_max_end_date = $check_dep_months_max[0] + 1;
+                    $gateway->lu_max_end_date = $check_dep_months_max[0];
                 }
 
                 if ($gateway->layup_dep_type == 'PERCENTAGE')
@@ -1932,13 +1967,13 @@ inlineEditPost.edit = function( post_id ) {
                     {
                         $deposit = $gateway->layup_dep;
                         $priceNoDep = $price - $gateway->layup_dep;
-                        $newInstalment = $priceNoDep / ($months-1);
+                        $newInstalment = $priceNoDep / $months;
                     }
                     else if ($gateway->layup_dep_type == 'PERCENTAGE')
                     {
                         $deposit = $gateway->layup_dep / 100 * $price;
                         $priceNoDep = $price - $deposit;
-                        $newInstalment = $priceNoDep / ($months-1);
+                        $newInstalment = $priceNoDep / $months;
                     }
                     else if ($gateway->layup_dep_type == 'INSTALMENT')
                     {
@@ -1956,7 +1991,7 @@ inlineEditPost.edit = function( post_id ) {
                 }
                     
                     echo '<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;" class="btn-est-layup">
-				<p style="margin-top: 0px; "><span class="btn-layup-text"><strong>PAY IT OFF</strong> with <em style="color:#1295a5;">LayUp</em></span> From R<span class="layup-installment-amount">' . esc_attr($formatInstalment) . '</span>/month for <span class="layup-months-amount">' . esc_attr($months-1) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . ' </span><span id="lumodallink" style="color:#1295a5;">Learn More</span></p>
+				<p style="margin-top: 0px; "><span class="btn-layup-text"><strong>PAY IT OFF</strong> with <em style="color:#1295a5;">LayUp</em></span> From R<span class="layup-installment-amount">' . esc_attr($formatInstalment) . '</span>/month for <span class="layup-months-amount">' . esc_attr($months) . '</span> Months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . ' </span><span id="lumodallink" style="color:#1295a5;">Learn More</span></p>
 				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
 				<style>
 					/* The Modal (background) */

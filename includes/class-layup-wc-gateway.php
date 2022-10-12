@@ -60,7 +60,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
         $this->enabled = $this->get_option('enabled');
 
-        $this->lu_max_end_date = $this->get_option('lu_max_end_date') + 1;
+        $this->lu_max_end_date = $this->get_option('lu_max_end_date');
 
         $this->lu_min_end_date = $this->get_option('lu_min_end_date');
 
@@ -74,7 +74,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         $this->payplan_disp_cart = 'yes' === $this->get_option('payplan_disp_cart');
 
         $this->layup_dep = (int)$this->get_option('layup_dep');
-
+        $this->absorb_fee = 'yes' === $this->get_option('absorb_fee');
         $this->layup_dep_type = $this->get_option('layup_dep_type');
         $this->learn_more_style = $this->get_option('learn_more_style');
 
@@ -247,6 +247,18 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                     'min' => '1'
 
                 )
+
+            ) ,
+
+            'absorb_fee' => array(
+
+                'title' => 'Absorb Fee',
+
+                'type' => 'checkbox',
+
+                'description' => 'Disabling this option will charge LayUp`s fee to your customers',
+
+                'default' => 'yes'
 
             ) ,
 
@@ -503,38 +515,35 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
             }
 
-            if (!empty(get_post_meta($cd_product->get_id() , 'layup_preview_deposit_type', true)))
+            $layup_custom_deposit = get_post_meta($cd_product->get_id() , 'layup_custom_deposit', true);
+            $layup_custom_deposit_type = get_post_meta($cd_product->get_id() , 'layup_custom_deposit_type', true);
+            $layup_custom_deposit_amount = get_post_meta($cd_product->get_id() , 'layup_custom_deposit_amount', true);
+            $layup_custom_months = get_post_meta($cd_product->get_id() , 'layup_custom_months', true);
+            $layup_custom_months_min = get_post_meta($cd_product->get_id() , 'layup_custom_months_min', true);
+            $layup_custom_months_max = get_post_meta($cd_product->get_id() , 'layup_custom_months_max', true);
+
+            if ($layup_custom_deposit == "yes")
             {
-                array_push($check_dep_type, get_post_meta($cd_product->get_id() , 'layup_preview_deposit_type', true));
+                array_push($check_dep_type, $layup_custom_deposit_type);
+                array_push($check_dep_amount, $layup_custom_deposit_amount);
             }
             else
             {
                 array_push($check_dep_type, $this->layup_dep_type);
-            }
-            if (!empty(get_post_meta($cd_product->get_id() , 'layup_preview_deposit_amount', true)))
-            {
-                array_push($check_dep_amount, get_post_meta($cd_product->get_id() , 'layup_preview_deposit_amount', true));
-            }
-            else
-            {
                 array_push($check_dep_amount, $this->layup_dep);
             }
-            if (!empty(get_post_meta($cd_product->get_id() , 'layup_preview_min_months', true)))
+            
+            if ($layup_custom_months == "yes")
             {
-                array_push($check_dep_months_min, get_post_meta($cd_product->get_id() , 'layup_preview_min_months', true));
+                array_push($check_dep_months_min, $layup_custom_months_min);
+                array_push($check_dep_months_max, $layup_custom_months_max);
             }
             else
             {
                 array_push($check_dep_months_min, $this->lu_min_end_date);
+                array_push($check_dep_months_max, $this->lu_max_end_date);
             }
-            if (!empty(get_post_meta($cd_product->get_id() , 'layup_preview_months', true)))
-            {
-                array_push($check_dep_months_max, get_post_meta($cd_product->get_id() , 'layup_preview_months', true));
-            }
-            else
-            {
-                array_push($check_dep_months_max, $this->lu_max_end_date - 1);
-            }
+            
 
         }
 
@@ -554,7 +563,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
             if (!empty($check_dep_months_min[0]))
             {
-                $this->lu_min_end_date = $check_dep_months_min[0] + 1;
+                $this->lu_min_end_date = $check_dep_months_min[0];
             }
 
             if (!empty($check_dep_months_max[0]))
@@ -711,7 +720,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 'depositPerc' => (int)$this->layup_dep,
 
-                'absorbsFee' => true,
+                'absorbsFee' => $this->absorb_fee,
 
                 'reference' => $ref,
 
