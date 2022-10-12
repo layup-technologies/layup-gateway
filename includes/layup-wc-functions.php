@@ -1916,7 +1916,6 @@ inlineEditPost.edit = function( post_id ) {
                 foreach($cart_products as $combine_cart_item_id => $combine_cart_item) {
                     $combine_cart_product = $combine_cart_item['data'];
                     $combine_product_price = $combine_cart_product->get_price();
-                    file_put_contents("test_combine_cart.txt", $combine_product_price);
                     if ($combine_cart_product->is_type('variation')) {
                         $combine_cart_product = wc_get_product($combine_cart_product->get_parent_id());
                     }
@@ -1955,6 +1954,8 @@ inlineEditPost.edit = function( post_id ) {
             }
     
             if (count(array_flip($check_dep_months_min)) > 1 || count(array_flip($check_dep_months_max)) > 1) {
+                var_dump($check_dep_months_min);
+                var_dump($check_dep_months_max);
                 $check_dep_months_min = array(max($check_dep_months_min));
                 $check_dep_months_max = array(min($check_dep_months_max));
             }
