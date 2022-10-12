@@ -547,8 +547,53 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
         }
 
-        if (count(array_unique($check_dep_type)) <= 1 && count(array_unique($check_dep_amount)) <= 1 && count(array_unique($check_dep_months_min)) <= 1 && count(array_unique($check_dep_months_max)) <= 1)
-        {
+
+
+        if (count(array_flip($check_dep_type)) > 1 || count(array_flip($check_dep_amount)) > 1) {
+            $combine_amount = [];
+            foreach($order_items as $combine_item_id => $combine_order_item) {
+                $combine_product = $combine_order_item->get_product();
+                $combine_product_price = round(($combine_order_item->get_total() * 100),0);
+                $layup_custom_deposit_combine = get_post_meta($combine_product->get_id() , 'layup_custom_deposit', true);
+                $layup_custom_deposit_type_combine = get_post_meta($combine_product->get_id() , 'layup_custom_deposit_type', true);
+                $layup_custom_deposit_amount_combine = get_post_meta($combine_product->get_id() , 'layup_custom_deposit_amount', true);
+                $layup_custom_months_max_combine = get_post_meta($combine_product->get_id() , 'layup_custom_months_max', true);
+                if ($layup_custom_deposit_combine == "yes")
+                {
+                    if ($layup_custom_deposit_type_combine == "FLAT")
+                    {
+                        array_push($combine_amount, $layup_custom_deposit_amount_combine);
+                    } elseif ($layup_custom_deposit_type_combine == "PERCENTAGE") {
+                        $perc_flat_amount = $layup_custom_deposit_amount_combine/100 * $combine_product_price;
+                        array_push($combine_amount, $perc_flat_amount);
+                    } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
+                        $instal_flat_amount = $combine_product_price / $layup_custom_months_max_combine;
+                        array_push($combine_amount, $instal_flat_amount);
+                    }
+                }
+                else
+                {
+                    if ($layup_custom_deposit_type_combine == "FLAT")
+                    {
+                        array_push($combine_amount, $this->layup_dep);
+                    } elseif ($layup_custom_deposit_type_combine == "PERCENTAGE") {
+                        $perc_flat_amount = $this->layup_dep/100 * $combine_product_price;
+                        array_push($combine_amount, $perc_flat_amount);
+                    } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
+                        $instal_flat_amount = $combine_product_price / $this->lu_max_end_date;
+                        array_push($combine_amount, $instal_flat_amount);
+                    }
+                }
+                
+            }
+            $check_dep_amount = array(array_sum($combine_amount));
+            $check_dep_type = array("FLAT");
+        }
+
+        if (count(array_flip($check_dep_months_min)) > 1 || count(array_flip($check_dep_months_max)) > 1) {
+            $check_dep_months_min = array(max($check_dep_months_min));
+            $check_dep_months_max = array(min($check_dep_months_max));
+        }
 
             if (!empty($check_dep_amount[0]))
             {
@@ -815,15 +860,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 return;
 
             }
-
-        }
-        else
-        {
-
-            wc_add_notice('Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.', 'error');
-
-            return;
-        }
 
     }
 
