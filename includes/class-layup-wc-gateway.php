@@ -553,7 +553,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
             $combine_amount = [];
             foreach($order_items as $combine_item_id => $combine_order_item) {
                 $combine_product = $combine_order_item->get_product();
-                $combine_product_price = round(($combine_order_item->get_total() * 100),0);
+                $combine_product_price = $combine_order_item->get_total();
                 $layup_custom_deposit_combine = get_post_meta($combine_product->get_id() , 'layup_custom_deposit', true);
                 $layup_custom_deposit_type_combine = get_post_meta($combine_product->get_id() , 'layup_custom_deposit_type', true);
                 $layup_custom_deposit_amount_combine = get_post_meta($combine_product->get_id() , 'layup_custom_deposit_amount', true);
