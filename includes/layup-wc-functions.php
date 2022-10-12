@@ -1915,10 +1915,11 @@ inlineEditPost.edit = function( post_id ) {
                 $combine_amount = [];
                 foreach($cart_products as $combine_cart_item_id => $combine_cart_item) {
                     $combine_cart_product = $combine_cart_item['data'];
+                    $combine_product_price = WC()->cart->get_product_price( $combine_cart_product );
                     if ($combine_cart_product->is_type('variation')) {
                         $combine_cart_product = wc_get_product($combine_cart_product->get_parent_id());
                     }
-                    $combine_product_price = WC()->cart->get_product_price( $combine_cart_product );
+                    
                     $combine_product_id = $combine_cart_product->get_id();
                     file_put_contents("test_combine_cart.txt", var_dump($combine_cart_product));
                     $layup_custom_deposit_combine = get_post_meta($combine_product_id , 'layup_custom_deposit', true);
