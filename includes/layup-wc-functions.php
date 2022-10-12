@@ -1102,8 +1102,8 @@ function layup_display_icon()
             }
             else if ($layup_preview_deposit_type == 'INSTALMENT')
             {
-                $newInstalment = $price / $months;
                 $months = $months + 1;
+                $newInstalment = $price / $months;
             }
             $layup_preview_amount = number_format($newInstalment, 2);
             

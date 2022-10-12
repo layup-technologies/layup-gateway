@@ -567,7 +567,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                         $perc_flat_amount = $layup_custom_deposit_amount_combine/100 * $combine_product_price;
                         array_push($combine_amount, $perc_flat_amount);
                     } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
-                        $instal_flat_amount = $combine_product_price / $layup_custom_months_max_combine;
+                        $instal_flat_amount = $combine_product_price / ($layup_custom_months_max_combine + 1);
                         array_push($combine_amount, $instal_flat_amount);
                     }
                 }
