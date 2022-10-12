@@ -557,7 +557,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 {
                     $combine_product = wc_get_product($combine_product->get_parent_id());
                 }
-                $combine_product_price = $combine_order_item->get_total();
+                $combine_product_price = $combine_order_item->get_total() + $combine_order_item->get_total_tax();
                 $combine_product_id = $combine_product->get_id();
                 $layup_custom_deposit_combine = get_post_meta($combine_product_id , 'layup_custom_deposit', true);
                 $layup_custom_deposit_type_combine = get_post_meta($combine_product_id , 'layup_custom_deposit_type', true);
@@ -587,7 +587,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 }
             }
             $check_dep_amount = array(array_sum($combine_amount));
-            file_put_contents("combine_test.txt", array_sum($check_dep_amount));
             $check_dep_type = array("FLAT");
         }
 
