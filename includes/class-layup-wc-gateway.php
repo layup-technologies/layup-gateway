@@ -76,6 +76,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         $this->layup_dep = (int)$this->get_option('layup_dep');
         $this->absorb_fee = 'yes' === $this->get_option('absorb_fee');
         $this->layup_dep_type = $this->get_option('layup_dep_type');
+        $this->dynamic_deposit = 'yes' === $this->get_option('dynamic_deposit');
         $this->learn_more_style = $this->get_option('learn_more_style');
 
         $this->api_key_error = $this->get_option('api_key_error');
@@ -178,6 +179,18 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 'description' => 'Place the payment gateway in test mode using test API keys.',
 
                 'default' => 'yes'
+
+            ) ,
+
+            'dynamic_deposit' => array(
+
+                'title' => 'Allow Dynamic deposits',
+
+                'type' => 'checkbox',
+
+                'description' => 'Enabling this will combine all individual product deposit types. This is meant to be used if you have multiple different deposits set on your products',
+
+                'default' => 'no'
 
             ) ,
 
@@ -548,52 +561,56 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         }
 
 
-
-        if (count(array_flip($check_dep_type)) > 1 || count(array_flip($check_dep_amount)) > 1) {
-            $combine_amount = [];
-            foreach($order_items as $combine_item_id => $combine_order_item) {
-                $combine_product = $combine_order_item->get_product();
-                if ($combine_product->is_type('variation'))
-                {
-                    $combine_product = wc_get_product($combine_product->get_parent_id());
-                }
-                $combine_product_price = $combine_order_item->get_total() + $combine_order_item->get_total_tax();
-                $combine_product_id = $combine_product->get_id();
-                $layup_custom_deposit_combine = get_post_meta($combine_product_id , 'layup_custom_deposit', true);
-                $layup_custom_deposit_type_combine = get_post_meta($combine_product_id , 'layup_custom_deposit_type', true);
-                $layup_custom_deposit_amount_combine = get_post_meta($combine_product_id, 'layup_custom_deposit_amount', true);
-                $layup_custom_months_max_combine = get_post_meta($combine_product_id , 'layup_custom_months_max', true);
-                if ($layup_custom_deposit_combine == "yes")
-                {
-                    if ($layup_custom_deposit_type_combine == "FLAT") {
-                        array_push($combine_amount, $layup_custom_deposit_amount_combine);
-                    } elseif ($layup_custom_deposit_type_combine == "PERCENTAGE") {
-                        $perc_flat_amount = $layup_custom_deposit_amount_combine/100 * $combine_product_price;
-                        array_push($combine_amount, $perc_flat_amount);
-                    } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
-                        $instal_flat_amount = $combine_product_price / ($layup_custom_months_max_combine + 1);
-                        array_push($combine_amount, $instal_flat_amount);
+        if ($this->dynamic_deposit == "yes") {
+            if (count(array_flip($check_dep_type)) > 1 || count(array_flip($check_dep_amount)) > 1) {
+                $combine_amount = [];
+                foreach($order_items as $combine_item_id => $combine_order_item) {
+                    $combine_product = $combine_order_item->get_product();
+                    if ($combine_product->is_type('variation'))
+                    {
+                        $combine_product = wc_get_product($combine_product->get_parent_id());
                     }
-                } else {
-                    if ($this->layup_dep_type == "FLAT") {
-                        array_push($combine_amount, $this->layup_dep);
-                    } elseif ($this->layup_dep_type == "PERCENTAGE") {
-                        $perc_flat_amount = $this->layup_dep/100 * $combine_product_price;
-                        array_push($combine_amount, $perc_flat_amount);
-                    } elseif ($this->layup_dep_type == "INSTALMENT") {
-                        $instal_flat_amount = $combine_product_price / ($this->lu_max_end_date + 1);
-                        array_push($combine_amount, $instal_flat_amount);
+                    $combine_product_price = $combine_order_item->get_total() + $combine_order_item->get_total_tax();
+                    $combine_product_id = $combine_product->get_id();
+                    $layup_custom_deposit_combine = get_post_meta($combine_product_id , 'layup_custom_deposit', true);
+                    $layup_custom_deposit_type_combine = get_post_meta($combine_product_id , 'layup_custom_deposit_type', true);
+                    $layup_custom_deposit_amount_combine = get_post_meta($combine_product_id, 'layup_custom_deposit_amount', true);
+                    $layup_custom_months_max_combine = get_post_meta($combine_product_id , 'layup_custom_months_max', true);
+                    if ($layup_custom_deposit_combine == "yes")
+                    {
+                        if ($layup_custom_deposit_type_combine == "FLAT") {
+                            array_push($combine_amount, $layup_custom_deposit_amount_combine);
+                        } elseif ($layup_custom_deposit_type_combine == "PERCENTAGE") {
+                            $perc_flat_amount = $layup_custom_deposit_amount_combine/100 * $combine_product_price;
+                            array_push($combine_amount, $perc_flat_amount);
+                        } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
+                            $instal_flat_amount = $combine_product_price / ($layup_custom_months_max_combine + 1);
+                            array_push($combine_amount, $instal_flat_amount);
+                        }
+                    } else {
+                        if ($this->layup_dep_type == "FLAT") {
+                            array_push($combine_amount, $this->layup_dep);
+                        } elseif ($this->layup_dep_type == "PERCENTAGE") {
+                            $perc_flat_amount = $this->layup_dep/100 * $combine_product_price;
+                            array_push($combine_amount, $perc_flat_amount);
+                        } elseif ($this->layup_dep_type == "INSTALMENT") {
+                            $instal_flat_amount = $combine_product_price / ($this->lu_max_end_date + 1);
+                            array_push($combine_amount, $instal_flat_amount);
+                        }
                     }
                 }
+                $check_dep_amount = array(array_sum($combine_amount));
+                $check_dep_type = array("FLAT");
             }
-            $check_dep_amount = array(array_sum($combine_amount));
-            $check_dep_type = array("FLAT");
+
+            if (count(array_flip($check_dep_months_min)) > 1 || count(array_flip($check_dep_months_max)) > 1) {
+                $check_dep_months_min = array(max($check_dep_months_min));
+                $check_dep_months_max = array(min($check_dep_months_max));
+            }
         }
 
-        if (count(array_flip($check_dep_months_min)) > 1 || count(array_flip($check_dep_months_max)) > 1) {
-            $check_dep_months_min = array(max($check_dep_months_min));
-            $check_dep_months_max = array(min($check_dep_months_max));
-        }
+        if (count(array_unique($check_dep_type)) <= 1 && count(array_unique($check_dep_amount)) <= 1 && count(array_unique($check_dep_months_min)) <= 1 && count(array_unique($check_dep_months_max)) <= 1)
+        {
 
             if (!empty($check_dep_amount[0]))
             {
@@ -860,6 +877,15 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 return;
 
             }
+
+        }
+        else
+        {
+
+            wc_add_notice('Some products are using a custom deposit for LayUp checkout. Please make sure that all products in your cart have the same deposit type and months before checking out with LayUp.', 'error');
+
+            return;
+        }
 
     }
 
