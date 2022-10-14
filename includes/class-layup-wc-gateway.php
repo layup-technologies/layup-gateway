@@ -184,7 +184,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
             'dynamic_deposit' => array(
 
-                'title' => 'Allow Dynamic deposits',
+                'title' => 'Allow dynamic deposits',
 
                 'type' => 'checkbox',
 
