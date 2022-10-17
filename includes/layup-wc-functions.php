@@ -1389,9 +1389,6 @@ function layup_display_icon()
 					let priceNoDep = 0;
 					let newInstalment = 0;
                     let deposit = document.querySelector(".layup-deposit-amount");
-                    if(deposit != null){
-					    deposit = deposit.innerHTML;
-                    }
 					
                     let months = document.querySelector(".layup-months-amount");
                     if(months != null){
