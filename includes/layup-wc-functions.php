@@ -1388,8 +1388,15 @@ function layup_display_icon()
 					let price = variant.display_price.toFixed(2);
 					let priceNoDep = 0;
 					let newInstalment = 0;
-					let deposit = document.querySelector(".layup-deposit-amount").innerHTML;
-					let months = parseInt(document.querySelector(".layup-months-amount").innerHTML);
+                    let deposit = document.querySelector(".layup-deposit-amount");
+                    if(deposit != null){
+					    deposit = deposit.innerHTML;
+                    }
+					
+                    let months = document.querySelector(".layup-months-amount");
+                    if(months != null){
+					    months = parseInt(months.innerHTML);
+                    }
 					if (deposit.startsWith("R")) {
 						deposit = deposit.substring(1).replace(/[^\d.-]/g, "");
 						priceNoDep = price - deposit;
@@ -1404,7 +1411,10 @@ function layup_display_icon()
 						newInstalment = price / months;
 					}
 					
-					document.querySelector(".layup-installment-amount").innerHTML = newInstalment.toFixed(2);
+                    if(document.querySelector(".layup-installment-amount") != null){
+					    document.querySelector(".layup-installment-amount").innerHTML = newInstalment.toFixed(2);
+                    }
+					
 				}
 
 
