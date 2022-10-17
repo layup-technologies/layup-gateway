@@ -1396,7 +1396,6 @@ function layup_display_icon()
                     } else {
                         months = 0;
                     }
-                    console.log(months);
                     if(deposit != null){
 					    deposit = deposit.innerHTML;
                         if (deposit.startsWith("R")) {
@@ -1413,7 +1412,7 @@ function layup_display_icon()
                             newInstalment = price / months;
                         }
                     }
-					
+					console.log(newInstalment);
                     if(document.querySelector(".layup-installment-amount") != null){
 					    document.querySelector(".layup-installment-amount").innerHTML = newInstalment.toFixed(2);
                     }
