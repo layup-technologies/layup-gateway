@@ -1396,20 +1396,25 @@ function layup_display_icon()
                     let months = document.querySelector(".layup-months-amount");
                     if(months != null){
 					    months = parseInt(months.innerHTML);
+                    } else {
+                        months = 0;
                     }
-					if (deposit.startsWith("R")) {
-						deposit = deposit.substring(1).replace(/[^\d.-]/g, "");
-						priceNoDep = price - deposit;
-						newInstalment = priceNoDep / months;
-					} else if(deposit.endsWith("%")) {
-					  deposit = deposit.slice(0, -1).replace(/[^\d.-]/g, "");
-					  deposit = deposit / 100 * price;
-					  priceNoDep = price - deposit;
-					  newInstalment = priceNoDep / months;
-					} else if(deposit == "") {
-						deposit = deposit.slice(0, -1);
-						newInstalment = price / months;
-					}
+                    if(deposit != null){
+					    deposit = deposit.innerHTML;
+                        if (deposit.startsWith("R")) {
+                            deposit = deposit.substring(1).replace(/[^\d.-]/g, "");
+                            priceNoDep = price - deposit;
+                            newInstalment = priceNoDep / months;
+                        } else if(deposit.endsWith("%")) {
+                          deposit = deposit.slice(0, -1).replace(/[^\d.-]/g, "");
+                          deposit = deposit / 100 * price;
+                          priceNoDep = price - deposit;
+                          newInstalment = priceNoDep / months;
+                        } else if(deposit == "") {
+                            deposit = deposit.slice(0, -1);
+                            newInstalment = price / months;
+                        }
+                    }
 					
                     if(document.querySelector(".layup-installment-amount") != null){
 					    document.querySelector(".layup-installment-amount").innerHTML = newInstalment.toFixed(2);
