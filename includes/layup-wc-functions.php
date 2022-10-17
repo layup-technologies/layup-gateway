@@ -1396,6 +1396,7 @@ function layup_display_icon()
                     } else {
                         months = 0;
                     }
+                    console.log(months);
                     if(deposit != null){
 					    deposit = deposit.innerHTML;
                         if (deposit.startsWith("R")) {
