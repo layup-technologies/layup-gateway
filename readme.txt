@@ -203,6 +203,7 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 * Added product level payment plan preview templates and learn more popup styles.
 * Removed API calls to save the payment plan preview values, these values are now calculated in the plugin instead.
+* Added dynamic deposits as a flat fee, as well as option to disable it.
 
 = v1.8.3 =
 

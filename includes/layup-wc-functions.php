@@ -1102,19 +1102,19 @@ function layup_display_icon()
             }
             else if ($layup_preview_deposit_type == 'INSTALMENT')
             {
-                $newInstalment = $price / $months;
                 $months = $months + 1;
+                $newInstalment = $price / $months;
             }
             $layup_preview_amount = number_format($newInstalment, 2);
             
 
             if ($layup_preview_deposit_type == 'PERCENTAGE')
             {
-                $layup_preview_deposit = 'Deposit: ' . $layup_preview_deposit_amount . '%';
+                $layup_preview_deposit = $layup_preview_deposit_amount . '%';
             }
             elseif ($layup_preview_deposit_type == 'FLAT')
             {
-                $layup_preview_deposit = 'Deposit: R' . $layup_preview_deposit_amount;
+                $layup_preview_deposit = 'R' . $layup_preview_deposit_amount;
             }
             elseif ($layup_preview_deposit_type == 'INSTALMENT')
             {
@@ -1136,7 +1136,7 @@ function layup_display_icon()
 
                 if ($layup_preview_payment_plan_template == "") {
 
-                    $finalString = '<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> months. Interest-free. <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
+                    $finalString = '<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> months. Interest-free. Deposit: <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
                 } else {
 
                     if ($layup_preview_deposit_type == 'PERCENTAGE')
@@ -1388,23 +1388,35 @@ function layup_display_icon()
 					let price = variant.display_price.toFixed(2);
 					let priceNoDep = 0;
 					let newInstalment = 0;
-					let deposit = document.querySelector(".layup-deposit-amount").innerHTML;
-					let months = parseInt(document.querySelector(".layup-months-amount").innerHTML);
-					if (deposit.startsWith("R")) {
-						deposit = deposit.substring(1).replace(/[^\d.-]/g, "");
-						priceNoDep = price - deposit;
-						newInstalment = priceNoDep / months;
-					} else if(deposit.endsWith("%")) {
-					  deposit = deposit.slice(0, -1).replace(/[^\d.-]/g, "");
-					  deposit = deposit / 100 * price;
-					  priceNoDep = price - deposit;
-					  newInstalment = priceNoDep / months;
-					} else if(deposit == "") {
-						deposit = deposit.slice(0, -1);
-						newInstalment = price / months;
-					}
+                    let deposit = document.querySelector(".layup-deposit-amount");
 					
-					document.querySelector(".layup-installment-amount").innerHTML = newInstalment.toFixed(2);
+                    let months = document.querySelector(".layup-months-amount");
+                    if(months != null){
+					    months = parseInt(months.innerHTML);
+                    } else {
+                        months = 0;
+                    }
+                    if(deposit != null){
+					    deposit = deposit.innerHTML;
+                        if (deposit.startsWith("R")) {
+                            deposit = deposit.substring(1).replace(/[^\d.-]/g, "");
+                            priceNoDep = price - deposit;
+                            newInstalment = priceNoDep / months;
+                        } else if(deposit.endsWith("%")) {
+                          deposit = deposit.slice(0, -1).replace(/[^\d.-]/g, "");
+                          deposit = deposit / 100 * price;
+                          priceNoDep = price - deposit;
+                          newInstalment = priceNoDep / months;
+                        } else if(deposit == "") {
+                            deposit = deposit.slice(0, -1);
+                            newInstalment = price / months;
+                        }
+                    }
+					console.log(newInstalment);
+                    if(document.querySelector(".layup-installment-amount") != null){
+					    document.querySelector(".layup-installment-amount").innerHTML = newInstalment.toFixed(2);
+                    }
+					
 				}
 
 
@@ -1440,7 +1452,7 @@ function layup_display_estimate()
 
     // Check for the Disable LayUp field value
     $product = wc_get_product($post->ID);
-
+    $price = (float)$product->get_price();
     if (is_object($product))
     {
 
@@ -1501,18 +1513,18 @@ function layup_display_estimate()
             }
             else if ($layup_preview_deposit_type == 'INSTALMENT')
             {
-                $newInstalment = $price / $months;
                 $months = $months + 1;
+                $newInstalment = $price / $months;
             }
             $layup_preview_amount = number_format($newInstalment, 2);
 
                 if ($layup_preview_deposit_type == 'PERCENTAGE')
                 {
-                    $layup_preview_deposit = 'Deposit: ' . $layup_preview_deposit_amount . '%';
+                    $layup_preview_deposit = $layup_preview_deposit_amount . '%';
                 }
                 elseif ($layup_preview_deposit_type == 'FLAT')
                 {
-                    $layup_preview_deposit = 'Deposit: R' . $layup_preview_deposit_amount;
+                    $layup_preview_deposit = 'R' . $layup_preview_deposit_amount;
                 }
                 elseif ($layup_preview_deposit_type == 'INSTALMENT')
                 {
@@ -1522,10 +1534,6 @@ function layup_display_estimate()
 
                 if ($layup_preview_months != 0 && $layup_preview_months != null)
                 {
-                    if ($layup_preview_deposit_type == 'INSTALMENT')
-                    {
-                        $layup_preview_months = $layup_preview_months + 1;
-                    }
 
                     if ($layup_preview_payment_plan_template == "") {
 
@@ -1537,9 +1545,9 @@ function layup_display_estimate()
                         $finalString = str_replace('{months}', esc_attr($layup_preview_months), $finalString);
                         if ($layup_preview_deposit_type == 'PERCENTAGE')
                     {
-                        $finalString = str_replace('{deposit}', esc_attr($layup_preview_deposit).'%', $finalString);
+                        $finalString = str_replace('{deposit}', esc_attr($layup_preview_deposit), $finalString);
                     } elseif($layup_preview_deposit_type == 'FLAT'){
-                        $finalString = str_replace('{deposit}', 'R'.esc_attr($layup_preview_deposit), $finalString);
+                        $finalString = str_replace('{deposit}', esc_attr($layup_preview_deposit), $finalString);
                     } elseif($layup_preview_deposit_type == 'INSTALMENT'){
                         $finalString = str_replace('{deposit}', 'R'.esc_attr($layup_preview_amount), $finalString);
                     }
@@ -1910,9 +1918,59 @@ inlineEditPost.edit = function( post_id ) {
                 else
                 {
                     array_push($check_dep_months_min, $gateway->lu_min_end_date);
-                    array_push($check_dep_months_max, $gateway->lu_max_end_date - 1);
+                    array_push($check_dep_months_max, $gateway->lu_max_end_date);
                 }
 
+            }
+
+            if ($gateway->dynamic_deposit == "yes")
+            {
+                if (count(array_flip($check_dep_type)) > 1 || count(array_flip($check_dep_amount)) > 1) {
+                    $combine_amount = [];
+                    foreach($cart_products as $combine_cart_item_id => $combine_cart_item) {
+                        $combine_cart_product = $combine_cart_item['data'];
+                        $combine_product_price = $combine_cart_product->get_price();
+                        if ($combine_cart_product->is_type('variation')) {
+                            $combine_cart_product = wc_get_product($combine_cart_product->get_parent_id());
+                        }
+                        
+                        $combine_product_id = $combine_cart_product->get_id();
+                        
+                        $layup_custom_deposit_combine = get_post_meta($combine_product_id , 'layup_custom_deposit', true);
+                        $layup_custom_deposit_type_combine = get_post_meta($combine_product_id , 'layup_custom_deposit_type', true);
+                        $layup_custom_deposit_amount_combine = get_post_meta($combine_product_id, 'layup_custom_deposit_amount', true);
+                        $layup_custom_months_max_combine = get_post_meta($combine_product_id , 'layup_custom_months_max', true);
+                        if ($layup_custom_deposit_combine == "yes")
+                        {
+                            if ($layup_custom_deposit_type_combine == "FLAT") {
+                                array_push($combine_amount, $layup_custom_deposit_amount_combine);
+                            } elseif ($layup_custom_deposit_type_combine == "PERCENTAGE") {
+                                $perc_flat_amount = $layup_custom_deposit_amount_combine/100 * $combine_product_price;
+                                array_push($combine_amount, $perc_flat_amount);
+                            } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
+                                $instal_flat_amount = $combine_product_price / ($layup_custom_months_max_combine + 1);
+                                array_push($combine_amount, $instal_flat_amount);
+                            }
+                        } else {
+                            if ($gateway->layup_dep_type == "FLAT") {
+                                array_push($combine_amount, $gateway->layup_dep);
+                            } elseif ($gateway->layup_dep_type == "PERCENTAGE") {
+                                $perc_flat_amount = $gateway->layup_dep/100 * $combine_product_price;
+                                array_push($combine_amount, $perc_flat_amount);
+                            } elseif ($gateway->layup_dep_type == "INSTALMENT") {
+                                $instal_flat_amount = $combine_product_price / ($gateway->lu_max_end_date + 1);
+                                array_push($combine_amount, $instal_flat_amount);
+                            }
+                        }
+                    }
+                    $check_dep_amount = array(array_sum($combine_amount));
+                    $check_dep_type = array("FLAT");
+                }
+        
+                if (count(array_flip($check_dep_months_min)) > 1 || count(array_flip($check_dep_months_max)) > 1) {
+                    $check_dep_months_min = array(max($check_dep_months_min));
+                    $check_dep_months_max = array(min($check_dep_months_max));
+                }
             }
 
             if (count(array_unique($check_dep_type)) <= 1 && count(array_unique($check_dep_amount)) <= 1 && count(array_unique($check_dep_months_min)) <= 1 && count(array_unique($check_dep_months_max)) <= 1)
