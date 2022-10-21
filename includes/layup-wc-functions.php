@@ -1366,6 +1366,16 @@ function layup_display_icon()
 				
 				});
 
+                jQuery( document ).ready(function() {
+				
+					jQuery("form.cart button[type=submit]").on("click", function() {
+						let value = jQuery(this).val();
+						console.log("add to cart clicked")
+						variantUpdateEvent(value);
+					});
+				
+				});
+
 				variantUpdateEvent = function (e) {
 					// assume were only dealing with a single product
 					let variants = JSON.parse(document.querySelector(".variations_form").getAttribute("data-product_variations"));
