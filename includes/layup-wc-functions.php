@@ -2390,7 +2390,8 @@ inlineEditPost.edit = function( post_id ) {
             {
                 $passed = true;
             } else {
-                $passed = false;
+                wc_add_notice( __( 'Please enter a date.', 'woocommerce' ), 'error' );
+                $passed = true;
             }
             return $passed;
     }
