@@ -1372,7 +1372,6 @@ function layup_display_icon()
 					jQuery("form.cart button[type=submit]").on("click", function() {
 						let value = jQuery(this).val();
 						console.log("add to cart clicked");
-                        event.preventDefault();
 					});
 				
 				});
