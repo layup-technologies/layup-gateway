@@ -1367,11 +1367,12 @@ function layup_display_icon()
 				});
 
                 jQuery( document ).ready(function() {
-				
+                    const checkbox = document.querySelector("form.cart button[type=submit]");
+                    checkbox.preventDefault();
 					jQuery("form.cart button[type=submit]").on("click", function() {
 						let value = jQuery(this).val();
-						console.log("add to cart clicked")
-						variantUpdateEvent(value);
+						console.log("add to cart clicked");
+                        event.preventDefault();
 					});
 				
 				});
