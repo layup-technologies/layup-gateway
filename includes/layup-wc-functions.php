@@ -1367,8 +1367,11 @@ function layup_display_icon()
 				});
 
                 jQuery( document ).ready(function() {
-                    const checkbox = document.querySelector("form.cart button[type=submit]");
-                    checkbox.preventDefault();
+                    
+                    document.querySelector("form.cart button[type=submit]").addEventListener("click", function(event){
+                        event.preventDefault()
+                      });
+                    
 					jQuery("form.cart button[type=submit]").on("click", function() {
 						let value = jQuery(this).val();
 						console.log("add to cart clicked");
