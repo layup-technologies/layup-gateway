@@ -1369,7 +1369,7 @@ function layup_display_icon()
                 jQuery( document ).ready(function() {
                     
                     document.querySelector("form.cart button[type=submit]").addEventListener("click", function(event){
-                        event.preventDefault()
+                        
                       });
                     
 					jQuery("form.cart button[type=submit]").on("click", function() {
