@@ -1465,9 +1465,10 @@ function layup_display_estimate()
 
     // Check for the Disable LayUp field value
     $product = wc_get_product($post->ID);
-    $price = (float)$product->get_price();
+    
     if (is_object($product))
     {
+        $price = (float)$product->get_price();
 
         $layup_disable_meta = $product->get_meta('layup_disable');
 
