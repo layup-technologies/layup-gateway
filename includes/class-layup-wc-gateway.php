@@ -725,6 +725,24 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
             }
 
+            // Check for fees
+
+            foreach ( $order->get_items('fee') as $item_id => $item_fee ){
+
+                $products[$i] = array(
+
+                    'amount' => (int)round(($item_fee->get_total() * 100),0),
+
+                    'link' => get_site_url(),
+
+                    'sku' => $item_fee->get_name()
+
+                );
+
+                $i++;
+         
+            }
+
             // Check for shipping total
             
             
