@@ -1366,19 +1366,6 @@ function layup_display_icon()
 				
 				});
 
-                jQuery( document ).ready(function() {
-                    
-                    document.querySelector("form.cart button[type=submit]").addEventListener("click", function(event){
-                        
-                      });
-                    
-					jQuery("form.cart button[type=submit]").on("click", function() {
-						let value = jQuery(this).val();
-						console.log("add to cart clicked");
-					});
-				
-				});
-
 				variantUpdateEvent = function (e) {
 					// assume were only dealing with a single product
 					let variants = JSON.parse(document.querySelector(".variations_form").getAttribute("data-product_variations"));
@@ -1436,6 +1423,113 @@ function layup_display_icon()
 				}
 
 				</script>';
+
+                if ($gateway->dynamic_deposit != "yes")
+            {
+                
+                $cart_products = $woocommerce->cart->cart_contents;
+    
+                // Build product array
+                $custom_dep_inarray = false;
+    
+                $check_dep_type = [];
+                $check_dep_amount = [];
+                $check_dep_months_min = [];
+                $check_dep_months_max = [];
+    
+                foreach ($cart_products as $cart_item_key => $cart_item)
+                {
+    
+                    $cart_product = $cart_item['data'];
+    
+                    if ($cart_product->is_type('variation'))
+                    {
+                        $cart_product = wc_get_product($cart_product->get_parent_id());
+    
+                    }
+    
+                    $layup_custom_deposit = get_post_meta($cart_product->get_id() , 'layup_custom_deposit', true);
+                    $layup_custom_deposit_type = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_type', true);
+                    $layup_custom_deposit_amount = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_amount', true);
+                    $layup_custom_months = get_post_meta($cart_product->get_id() , 'layup_custom_months', true);
+                    $layup_custom_months_min = get_post_meta($cart_product->get_id() , 'layup_custom_months_min', true);
+                    $layup_custom_months_max = get_post_meta($cart_product->get_id() , 'layup_custom_months_max', true);
+    
+                    if ($layup_custom_deposit == "yes")
+                    {
+                        array_push($check_dep_type, $layup_custom_deposit_type);
+                        array_push($check_dep_amount, $layup_custom_deposit_amount);
+                    }
+                    else
+                    {
+                        array_push($check_dep_type, $gateway->layup_dep_type);
+                        array_push($check_dep_amount, $gateway->layup_dep);
+                    }
+                    
+                    if ($layup_custom_months == "yes")
+                    {
+                        array_push($check_dep_months_min, $layup_custom_months_min);
+                        array_push($check_dep_months_max, $layup_custom_months_max);
+                    }
+                    else
+                    {
+                        array_push($check_dep_months_min, $gateway->lu_min_end_date);
+                        array_push($check_dep_months_max, $gateway->lu_max_end_date);
+                    }
+    
+                }
+                if (count(array_unique($check_dep_type)) > 1 && count(array_unique($check_dep_amount)) > 1 && count(array_unique($check_dep_months_min)) > 1 && count(array_unique($check_dep_months_max)) > 1)
+                {
+
+                    echo '<script>
+
+                    jQuery(document).ready(function(){
+                        
+                        document.querySelector("form.cart button[type=submit]").addEventListener("click", function(event){
+                            event.preventDefault();
+                          });
+
+                        jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br></div></div>` );
+
+                        // Get the modal
+                        var luModal = document.getElementById("lumyModal");
+            
+                        // Get the button that opens the modal
+                        var luBtn = querySelector("form.cart button[type=submit]");
+            
+                        // Get the <span> element that closes the modal
+                        var luSpan = document.getElementsByClassName("luclose")[0];
+            
+                        // When the user clicks the button, open the modal 
+                        luBtn.onclick = function () {
+						
+                            jQuery( "#lumyModal .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p></div><button style="width:100%;background:#1295a5;color:#FFF;padding:15px;" on-click="luSubmitForm()">Continue</button><div></div>` );
+                            
+                            luModal.style.display = "block";
+                        }
+
+                        function luSubmitForm() {
+                            document.querySelector("form.cart").submit();
+                        }
+            
+                        // When the user clicks on <span> (x), close the modal
+                        luSpan.onclick = function () {
+                            luModal.style.display = "none";
+                            jQuery("#lu-warning").remove();
+                        }
+            
+                        // When the user clicks anywhere outside of the modal, close it
+                        window.onclick = function (event) {
+                            if (event.target == luModal) {
+                                luModal.style.display = "none";
+                                jQuery("#lu-warning").remove();
+                            }
+                        }
+
+                    });
+                    </script>';
+                    }
+                }
             }
 
         }
