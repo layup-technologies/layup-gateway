@@ -1515,12 +1515,12 @@ function layup_display_icon()
                         // When the user clicks the button, open the modal 
                         luBtn.onclick = function () {
 						
-                            jQuery( "#lumyModalComp .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p></div><button style="width:100%;background:#1295a5;color:#FFF;padding:15px;" on-click="luSubmitForm()">Continue</button><div></div>` );
+                            jQuery( "#lumyModalComp .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p><button class="luContinue" style="width:100%;background:#1295a5;color:#FFF;padding:15px;" >Continue</button></div>` );
                             
                             luModal.style.display = "block";
                         }
-
-                        function luSubmitForm() {
+                        var luCont = document.querySelector("button.luContinue");
+                        luCont.onclick = function () {
                             document.querySelector("form.cart").submit();
                         }
             
