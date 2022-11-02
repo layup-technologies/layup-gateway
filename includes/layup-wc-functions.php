@@ -1518,10 +1518,10 @@ function layup_display_icon()
                             jQuery( "#lumyModalComp .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p><button class="luContinue" style="width:100%;background:#1295a5;color:#FFF;padding:15px;" >Continue</button></div>` );
                             
                             luModal.style.display = "block";
-                        }
-                        var luCont = document.querySelector("button.luContinue");
-                        luCont.onclick = function () {
-                            document.querySelector("form.cart").submit();
+                            var luCont = document.querySelector("button.luContinue");
+                            luCont.onclick = function () {
+                                document.querySelector("form.cart").submit();
+                            }
                         }
             
                         // When the user clicks on <span> (x), close the modal
