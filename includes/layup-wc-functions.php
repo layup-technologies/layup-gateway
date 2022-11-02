@@ -361,60 +361,64 @@ function layup_admin_footer_script()
 
     global $post;
 
-    global $woocommerce;
-
-    $gateway_id = 'layup';
-
-    $gateways = WC_Payment_Gateways::instance();
-
-    $gateway = $gateways->payment_gateways() [$gateway_id];
-
-    $dates = get_post_meta($post->ID, 'layup_date', true);
-
-    $x = - 1;
-
-    if (is_array($dates))
+    if (is_object($post))
     {
+
+        global $woocommerce;
+
+        $gateway_id = 'layup';
+
+        $gateways = WC_Payment_Gateways::instance();
+
+        $gateway = $gateways->payment_gateways() [$gateway_id];
+
+        $dates = get_post_meta($post->ID, 'layup_date', true);
 
         $x = - 1;
 
-        foreach ($dates as $date)
+        if (is_array($dates))
         {
 
-            $x++;
+            $x = - 1;
+
+            foreach ($dates as $date)
+            {
+
+                $x++;
+
+            }
 
         }
 
-    }
+        if ('product' == $post->post_type)
+        {
 
-    if ('product' == $post->post_type)
-    {
+            $curr_date = date('Y-m-d');
 
-        $curr_date = date('Y-m-d');
+            $max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($curr_date)));
 
-        $max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($curr_date)));
+            $min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($curr_date)));
 
-        $min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($curr_date)));
-
-        echo '<script type="text/javascript">
-                jQuery(document).ready(function($) {
-                    var today = new Date();
-                    var date = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
-                    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
-                    var add_button      = $(".add_field_button"); //Add button ID
-                    var x = ' . esc_attr($x) . '; //initlal text box count
-                    $(add_button).click(function(e){ //on add input button click
-                    e.preventDefault();
-                    x++;
-                    $(wrapper).append(`<p class="form-field date_field_type"><span class="wrap"><label>Departure/Event Date</label><input placeholder="Date" max="' . esc_attr($max_date) . '" min="' . esc_attr($min_date) . '" class="" type="date" name="layup_date[`+ x +`]" value=""  style="width: 150px;" /></span><a href="#" class="remove_field">Remove</a></p>`);
+            echo '<script type="text/javascript">
+                    jQuery(document).ready(function($) {
+                        var today = new Date();
+                        var date = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+                        var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+                        var add_button      = $(".add_field_button"); //Add button ID
+                        var x = ' . esc_attr($x) . '; //initlal text box count
+                        $(add_button).click(function(e){ //on add input button click
+                        e.preventDefault();
+                        x++;
+                        $(wrapper).append(`<p class="form-field date_field_type"><span class="wrap"><label>Departure/Event Date</label><input placeholder="Date" max="' . esc_attr($max_date) . '" min="' . esc_attr($min_date) . '" class="" type="date" name="layup_date[`+ x +`]" value=""  style="width: 150px;" /></span><a href="#" class="remove_field">Remove</a></p>`);
+                        });
+                        $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+                        e.preventDefault(); 
+                        $(this).parent("p").remove();
+                        })
                     });
-                    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-                    e.preventDefault(); 
-                    $(this).parent("p").remove();
-                    })
-                });
-            </script>';
+                </script>';
 
+        }
     }
 
 }
