@@ -1515,12 +1515,17 @@ function layup_display_icon()
                         // When the user clicks the button, open the modal 
                         luBtn.onclick = function () {
 						
-                            jQuery( "#lumyModalComp .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p><button class="luContinue" style="width:100%;background:#1295a5;color:#FFF;padding:15px;" >Continue</button></div>` );
+                            jQuery( "#lumyModalComp .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p><button class="luContinue" style="width: 40%;background:#1295a5;color:#FFF;padding:15px;margin: 5px;border: 0px;" >Continue</button><button class="luCancel" style="width: 40%;background:#1295a5;color:#FFF;padding:15px;margin: 5px;border: 0px;" >Cancel</button></div>` );
                             
                             luModal.style.display = "block";
                             var luCont = document.querySelector("button.luContinue");
                             luCont.onclick = function () {
                                 document.querySelector("form.cart").submit();
+                            }
+                            var luCancel = document.querySelector("button.luCancel");
+                            luCancel.onclick = function () {
+                                luModal.style.display = "none";
+                                jQuery("#lu-warning").remove();
                             }
                         }
             
