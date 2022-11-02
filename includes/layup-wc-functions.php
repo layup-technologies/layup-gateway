@@ -1501,7 +1501,7 @@ function layup_display_icon()
                             event.preventDefault();
                           });
 
-                        jQuery( "body" ).prepend( `<div id="lumyModal" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br></div></div>` );
+                        
 
                         // Get the modal
                         var luModal = document.getElementById("lumyModal");
