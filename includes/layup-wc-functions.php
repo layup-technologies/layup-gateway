@@ -1501,10 +1501,10 @@ function layup_display_icon()
                             event.preventDefault();
                           });
 
-                        
+                        jQuery( "body" ).prepend( `<div id="lumyModalComp" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br></div></div>` );
 
                         // Get the modal
-                        var luModal = document.getElementById("lumyModal");
+                        var luModal = document.getElementById("lumyModalComp");
             
                         // Get the button that opens the modal
                         var luBtn = jQuery("form.cart button[type=submit]");
@@ -1515,7 +1515,7 @@ function layup_display_icon()
                         // When the user clicks the button, open the modal 
                         luBtn.onclick = function () {
 						
-                            jQuery( "#lumyModal .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p></div><button style="width:100%;background:#1295a5;color:#FFF;padding:15px;" on-click="luSubmitForm()">Continue</button><div></div>` );
+                            jQuery( "#lumyModalComp .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p></div><button style="width:100%;background:#1295a5;color:#FFF;padding:15px;" on-click="luSubmitForm()">Continue</button><div></div>` );
                             
                             luModal.style.display = "block";
                         }
