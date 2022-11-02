@@ -1507,7 +1507,7 @@ function layup_display_icon()
                         var luModal = document.getElementById("lumyModalComp");
             
                         // Get the button that opens the modal
-                        var luBtn = jQuery("form.cart button[type=submit]");
+                        var luBtn = document.querySelector("form.cart button[type=submit]");
                           console.log(luBtn);
                         // Get the <span> element that closes the modal
                         var luSpan = document.getElementsByClassName("luclose")[0];
