@@ -1073,8 +1073,10 @@ function layup_display_icon()
 
             if ($layup_custom_months == 'yes' && $layup_custom_months_max != ""){
                 $layup_preview_months = $layup_custom_months_max;
+                $layup_preview_months_min = $layup_custom_months_min;
             } else {
                 $layup_preview_months = $gateway->lu_max_end_date;
+                $layup_preview_months_min = $gateway->lu_min_end_date;
             }
 
             if ($layup_custom_payment_plan == 'yes' && $layup_custom_payment_plan_template != ""){
@@ -1436,10 +1438,10 @@ function layup_display_icon()
                 // Build product array
                 $custom_dep_inarray = false;
     
-                $check_dep_type = [];
-                $check_dep_amount = [];
-                $check_dep_months_min = [];
-                $check_dep_months_max = [];
+                $check_dep_type_comp = [];
+                $check_dep_amount_comp = [];
+                $check_dep_months_min_comp = [];
+                $check_dep_months_max_comp = [];
     
                 foreach ($cart_products as $cart_item_key => $cart_item)
                 {
@@ -1452,37 +1454,43 @@ function layup_display_icon()
     
                     }
     
-                    $layup_custom_deposit = get_post_meta($cart_product->get_id() , 'layup_custom_deposit', true);
-                    $layup_custom_deposit_type = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_type', true);
-                    $layup_custom_deposit_amount = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_amount', true);
-                    $layup_custom_months = get_post_meta($cart_product->get_id() , 'layup_custom_months', true);
-                    $layup_custom_months_min = get_post_meta($cart_product->get_id() , 'layup_custom_months_min', true);
-                    $layup_custom_months_max = get_post_meta($cart_product->get_id() , 'layup_custom_months_max', true);
+                    $layup_custom_deposit_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit', true);
+                    $layup_custom_deposit_type_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_type', true);
+                    $layup_custom_deposit_amount_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_amount', true);
+                    $layup_custom_months_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months', true);
+                    $layup_custom_months_min_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months_min', true);
+                    $layup_custom_months_max_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months_max', true);
     
-                    if ($layup_custom_deposit == "yes")
+                    if ($layup_custom_deposit_comp == "yes")
                     {
-                        array_push($check_dep_type, $layup_custom_deposit_type);
-                        array_push($check_dep_amount, $layup_custom_deposit_amount);
+                        array_push($check_dep_type_comp, $layup_custom_deposit_type_comp);
+                        array_push($check_dep_amount_comp, $layup_custom_deposit_amount_comp);
                     }
                     else
                     {
-                        array_push($check_dep_type, $gateway->layup_dep_type);
-                        array_push($check_dep_amount, $gateway->layup_dep);
+                        array_push($check_dep_type_comp, $gateway->layup_dep_type);
+                        array_push($check_dep_amount_comp, $gateway->layup_dep);
                     }
                     
-                    if ($layup_custom_months == "yes")
+                    if ($layup_custom_months_comp == "yes")
                     {
-                        array_push($check_dep_months_min, $layup_custom_months_min);
-                        array_push($check_dep_months_max, $layup_custom_months_max);
+                        array_push($check_dep_months_min_comp, $layup_custom_months_min_comp);
+                        array_push($check_dep_months_max_comp, $layup_custom_months_max_comp);
                     }
                     else
                     {
-                        array_push($check_dep_months_min, $gateway->lu_min_end_date);
-                        array_push($check_dep_months_max, $gateway->lu_max_end_date);
+                        array_push($check_dep_months_min_comp, $gateway->lu_min_end_date);
+                        array_push($check_dep_months_max_comp, $gateway->lu_max_end_date);
                     }
     
                 }
-                if (count(array_unique($check_dep_type)) > 1 && count(array_unique($check_dep_amount)) > 1 && count(array_unique($check_dep_months_min)) > 1 && count(array_unique($check_dep_months_max)) > 1)
+
+                array_push($check_dep_type_comp, $layup_preview_deposit_type);
+                array_push($check_dep_amount_comp, $layup_preview_deposit_amount);
+                array_push($check_dep_months_min_comp, $layup_preview_months_min);
+                array_push($check_dep_months_max_comp, $layup_preview_months);
+
+                if (count(array_unique($check_dep_type_comp)) > 1 && count(array_unique($check_dep_amount_comp)) > 1 && count(array_unique($check_dep_months_min_comp)) > 1 && count(array_unique($check_dep_months_max_comp)) > 1)
                 {
 
                     echo '<script>
