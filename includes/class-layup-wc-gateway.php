@@ -803,7 +803,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
             
             $order_details = array(
 
-                'depositAmount' => (int)($this->layup_dep * 100),
+                'depositAmount' => round(($this->layup_dep * 100),0),
 
                 'products' => $products,
 
