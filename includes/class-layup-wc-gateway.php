@@ -77,6 +77,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         $this->absorb_fee = 'yes' === $this->get_option('absorb_fee');
         $this->layup_dep_type = $this->get_option('layup_dep_type');
         $this->dynamic_deposit = 'yes' === $this->get_option('dynamic_deposit');
+        $this->popup_warning = 'yes' === $this->get_option('popup_warning');
         $this->learn_more_style = $this->get_option('learn_more_style');
 
         $this->api_key_error = $this->get_option('api_key_error');
@@ -189,6 +190,18 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 'type' => 'checkbox',
 
                 'description' => 'Enabling this will combine all individual product deposit types. This is meant to be used if you have multiple different deposits set on your products',
+
+                'default' => 'no'
+
+            ) ,
+
+            'popup_warning' => array(
+
+                'title' => 'Allow popup warning on product page',
+
+                'type' => 'checkbox',
+
+                'description' => 'Enabling this will create a popup warning for the customer if they attemped to add a product to their cart which already has products with different deposit configurations.',
 
                 'default' => 'no'
 

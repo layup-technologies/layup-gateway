@@ -1429,122 +1429,124 @@ function layup_display_icon()
 				}
 
 				</script>';
-
-                if ($gateway->dynamic_deposit != "yes")
-            {
                 
-                $cart_products = $woocommerce->cart->cart_contents;
-    
-                // Build product array
-                $custom_dep_inarray = false;
-    
-                $check_dep_type_comp = [];
-                $check_dep_amount_comp = [];
-                $check_dep_months_min_comp = [];
-                $check_dep_months_max_comp = [];
-    
-                foreach ($cart_products as $cart_item_key => $cart_item)
-                {
-    
-                    $cart_product = $cart_item['data'];
-    
-                    if ($cart_product->is_type('variation'))
-                    {
-                        $cart_product = wc_get_product($cart_product->get_parent_id());
-    
-                    }
-    
-                    $layup_custom_deposit_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit', true);
-                    $layup_custom_deposit_type_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_type', true);
-                    $layup_custom_deposit_amount_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_amount', true);
-                    $layup_custom_months_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months', true);
-                    $layup_custom_months_min_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months_min', true);
-                    $layup_custom_months_max_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months_max', true);
-    
-                    if ($layup_custom_deposit_comp == "yes")
-                    {
-                        array_push($check_dep_type_comp, $layup_custom_deposit_type_comp);
-                        array_push($check_dep_amount_comp, $layup_custom_deposit_amount_comp);
-                    }
-                    else
-                    {
-                        array_push($check_dep_type_comp, $gateway->layup_dep_type);
-                        array_push($check_dep_amount_comp, $gateway->layup_dep);
-                    }
+                if ($gateway->popup_warning == "yes") {
+
+                    if ($gateway->dynamic_deposit != "yes"){
                     
-                    if ($layup_custom_months_comp == "yes")
+                    $cart_products = $woocommerce->cart->cart_contents;
+        
+                    // Build product array
+                    $custom_dep_inarray = false;
+        
+                    $check_dep_type_comp = [];
+                    $check_dep_amount_comp = [];
+                    $check_dep_months_min_comp = [];
+                    $check_dep_months_max_comp = [];
+        
+                    foreach ($cart_products as $cart_item_key => $cart_item)
                     {
-                        array_push($check_dep_months_min_comp, $layup_custom_months_min_comp);
-                        array_push($check_dep_months_max_comp, $layup_custom_months_max_comp);
-                    }
-                    else
-                    {
-                        array_push($check_dep_months_min_comp, $gateway->lu_min_end_date);
-                        array_push($check_dep_months_max_comp, $gateway->lu_max_end_date);
-                    }
-    
-                }
-
-                array_push($check_dep_type_comp, $layup_preview_deposit_type);
-                array_push($check_dep_amount_comp, $layup_preview_deposit_amount);
-                array_push($check_dep_months_min_comp, $layup_preview_months_min);
-                array_push($check_dep_months_max_comp, $layup_preview_months);
-
-                if (count(array_unique($check_dep_type_comp)) > 1 && count(array_unique($check_dep_amount_comp)) > 1 && count(array_unique($check_dep_months_min_comp)) > 1 && count(array_unique($check_dep_months_max_comp)) > 1)
-                {
-
-                    echo '<script>
-
-                    jQuery(document).ready(function(){
+        
+                        $cart_product = $cart_item['data'];
+        
+                        if ($cart_product->is_type('variation'))
+                        {
+                            $cart_product = wc_get_product($cart_product->get_parent_id());
+        
+                        }
+        
+                        $layup_custom_deposit_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit', true);
+                        $layup_custom_deposit_type_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_type', true);
+                        $layup_custom_deposit_amount_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_amount', true);
+                        $layup_custom_months_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months', true);
+                        $layup_custom_months_min_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months_min', true);
+                        $layup_custom_months_max_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months_max', true);
+        
+                        if ($layup_custom_deposit_comp == "yes")
+                        {
+                            array_push($check_dep_type_comp, $layup_custom_deposit_type_comp);
+                            array_push($check_dep_amount_comp, $layup_custom_deposit_amount_comp);
+                        }
+                        else
+                        {
+                            array_push($check_dep_type_comp, $gateway->layup_dep_type);
+                            array_push($check_dep_amount_comp, $gateway->layup_dep);
+                        }
                         
-                        document.querySelector("form.cart button[type=submit]").addEventListener("click", function(event){
-                            event.preventDefault();
-                          });
+                        if ($layup_custom_months_comp == "yes")
+                        {
+                            array_push($check_dep_months_min_comp, $layup_custom_months_min_comp);
+                            array_push($check_dep_months_max_comp, $layup_custom_months_max_comp);
+                        }
+                        else
+                        {
+                            array_push($check_dep_months_min_comp, $gateway->lu_min_end_date);
+                            array_push($check_dep_months_max_comp, $gateway->lu_max_end_date);
+                        }
+        
+                    }
 
-                        jQuery( "body" ).prepend( `<div id="lumyModalComp" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br></div></div>` );
+                    array_push($check_dep_type_comp, $layup_preview_deposit_type);
+                    array_push($check_dep_amount_comp, $layup_preview_deposit_amount);
+                    array_push($check_dep_months_min_comp, $layup_preview_months_min);
+                    array_push($check_dep_months_max_comp, $layup_preview_months);
 
-                        // Get the modal
-                        var luModal = document.getElementById("lumyModalComp");
-            
-                        // Get the button that opens the modal
-                        var luBtn = document.querySelector("form.cart button[type=submit]");
-                          console.log(luBtn);
-                        // Get the <span> element that closes the modal
-                        var luSpan = document.getElementsByClassName("luclose")[0];
-            
-                        // When the user clicks the button, open the modal 
-                        luBtn.onclick = function () {
-						
-                            jQuery( "#lumyModalComp .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p><button class="luContinue" style="width:40%;background:#1295a5;color:#FFF;padding:15px;margin:5px;border:0px;cursor: pointer;" >Continue</button><button class="luCancel" style="width:40%;background:#1295a5;color:#FFF;padding:15px;margin:5px;border:0px;cursor: pointer;" >Cancel</button></div>` );
+                    if (count(array_unique($check_dep_type_comp)) > 1 && count(array_unique($check_dep_amount_comp)) > 1 && count(array_unique($check_dep_months_min_comp)) > 1 && count(array_unique($check_dep_months_max_comp)) > 1)
+                    {
+
+                        echo '<script>
+
+                        jQuery(document).ready(function(){
                             
-                            luModal.style.display = "block";
-                            var luCont = document.querySelector("button.luContinue");
-                            luCont.onclick = function () {
-                                document.querySelector("form.cart").submit();
-                            }
-                            var luCancel = document.querySelector("button.luCancel");
-                            luCancel.onclick = function () {
-                                luModal.style.display = "none";
-                                jQuery("#lu-warning").remove();
-                            }
-                        }
-            
-                        // When the user clicks on <span> (x), close the modal
-                        luSpan.onclick = function () {
-                            luModal.style.display = "none";
-                            jQuery("#lu-warning").remove();
-                        }
-            
-                        // When the user clicks anywhere outside of the modal, close it
-                        window.onclick = function (event) {
-                            if (event.target == luModal) {
-                                luModal.style.display = "none";
-                                jQuery("#lu-warning").remove();
-                            }
-                        }
+                            document.querySelector("form.cart button[type=submit]").addEventListener("click", function(event){
+                                event.preventDefault();
+                            });
 
-                    });
-                    </script>';
+                            jQuery( "body" ).prepend( `<div id="lumyModalComp" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br></div></div>` );
+
+                            // Get the modal
+                            var luModal = document.getElementById("lumyModalComp");
+                
+                            // Get the button that opens the modal
+                            var luBtn = document.querySelector("form.cart button[type=submit]");
+                            console.log(luBtn);
+                            // Get the <span> element that closes the modal
+                            var luSpan = document.getElementsByClassName("luclose")[0];
+                
+                            // When the user clicks the button, open the modal 
+                            luBtn.onclick = function () {
+                            
+                                jQuery( "#lumyModalComp .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p><button class="luContinue" style="width:40%;background:#1295a5;color:#FFF;padding:15px;margin:5px;border:0px;cursor: pointer;" >Continue</button><button class="luCancel" style="width:40%;background:#1295a5;color:#FFF;padding:15px;margin:5px;border:0px;cursor: pointer;" >Cancel</button></div>` );
+                                
+                                luModal.style.display = "block";
+                                var luCont = document.querySelector("button.luContinue");
+                                luCont.onclick = function () {
+                                    document.querySelector("form.cart").submit();
+                                }
+                                var luCancel = document.querySelector("button.luCancel");
+                                luCancel.onclick = function () {
+                                    luModal.style.display = "none";
+                                    jQuery("#lu-warning").remove();
+                                }
+                            }
+                
+                            // When the user clicks on <span> (x), close the modal
+                            luSpan.onclick = function () {
+                                luModal.style.display = "none";
+                                jQuery("#lu-warning").remove();
+                            }
+                
+                            // When the user clicks anywhere outside of the modal, close it
+                            window.onclick = function (event) {
+                                if (event.target == luModal) {
+                                    luModal.style.display = "none";
+                                    jQuery("#lu-warning").remove();
+                                }
+                            }
+
+                        });
+                        </script>';
+                        }
                     }
                 }
             }
@@ -2372,157 +2374,6 @@ inlineEditPost.edit = function( post_id ) {
     }
 
     add_action('woocommerce_after_cart_totals', 'layup_display_cart', 10);
-
-    function layup_woocommerce_add_to_cart_validation( $passed, $product_id, $quantity ){ 
-        global $post;
-
-        global $woocommerce;
-
-        $gateway_id = 'layup';
-
-        $gateways = WC_Payment_Gateways::instance();
-
-        $gateway = $gateways->payment_gateways() [$gateway_id];
-
-        // Check for the Disable LayUp field value
-        
-
-        $cart_products = $woocommerce->cart->cart_contents;
-
-            $cart_inarray = false;
-            $product_names = '';
-
-            foreach ($cart_products as $cart_product)
-            { //enumerate over all cart contents
-                $layup_disable_meta = get_post_meta($cart_product['data']->get_id() , 'layup_disable', true);
-
-                if (!empty($layup_disable_meta))
-                {
-
-                    $cart_inarray = true; //set inarray to true
-                    $product_names .= $cart_product['data']->get_title() . ', ';
-
-                }
-
-            }
-
-            if ($cart_inarray)
-            { 
-                return false;
-            }
-
-            // Build product array
-            $custom_dep_inarray = false;
-
-            $check_dep_type = [];
-            $check_dep_amount = [];
-            $check_dep_months_min = [];
-            $check_dep_months_max = [];
-
-            foreach ($cart_products as $cart_item_key => $cart_item)
-            {
-
-                $cart_product = $cart_item['data'];
-
-                if ($cart_product->is_type('variation'))
-                {
-                    $cart_product = wc_get_product($cart_product->get_parent_id());
-
-                }
-
-                $layup_custom_deposit = get_post_meta($cart_product->get_id() , 'layup_custom_deposit', true);
-                $layup_custom_deposit_type = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_type', true);
-                $layup_custom_deposit_amount = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_amount', true);
-                $layup_custom_months = get_post_meta($cart_product->get_id() , 'layup_custom_months', true);
-                $layup_custom_months_min = get_post_meta($cart_product->get_id() , 'layup_custom_months_min', true);
-                $layup_custom_months_max = get_post_meta($cart_product->get_id() , 'layup_custom_months_max', true);
-
-                if ($layup_custom_deposit == "yes")
-                {
-                    array_push($check_dep_type, $layup_custom_deposit_type);
-                    array_push($check_dep_amount, $layup_custom_deposit_amount);
-                }
-                else
-                {
-                    array_push($check_dep_type, $gateway->layup_dep_type);
-                    array_push($check_dep_amount, $gateway->layup_dep);
-                }
-                
-                if ($layup_custom_months == "yes")
-                {
-                    array_push($check_dep_months_min, $layup_custom_months_min);
-                    array_push($check_dep_months_max, $layup_custom_months_max);
-                }
-                else
-                {
-                    array_push($check_dep_months_min, $gateway->lu_min_end_date);
-                    array_push($check_dep_months_max, $gateway->lu_max_end_date);
-                }
-
-            }
-
-            if ($gateway->dynamic_deposit == "yes")
-            {
-                if (count(array_flip($check_dep_type)) > 1 || count(array_flip($check_dep_amount)) > 1) {
-                    $combine_amount = [];
-                    foreach($cart_products as $combine_cart_item_id => $combine_cart_item) {
-                        $combine_cart_product = $combine_cart_item['data'];
-                        $combine_product_price = $combine_cart_product->get_price();
-                        if ($combine_cart_product->is_type('variation')) {
-                            $combine_cart_product = wc_get_product($combine_cart_product->get_parent_id());
-                        }
-                        
-                        $combine_product_id = $combine_cart_product->get_id();
-                        
-                        $layup_custom_deposit_combine = get_post_meta($combine_product_id , 'layup_custom_deposit', true);
-                        $layup_custom_deposit_type_combine = get_post_meta($combine_product_id , 'layup_custom_deposit_type', true);
-                        $layup_custom_deposit_amount_combine = get_post_meta($combine_product_id, 'layup_custom_deposit_amount', true);
-                        $layup_custom_months_max_combine = get_post_meta($combine_product_id , 'layup_custom_months_max', true);
-                        if ($layup_custom_deposit_combine == "yes")
-                        {
-                            if ($layup_custom_deposit_type_combine == "FLAT") {
-                                array_push($combine_amount, $layup_custom_deposit_amount_combine);
-                            } elseif ($layup_custom_deposit_type_combine == "PERCENTAGE") {
-                                $perc_flat_amount = $layup_custom_deposit_amount_combine/100 * $combine_product_price;
-                                array_push($combine_amount, $perc_flat_amount);
-                            } elseif ($layup_custom_deposit_type_combine == "INSTALMENT") {
-                                $instal_flat_amount = $combine_product_price / ($layup_custom_months_max_combine + 1);
-                                array_push($combine_amount, $instal_flat_amount);
-                            }
-                        } else {
-                            if ($gateway->layup_dep_type == "FLAT") {
-                                array_push($combine_amount, $gateway->layup_dep);
-                            } elseif ($gateway->layup_dep_type == "PERCENTAGE") {
-                                $perc_flat_amount = $gateway->layup_dep/100 * $combine_product_price;
-                                array_push($combine_amount, $perc_flat_amount);
-                            } elseif ($gateway->layup_dep_type == "INSTALMENT") {
-                                $instal_flat_amount = $combine_product_price / ($gateway->lu_max_end_date + 1);
-                                array_push($combine_amount, $instal_flat_amount);
-                            }
-                        }
-                    }
-                    $check_dep_amount = array(array_sum($combine_amount));
-                    $check_dep_type = array("FLAT");
-                }
-        
-                if (count(array_flip($check_dep_months_min)) > 1 || count(array_flip($check_dep_months_max)) > 1) {
-                    $check_dep_months_min = array(max($check_dep_months_min));
-                    $check_dep_months_max = array(min($check_dep_months_max));
-                }
-            }
-
-            if (count(array_unique($check_dep_type)) <= 1 && count(array_unique($check_dep_amount)) <= 1 && count(array_unique($check_dep_months_min)) <= 1 && count(array_unique($check_dep_months_max)) <= 1)
-            {
-                $passed = true;
-            } else {
-                wc_add_notice( __( 'Please enter a date.', 'woocommerce' ), 'error' );
-                $passed = true;
-            }
-            return $passed;
-    }
-     
-     //add the action 
-     add_filter('woocommerce_add_to_cart_validation', 'layup_woocommerce_add_to_cart_validation', 15, 3);
     
     function general_admin_notice(){
 
