@@ -1172,7 +1172,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 $layup_payment_id = $_POST['body']['paymentId'];
                 $url = explode('/', $this->api_url);
                 array_pop($url);
-                $payments_url = implode('/', $url) . '/v1/payments-verification';
+                $payments_url = implode('/', $url) . '/payments-verification';
                 
                 $headers = array(
                     'accept' => 'application/json',
