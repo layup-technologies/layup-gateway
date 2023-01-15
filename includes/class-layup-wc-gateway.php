@@ -1187,6 +1187,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 if (!is_wp_error($order_response)) {
                     $body = json_decode($order_response['body'], true);
                     $refundPayment = [];
+                    $pp = 0;
                     foreach ($body['plans'] as $plans)
                 {
 
