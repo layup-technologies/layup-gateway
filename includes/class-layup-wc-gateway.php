@@ -1199,7 +1199,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                     foreach ($plans['payments'] as $payment)
                     {
-                        if($payment['Id'] == $layup_payment_id){
+                        if($payment['_id'] == $layup_payment_id){
                             $refundPayment = $payment;
                         }
 
