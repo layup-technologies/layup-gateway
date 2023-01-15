@@ -1814,6 +1814,10 @@ function layup_populate_column($column_name, $id)
 
     function layup_quick_edit_save($post_id)
     {
+        if (!$_POST)
+        {
+            return;
+        }
 
         // check user capabilities
         if (!current_user_can('edit_post', $post_id))
