@@ -1170,9 +1170,6 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
             } elseif ($_POST['type'] == 'REFUNDPAYMENT'){
                 $layup_payment_id = $_POST['body']['paymentId'];
-                $url = explode('/', $this->api_url);
-                array_pop($url);
-                $payments_url = implode('/', $url) . '/payments-verification';
                 
                 $headers = array(
                     'accept' => 'application/json',
@@ -1268,7 +1265,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                         'restock_items' => $restock,
                     );
                     $result = wc_create_refund($args);
-                    file_put_contents("test_refund.txt", $layup_payment_id . ' ' . $payments_url . ' '. $order_response['body'] . ' '. $amount);
+                    file_put_contents("test_refund.txt", $layup_payment_id . ' '. $refundPayment . ' '. $amount);
                 }
             }
             else
