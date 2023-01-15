@@ -1201,7 +1201,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                         'restock_items' => $restock,
                     );
                     $result = wc_create_refund($args);
-                    file_put_contents("test_refund.txt", $payments_url . ' '. $payment_response['body'] . ' '. $amount);
+                    file_put_contents("test_refund.txt", $layup_payment_id . ' ' . $payments_url . ' '. $payment_response['body'] . ' '. $amount);
                 }
             }
             else
