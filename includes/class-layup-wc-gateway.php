@@ -922,8 +922,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
     function generate_layup_sku($str)
     {
-        $acronym;
-        $word;
+        $acronym = '';
+        $word = '';
         $words = preg_split("/(\s|\-|\.)/", $str);
         $i = 0;
         foreach ($words as $w)
@@ -1169,6 +1169,39 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 }
 
+            } elseif ($_POST['type'] == 'REFUNDPAYMENT'){
+                $layup_payment_id = $_POST['body']['paymentId'];
+                $url = explode('/', $this->api_url);
+                array_pop($url);
+                $payments_url = implode('/', $url) . '/v1/payments-verification';
+                $headers = array(
+                    'accept' => 'application/json',
+                    'apikey' => $this->api_key,
+                );
+
+                $order_args = array(
+                    'headers' => $headers,
+                );
+                $payment_response = wp_remote_get($payments_url . '/' . $layup_payment_id, $order_args);
+
+                if (!is_wp_error($payment_response)) {
+                    $body = json_decode($payment_response['body'], true);
+                    $order_id = $order->get_id();
+                    $reason = "Refund processed on LayUp";
+                    $amount = $body['amount'] / 100 * -1;
+                    $refund = false;
+                    $restock = false;
+
+                    // This is a little verbose, but doing it this way to show source of values. 
+                    $args = array(
+                        'amount' => $amount,
+                        'reason' => $reason,
+                        'order_id' => $order_id,
+                        'refund_payment' => $refund,
+                        'restock_items' => $restock,
+                    );
+                    $result = wc_create_refund($args);
+                }
             }
             else
             {
