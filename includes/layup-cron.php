@@ -229,6 +229,9 @@ function layup_check_canceled_order()
         $order = wc_get_order($order->ID);
 
         $layup_order_id = get_post_meta($order->get_id() , 'layup_order_id', true);
+        if (!$layup_order_id || $layup_order_id == ""){
+            continue;
+        }
 
         $headers = array(
 
