@@ -1661,7 +1661,7 @@ function layup_populate_column($column_name, $id)
         switch ($column_name):
         case 'featured':
             {
-                    wp_nonce_field('layup_q_edit_nonce', 'layup_nonce');
+
                     echo '<fieldset class="inline-edit-col-right">
 				<div class="inline-edit-col">
 					<div class="inline-edit-group wp-clearfix">';
@@ -1695,11 +1695,6 @@ function layup_populate_column($column_name, $id)
             return;
         }
 
-        // check nonce
-        if (!wp_verify_nonce($_POST['layup_nonce'], 'layup_q_edit_nonce'))
-        {
-            return;
-        }
         // update checkbox
         if (isset($_POST['layup_disable']))
         {
