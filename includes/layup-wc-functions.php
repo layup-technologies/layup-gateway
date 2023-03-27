@@ -1787,7 +1787,6 @@ function layup_populate_column($column_name, $id)
         switch ($column_name):
         case 'featured':
             {
-                    
                     echo '<fieldset class="inline-edit-col-right">
 				<div class="inline-edit-col">
 					<div class="inline-edit-group wp-clearfix">';
