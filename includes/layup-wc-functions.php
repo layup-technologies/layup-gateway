@@ -1166,7 +1166,7 @@ function layup_display_icon()
                 }
 
                 echo '<div style="align-items: center;max-width: 100%;">
-			<div style="display: flex;font-family:Quicksand,Arial, Helvetica, sans-serif ;padding: 10px 30px 10px 30px;margin-top: 15px;color: #ffffff;text-align: center;align-items: center;background-color: #0C4152;box-sizing: border-box;justify-content: center;"
+			<div style="display: flex;font-family:Quicksand,Arial, Helvetica, sans-serif ;padding: 10px 30px 10px 30px;margin-top: 15px;color: #ffffff;text-align: center;align-items: center;background-color: #0C4152;box-sizing: border-box;justify-content: center;border-radius:3px;"
 				class="btn-layup">
 		
 				<div class="btn-layup-text">PAY IT OFF WITH</div>
