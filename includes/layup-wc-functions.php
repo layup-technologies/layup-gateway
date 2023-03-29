@@ -1573,7 +1573,7 @@ function layup_display_icon()
 
 }
 
-add_action('woocommerce_before_add_to_cart_form', 'layup_display_icon', 30);
+add_action('woocommerce_after_add_to_cart_form', 'layup_display_icon', 30);
 
 /**
  * Display LayUp extimate text on shop page
