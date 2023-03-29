@@ -1142,7 +1142,7 @@ function layup_display_icon()
 
                 if ($layup_preview_payment_plan_template == "") {
 
-                    $finalString = '<p style="margin: 0px; width: 70%; ">From <span class="layup-installment-amount">R' . esc_attr($layup_preview_amount) . '/pm</span> for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> months. Interest-free. | Deposit: <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
+                    $finalString = '<p style="margin: 0px; width: 70%; ">From <span class="layup-installment-amount">R' . esc_attr($layup_preview_amount) . '/pm</span> for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> months.<br>Interest-free. | Deposit: <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
                 } else {
 
                     if ($layup_preview_deposit_type == 'PERCENTAGE')
