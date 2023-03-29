@@ -1166,12 +1166,12 @@ function layup_display_icon()
                 }
 
                 echo '<div style="align-items: center;max-width: 100%;">
-			<div style="display: flex;font-family:Quicksand,Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 40px 10px 40px;margin-top: 15px;color: #ffffff;text-align: center;align-items: center;background-color: #0C4152;box-sizing: border-box;justify-content: center;"
+			<div style="display: flex;font-family:Quicksand,Arial, Helvetica, sans-serif ;padding: 10px 40px 10px 40px;margin-top: 15px;color: #ffffff;text-align: center;align-items: center;background-color: #0C4152;box-sizing: border-box;justify-content: center;"
 				class="btn-layup">
 		
 				<div class="btn-layup-text">PAY IT OFF WITH</div>
 		
-				<div class="btn-layup-logo"><img style="width: 125px !important; top: 0 !important; vertical-align: middle; border-style: none"
+				<div class="btn-layup-logo"><img style="top: 0 !important; vertical-align: middle; border-style: none"
 					src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-light.svg">
 				</div>
 			</div>
@@ -1218,6 +1218,26 @@ function layup_display_icon()
 
                 #lumodallink {
                     font-weight: 700;
+                }
+
+                .btn-layup-logo img {
+                    width: 125px;
+                }
+
+                @media (max-width: 600px) {
+		
+                    .btn-layup-logo img {
+                        width: 80px;
+                    }
+
+                    .btn-layup-text {
+                        font-size: 14px;
+                    }
+
+                    .btn-est-layup {
+                        font-size: 13px;
+                    }
+    
                 }
 		
 					.lumodal {
