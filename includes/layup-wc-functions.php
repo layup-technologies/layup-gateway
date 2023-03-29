@@ -1142,7 +1142,7 @@ function layup_display_icon()
 
                 if ($layup_preview_payment_plan_template == "") {
 
-                    $finalString = '<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> months. Interest-free. Deposit: <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
+                    $finalString = '<p style="margin: 0px; width: 70%; ">From <span class="layup-installment-amount">R' . esc_attr($layup_preview_amount) . '/pm</span> for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> months. Interest-free. | Deposit: <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
                 } else {
 
                     if ($layup_preview_deposit_type == 'PERCENTAGE')
@@ -1158,71 +1158,67 @@ function layup_display_icon()
                         $layupDepositFormat = 'R'.$layup_preview_amount;
                     }
 
-                    $finalString = str_replace('{amount}', 'R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>', $layup_preview_payment_plan_template);
+                    $finalString = str_replace('{amount}', '<span class="layup-installment-amount">R' . esc_attr($layup_preview_amount) . '/pm</span>', $layup_preview_payment_plan_template);
                     $finalString = str_replace('{months}', '<span class="layup-months-amount">'.esc_attr($layup_preview_months).'</span>', $finalString);
                     
                     $finalString = str_replace('{deposit}', '<span class="layup-deposit-amount">'.esc_attr($layupDepositFormat).'</span>', $finalString);
-                    $finalString = "<p style='margin-top: 0px;'>".$finalString."</p>";
+                    $finalString = "<p style='margin: 0px; width: 70%;'>".$finalString."</p>";
                 }
 
-                echo '<div style="display:flex;align-items: center;max-width: 100%;">
-			<div style="font-family:Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 30px 10px 20px;margin-top: 15px;margin-bottom: 15px;color: #000000;text-align: center;"
+                echo '<div style="align-items: center;max-width: 100%;">
+			<div style="display: flex;font-family:"Quicksand",Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 40px 10px 40px;margin-top: 15px;color: #ffffff;text-align: center;align-items: center;background-color: #0C4152;box-sizing: border-box;justify-content: center;"
 				class="btn-layup">
 		
 				<div class="btn-layup-text">PAY IT OFF WITH</div>
 		
-				<div class="btn-layup-logo"><img style="width: 100% !important; top: 0 !important; vertical-align: middle; border-style: none"
-					src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-color.png">
+				<div class="btn-layup-logo"><img style="width: 125px !important; top: 0 !important; vertical-align: middle; border-style: none"
+					src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-light.svg">
 				</div>
 			</div>
 		
-			<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;border-left:#808080 1px solid;" class="btn-est-layup">
+			<div style="font-family:"Quicksand", Arial, Helvetica, sans-serif ;font-weight: 500;display: flex;align-items: center;gap: 20px;justify-content: space-between;flex-wrap: nowrap;" class="btn-est-layup">
 		
 				' .$finalString. '
 				<span id="lumodallink" style="color:#1295a5;">Learn More</span>
 
             </div>
 		</div>
-				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 				<style>
-					/* The Modal (background) */
+                /* The Modal (background) */
 		
-					.btn-layup {
-						float: left;
-						max-width: 30%;
-						margin-right:0px;
-					}
-		
-					.btn-est-layup {
-						max-width: 100%;
-						padding: 10px 10px 10px 30px;
-						margin-left:0px;
-						float: left;
-						font-size: 12px;
-					}
-		
-					@media screen and (max-width: 1040px) {
-						.btn-layup {
-							float: none;
-							max-width: 40%;
-						}
-		
-						.btn-est-layup {
-							margin-left: 0px;
-						}
-					}
-		
-					@media screen and (max-width: 600px) {
-						.btn-layup-text {
-							font-size: 75%;
-						}
-						.btn-layup {
-							max-width: 50%;
-						}
-						.btn-est-layup {
-						font-size: 10px;
-					}
-					}
+                .btn-layup {
+                    
+                    margin-right:0px;
+                }
+    
+                .btn-est-layup {
+                    max-width: 100%;
+                    padding: 10px 0px;
+                    margin-left:0px;
+                    font-size: 16px;
+                    color: #0C4152;
+                }
+    
+                .btn-layup-text {
+                    padding: 10px;
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+
+                .btn-layup-logo {
+                    padding: 10px;
+                }
+
+                .layup-installment-amount, .layup-months-amount, .layup-deposit-amount {
+                    font-weight: 700;
+                }
+
+                #lumodallink {
+                    font-weight: 700;
+                }
 		
 					.lumodal {
 						font-family: "Quicksand", serif !important;
