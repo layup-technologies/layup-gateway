@@ -1166,7 +1166,7 @@ function layup_display_icon()
                 }
 
                 echo '<div style="align-items: center;max-width: 100%;">
-			<div style="display: flex;font-family:\'\Quicksand\'\,Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 40px 10px 40px;margin-top: 15px;color: #ffffff;text-align: center;align-items: center;background-color: #0C4152;box-sizing: border-box;justify-content: center;"
+			<div style="display: flex;font-family:Quicksand,Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 40px 10px 40px;margin-top: 15px;color: #ffffff;text-align: center;align-items: center;background-color: #0C4152;box-sizing: border-box;justify-content: center;"
 				class="btn-layup">
 		
 				<div class="btn-layup-text">PAY IT OFF WITH</div>
@@ -1176,7 +1176,7 @@ function layup_display_icon()
 				</div>
 			</div>
 		
-			<div style="font-family:\'\Quicksand\'\, Arial, Helvetica, sans-serif ;font-weight: 500;display: flex;align-items: center;gap: 20px;justify-content: space-between;flex-wrap: nowrap;" class="btn-est-layup">
+			<div style="font-family:Quicksand, Arial, Helvetica, sans-serif ;font-weight: 500;display: flex;align-items: center;gap: 20px;justify-content: space-between;flex-wrap: nowrap;" class="btn-est-layup">
 		
 				' .$finalString. '
 				<span id="lumodallink" style="color:#1295a5;">Learn More</span>
