@@ -1170,7 +1170,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 }
 
-            } elseif ($_POST['type'] == 'REFUNDPAYMENT'){
+            /* }  elseif ($_POST['type'] == 'REFUNDPAYMENT'){
                 $layup_payment_id = $_POST['body']['paymentId'];
                 
                 $headers = array(
@@ -1268,7 +1268,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                     );
                     $result = wc_create_refund($args);
                     
-                }
+                } */
             } elseif ($_POST['type'] == 'ORDERAMENDED'){
                 $layup_amendment_id = $_POST['body']['amendmentId'];
                 
