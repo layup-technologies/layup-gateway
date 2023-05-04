@@ -92,6 +92,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
             $this->api_key = "myApiKey";
         }
 
+        $this->api_url_v1 = $this->testmode ? "https://sandbox-api.layup.co.za/v1" : "https://api.layup.co.za/v1";
+
         $this->api_url = $this->testmode ? "https://sandbox-api.layup.co.za/v1/orders" : "https://api.layup.co.za/v1/orders";
 
         // This action hook saves the settings
@@ -1265,9 +1267,82 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                         'restock_items' => $restock,
                     );
                     $result = wc_create_refund($args);
-                    file_put_contents("test_refund.txt", $layup_payment_id . ' '. json_encode($refundPayment) . ' '. $amount);
+                    
                 }
-            }
+            } elseif ($_POST['type'] == 'ORDERAMENDED'){
+                $layup_amendment_id = $_POST['body']['amendmentId'];
+                
+                $headers = array(
+                    'accept' => 'application/json',
+                    'apikey' => $this->api_key,
+                );
+
+                $amendment_args = array(
+                    'headers' => $headers,
+                );
+                $amendment_response = wp_remote_get($this->api_url_v1 . '/order-amendments/' . $layup_amendment_id, $amendment_args);
+
+                if (!is_wp_error($amendment_response)) {
+                    $body = json_decode($amendment_response['body'], true);
+                    if ($body['amendmentType'] === "PRODUCT:CREATE") {
+                        foreach ($body['products'] as $product)
+                        {
+                            $product_id = wc_get_product_id_by_sku( $product['sku'] );
+                            if($product_id){
+                                $_product = wc_get_product( $product_id );
+                                $order->add_product( $_product, 1, [
+                                    'subtotal'     => $product['amount'] / 100,
+                                    'total'        => $product['amount'] / 100, 
+                                ] );
+                                $order->save();
+                            }
+                            
+                        }
+                    } elseif ($body['amendmentType'] === "PRODUCT:UPDATE") {
+                        foreach ($body['products'] as $product)
+                        {   
+                            $sku;
+                            if (!$product['sku']) {
+                                $find_product = array_search($product['_id'], array_column($body['from']['products'], '_id'));
+                                $sku = $body['from']['products'][$find_product]['sku'];
+                            } else {
+                                $sku = $product['sku'];
+                            }
+                            $order_items = $order->get_items();
+                            foreach ($order_items as $key => $item) {
+                                $order_product = wc_get_product($item->get_product_id());
+                                if($order_product->get_sku() == $sku){
+                                    if ($product['amount']) {
+                                        $order_items[$key]->set_subtotal( $product['amount'] );
+                                    }
+                                    break;
+                                }
+                              }
+                              $order->calculate_taxes();
+                              $order->calculate_totals();
+                              $order->save();
+                        }
+                    } elseif ($body['amendmentType'] === "PRODUCT:DELETE") {
+                        foreach ($body['products'] as $product)
+                        {   
+                                $find_product = array_search($product['_id'], array_column($body['from']['products'], '_id'));
+                                $sku = $body['from']['products'][$find_product]['sku'];
+                            
+                                $order_items = $order->get_items();
+                                foreach ($order_items as $key => $item) {
+                                    $order_product = wc_get_product($item->get_product_id());
+                                    if($order_product->get_sku() == $sku){
+                                        wc_delete_order_item($key);
+                                        break;
+                                    }
+                                  }
+                                  $order->calculate_taxes();
+                                  $order->calculate_totals();
+                                  $order->save();
+                        }
+                    }
+                }
+            }  
             else
             {
                 return;
