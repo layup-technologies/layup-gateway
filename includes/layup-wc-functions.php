@@ -361,60 +361,64 @@ function layup_admin_footer_script()
 
     global $post;
 
-    global $woocommerce;
-
-    $gateway_id = 'layup';
-
-    $gateways = WC_Payment_Gateways::instance();
-
-    $gateway = $gateways->payment_gateways() [$gateway_id];
-
-    $dates = get_post_meta($post->ID, 'layup_date', true);
-
-    $x = - 1;
-
-    if (is_array($dates))
+    if (is_object($post))
     {
+
+        global $woocommerce;
+
+        $gateway_id = 'layup';
+
+        $gateways = WC_Payment_Gateways::instance();
+
+        $gateway = $gateways->payment_gateways() [$gateway_id];
+
+        $dates = get_post_meta($post->ID, 'layup_date', true);
 
         $x = - 1;
 
-        foreach ($dates as $date)
+        if (is_array($dates))
         {
 
-            $x++;
+            $x = - 1;
+
+            foreach ($dates as $date)
+            {
+
+                $x++;
+
+            }
 
         }
 
-    }
+        if ('product' == $post->post_type)
+        {
 
-    if ('product' == $post->post_type)
-    {
+            $curr_date = date('Y-m-d');
 
-        $curr_date = date('Y-m-d');
+            $max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($curr_date)));
 
-        $max_date = date('Y-m-d', strtotime("+" . $gateway->lu_max_end_date . " months", strtotime($curr_date)));
+            $min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($curr_date)));
 
-        $min_date = date('Y-m-d', strtotime("+" . $gateway->lu_min_end_date . " months", strtotime($curr_date)));
-
-        echo '<script type="text/javascript">
-                jQuery(document).ready(function($) {
-                    var today = new Date();
-                    var date = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
-                    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
-                    var add_button      = $(".add_field_button"); //Add button ID
-                    var x = ' . esc_attr($x) . '; //initlal text box count
-                    $(add_button).click(function(e){ //on add input button click
-                    e.preventDefault();
-                    x++;
-                    $(wrapper).append(`<p class="form-field date_field_type"><span class="wrap"><label>Departure/Event Date</label><input placeholder="Date" max="' . esc_attr($max_date) . '" min="' . esc_attr($min_date) . '" class="" type="date" name="layup_date[`+ x +`]" value=""  style="width: 150px;" /></span><a href="#" class="remove_field">Remove</a></p>`);
+            echo '<script type="text/javascript">
+                    jQuery(document).ready(function($) {
+                        var today = new Date();
+                        var date = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+                        var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+                        var add_button      = $(".add_field_button"); //Add button ID
+                        var x = ' . esc_attr($x) . '; //initlal text box count
+                        $(add_button).click(function(e){ //on add input button click
+                        e.preventDefault();
+                        x++;
+                        $(wrapper).append(`<p class="form-field date_field_type"><span class="wrap"><label>Departure/Event Date</label><input placeholder="Date" max="' . esc_attr($max_date) . '" min="' . esc_attr($min_date) . '" class="" type="date" name="layup_date[`+ x +`]" value=""  style="width: 150px;" /></span><a href="#" class="remove_field">Remove</a></p>`);
+                        });
+                        $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+                        e.preventDefault(); 
+                        $(this).parent("p").remove();
+                        })
                     });
-                    $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-                    e.preventDefault(); 
-                    $(this).parent("p").remove();
-                    })
-                });
-            </script>';
+                </script>';
 
+        }
     }
 
 }
@@ -1069,8 +1073,10 @@ function layup_display_icon()
 
             if ($layup_custom_months == 'yes' && $layup_custom_months_max != ""){
                 $layup_preview_months = $layup_custom_months_max;
+                $layup_preview_months_min = $layup_custom_months_min;
             } else {
                 $layup_preview_months = $gateway->lu_max_end_date;
+                $layup_preview_months_min = $gateway->lu_min_end_date;
             }
 
             if ($layup_custom_payment_plan == 'yes' && $layup_custom_payment_plan_template != ""){
@@ -1136,7 +1142,7 @@ function layup_display_icon()
 
                 if ($layup_preview_payment_plan_template == "") {
 
-                    $finalString = '<p style="margin-top: 0px; ">From R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>/month for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> months. Interest-free. Deposit: <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
+                    $finalString = '<p style="margin: 0px; width: 70%; ">From <span class="layup-installment-amount">R' . esc_attr($layup_preview_amount) . '/pm</span> for <span class="layup-months-amount">' . esc_attr($layup_preview_months) . '</span> months.<br>Interest-free. | Deposit: <span class="layup-deposit-amount">' . esc_attr($layup_preview_deposit) . '</span></p>';
                 } else {
 
                     if ($layup_preview_deposit_type == 'PERCENTAGE')
@@ -1152,71 +1158,87 @@ function layup_display_icon()
                         $layupDepositFormat = 'R'.$layup_preview_amount;
                     }
 
-                    $finalString = str_replace('{amount}', 'R<span class="layup-installment-amount">' . esc_attr($layup_preview_amount) . '</span>', $layup_preview_payment_plan_template);
+                    $finalString = str_replace('{amount}', '<span class="layup-installment-amount">R' . esc_attr($layup_preview_amount) . '/pm</span>', $layup_preview_payment_plan_template);
                     $finalString = str_replace('{months}', '<span class="layup-months-amount">'.esc_attr($layup_preview_months).'</span>', $finalString);
                     
                     $finalString = str_replace('{deposit}', '<span class="layup-deposit-amount">'.esc_attr($layupDepositFormat).'</span>', $finalString);
-                    $finalString = "<p style='margin-top: 0px;'>".$finalString."</p>";
+                    $finalString = "<p style='margin: 0px; width: 70%;'>".$finalString."</p>";
                 }
 
-                echo '<div style="display:flex;align-items: center;max-width: 100%;">
-			<div style="font-family:Arial, Helvetica, sans-serif ;font-size: 80%;padding: 10px 30px 10px 20px;margin-top: 15px;margin-bottom: 15px;color: #000000;text-align: center;"
+                echo '<div style="align-items: center;max-width: 100%;">
+			<div style="display: flex;font-family:Quicksand,Arial, Helvetica, sans-serif ;padding: 10px 30px 10px 30px;margin-top: 15px;color: #ffffff;text-align: center;align-items: center;background-color: #0C4152;box-sizing: border-box;justify-content: center;border-radius:3px;"
 				class="btn-layup">
 		
 				<div class="btn-layup-text">PAY IT OFF WITH</div>
 		
-				<div class="btn-layup-logo"><img style="width: 100% !important; top: 0 !important; vertical-align: middle; border-style: none"
-					src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-color.png">
+				<div class="btn-layup-logo"><img style="top: 0 !important; vertical-align: middle; border-style: none"
+					src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-light.svg">
 				</div>
 			</div>
 		
-			<div style="font-family:Arial, Helvetica, sans-serif ;margin-top: 15px;margin-bottom: 15px;border-left:#808080 1px solid;" class="btn-est-layup">
+			<div style="font-family:Quicksand, Arial, Helvetica, sans-serif ;font-weight: 500;display: flex;align-items: center;gap: 20px;justify-content: space-between;flex-wrap: nowrap;" class="btn-est-layup">
 		
 				' .$finalString. '
 				<span id="lumodallink" style="color:#1295a5;">Learn More</span>
 
             </div>
 		</div>
-				<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 				<style>
-					/* The Modal (background) */
+                /* The Modal (background) */
 		
-					.btn-layup {
-						float: left;
-						max-width: 30%;
-						margin-right:0px;
-					}
+                .btn-layup {
+                    
+                    margin-right:0px;
+                }
+    
+                .btn-est-layup {
+                    max-width: 100%;
+                    padding: 10px 0px;
+                    margin-left:0px;
+                    font-size: 16px;
+                    color: #0C4152;
+                }
+    
+                .btn-layup-text {
+                    padding: 10px;
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+
+                .btn-layup-logo {
+                    padding: 10px;
+                }
+
+                .layup-installment-amount, .layup-months-amount, .layup-deposit-amount {
+                    font-weight: 700;
+                }
+
+                #lumodallink {
+                    font-weight: 700;
+                }
+
+                .btn-layup-logo img {
+                    width: 125px;
+                }
+
+                @media (max-width: 600px) {
 		
-					.btn-est-layup {
-						max-width: 100%;
-						padding: 10px 10px 10px 30px;
-						margin-left:0px;
-						float: left;
-						font-size: 12px;
-					}
-		
-					@media screen and (max-width: 1040px) {
-						.btn-layup {
-							float: none;
-							max-width: 40%;
-						}
-		
-						.btn-est-layup {
-							margin-left: 0px;
-						}
-					}
-		
-					@media screen and (max-width: 600px) {
-						.btn-layup-text {
-							font-size: 75%;
-						}
-						.btn-layup {
-							max-width: 50%;
-						}
-						.btn-est-layup {
-						font-size: 10px;
-					}
-					}
+                    .btn-layup-logo img {
+                        width: 80px;
+                    }
+
+                    .btn-layup-text {
+                        font-size: 14px;
+                    }
+
+                    .btn-est-layup {
+                        font-size: 13px;
+                    }
+    
+                }
 		
 					.lumodal {
 						font-family: "Quicksand", serif !important;
@@ -1423,6 +1445,126 @@ function layup_display_icon()
 				}
 
 				</script>';
+                
+                if ($gateway->popup_warning == "yes") {
+
+                    if ($gateway->dynamic_deposit != "yes"){
+                    
+                    $cart_products = $woocommerce->cart->cart_contents;
+        
+                    // Build product array
+                    $custom_dep_inarray = false;
+        
+                    $check_dep_type_comp = [];
+                    $check_dep_amount_comp = [];
+                    $check_dep_months_min_comp = [];
+                    $check_dep_months_max_comp = [];
+        
+                    foreach ($cart_products as $cart_item_key => $cart_item)
+                    {
+        
+                        $cart_product = $cart_item['data'];
+        
+                        if ($cart_product->is_type('variation'))
+                        {
+                            $cart_product = wc_get_product($cart_product->get_parent_id());
+        
+                        }
+        
+                        $layup_custom_deposit_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit', true);
+                        $layup_custom_deposit_type_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_type', true);
+                        $layup_custom_deposit_amount_comp = get_post_meta($cart_product->get_id() , 'layup_custom_deposit_amount', true);
+                        $layup_custom_months_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months', true);
+                        $layup_custom_months_min_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months_min', true);
+                        $layup_custom_months_max_comp = get_post_meta($cart_product->get_id() , 'layup_custom_months_max', true);
+        
+                        if ($layup_custom_deposit_comp == "yes")
+                        {
+                            array_push($check_dep_type_comp, $layup_custom_deposit_type_comp);
+                            array_push($check_dep_amount_comp, $layup_custom_deposit_amount_comp);
+                        }
+                        else
+                        {
+                            array_push($check_dep_type_comp, $gateway->layup_dep_type);
+                            array_push($check_dep_amount_comp, $gateway->layup_dep);
+                        }
+                        
+                        if ($layup_custom_months_comp == "yes")
+                        {
+                            array_push($check_dep_months_min_comp, $layup_custom_months_min_comp);
+                            array_push($check_dep_months_max_comp, $layup_custom_months_max_comp);
+                        }
+                        else
+                        {
+                            array_push($check_dep_months_min_comp, $gateway->lu_min_end_date);
+                            array_push($check_dep_months_max_comp, $gateway->lu_max_end_date);
+                        }
+        
+                    }
+
+                    array_push($check_dep_type_comp, $layup_preview_deposit_type);
+                    array_push($check_dep_amount_comp, $layup_preview_deposit_amount);
+                    array_push($check_dep_months_min_comp, $layup_preview_months_min);
+                    array_push($check_dep_months_max_comp, $layup_preview_months);
+
+                    if (count(array_unique($check_dep_type_comp)) > 1 && count(array_unique($check_dep_amount_comp)) > 1 && count(array_unique($check_dep_months_min_comp)) > 1 && count(array_unique($check_dep_months_max_comp)) > 1)
+                    {
+
+                        echo '<script>
+
+                        jQuery(document).ready(function(){
+                            
+                            document.querySelector("form.cart button[type=submit]").addEventListener("click", function(event){
+                                event.preventDefault();
+                            });
+
+                            jQuery( "body" ).prepend( `<div id="lumyModalComp" class="lumodal"><div class="lumodal-content"><span class="luclose">×</span><br><br></div></div>` );
+
+                            // Get the modal
+                            var luModal = document.getElementById("lumyModalComp");
+                
+                            // Get the button that opens the modal
+                            var luBtn = document.querySelector("form.cart button[type=submit]");
+                            console.log(luBtn);
+                            // Get the <span> element that closes the modal
+                            var luSpan = document.getElementsByClassName("luclose")[0];
+                
+                            // When the user clicks the button, open the modal 
+                            luBtn.onclick = function () {
+                            
+                                jQuery( "#lumyModalComp .lumodal-content" ).append( `<div id="lu-warning"><p>Products currently in your basket have different deposit configurations than this one. Are you sure you want to add this to your basket?</p><button class="luContinue" style="width:40%;background:#1295a5;color:#FFF;padding:15px;margin:5px;border:0px;cursor: pointer;" >Continue</button><button class="luCancel" style="width:40%;background:#1295a5;color:#FFF;padding:15px;margin:5px;border:0px;cursor: pointer;" >Cancel</button></div>` );
+                                
+                                luModal.style.display = "block";
+                                var luCont = document.querySelector("button.luContinue");
+                                luCont.onclick = function () {
+                                    document.querySelector("form.cart").submit();
+                                }
+                                var luCancel = document.querySelector("button.luCancel");
+                                luCancel.onclick = function () {
+                                    luModal.style.display = "none";
+                                    jQuery("#lu-warning").remove();
+                                }
+                            }
+                
+                            // When the user clicks on <span> (x), close the modal
+                            luSpan.onclick = function () {
+                                luModal.style.display = "none";
+                                jQuery("#lu-warning").remove();
+                            }
+                
+                            // When the user clicks anywhere outside of the modal, close it
+                            window.onclick = function (event) {
+                                if (event.target == luModal) {
+                                    luModal.style.display = "none";
+                                    jQuery("#lu-warning").remove();
+                                }
+                            }
+
+                        });
+                        </script>';
+                        }
+                    }
+                }
             }
 
         }
@@ -1431,7 +1573,7 @@ function layup_display_icon()
 
 }
 
-add_action('woocommerce_before_add_to_cart_form', 'layup_display_icon', 30);
+add_action('woocommerce_after_add_to_cart_form', 'layup_display_icon', 30);
 
 /**
  * Display LayUp extimate text on shop page
@@ -1661,7 +1803,6 @@ function layup_populate_column($column_name, $id)
         switch ($column_name):
         case 'featured':
             {
-
                     echo '<fieldset class="inline-edit-col-right">
 				<div class="inline-edit-col">
 					<div class="inline-edit-group wp-clearfix">';
@@ -1688,6 +1829,10 @@ function layup_populate_column($column_name, $id)
 
     function layup_quick_edit_save($post_id)
     {
+        if (!$_POST)
+        {
+            return;
+        }
 
         // check user capabilities
         if (!current_user_can('edit_post', $post_id))

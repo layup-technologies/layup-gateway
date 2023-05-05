@@ -109,7 +109,7 @@ function layup_check_payments()
                     foreach ($plans['payments'] as $payment)
                     {
 
-                        if ($payment['paid'] == false)
+                        if ($payment['paid'] == false && $payment['amount'] > 0)
                         {
 
                             $due = $payment['due'];
@@ -140,9 +140,9 @@ function layup_check_payments()
 
                     $outstanding_rands = $outstanding / 100;
 
-                    $due_str = strstr($due, '(', true);
+                    
                     //formate numbers to work with WC
-                    $due_date = date("Y/m/d", strtotime($due_str));
+                    $due_date = date("Y/m/d", strtotime($due));
 
                     $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
 
@@ -229,6 +229,10 @@ function layup_check_canceled_order()
         $order = wc_get_order($order->ID);
 
         $layup_order_id = get_post_meta($order->get_id() , 'layup_order_id', true);
+        
+        if (!$layup_order_id || $layup_order_id == ""){
+            continue;
+        }
 
         $headers = array(
 

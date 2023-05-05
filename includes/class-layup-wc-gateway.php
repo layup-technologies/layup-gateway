@@ -77,6 +77,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         $this->absorb_fee = 'yes' === $this->get_option('absorb_fee');
         $this->layup_dep_type = $this->get_option('layup_dep_type');
         $this->dynamic_deposit = 'yes' === $this->get_option('dynamic_deposit');
+        $this->popup_warning = 'yes' === $this->get_option('popup_warning');
         $this->learn_more_style = $this->get_option('learn_more_style');
 
         $this->api_key_error = $this->get_option('api_key_error');
@@ -189,6 +190,18 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 'type' => 'checkbox',
 
                 'description' => 'Enabling this will combine all individual product deposit types. This is meant to be used if you have multiple different deposits set on your products',
+
+                'default' => 'no'
+
+            ) ,
+
+            'popup_warning' => array(
+
+                'title' => 'Allow popup warning on product page',
+
+                'type' => 'checkbox',
+
+                'description' => 'Enabling this will create a popup warning for the customer if they attemped to add a product to their cart which already has products with different deposit configurations.',
 
                 'default' => 'no'
 
@@ -790,7 +803,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
             
             $order_details = array(
 
-                'depositAmount' => (int)($this->layup_dep * 100),
+                'depositAmount' => round(($this->layup_dep * 100),0),
 
                 'products' => $products,
 
@@ -909,8 +922,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
     function generate_layup_sku($str)
     {
-        $acronym;
-        $word;
+        $acronym = '';
+        $word = '';
         $words = preg_split("/(\s|\-|\.)/", $str);
         $i = 0;
         foreach ($words as $w)
@@ -1023,9 +1036,9 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                     $outstanding_rands = $outstanding / 100;
 
-                    $due_str = strstr($due, '(', true);
+                    
                     //formate numbers to work with WC
-                    $due_date = date("Y/m/d", strtotime($due_str));
+                    $due_date = date("Y/m/d", strtotime($due));
 
                     $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
 
@@ -1106,7 +1119,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                     foreach ($plans['payments'] as $payment)
                     {
 
-                        if ($payment['paid'] == false)
+                        if ($payment['paid'] == false && $payment['amount'] > 0)
                         {
 
                             $due = $payment['due'];
@@ -1137,9 +1150,8 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                     $outstanding_rands = $outstanding / 100;
 
-                    $due_str = strstr($due, '(', true);
                     //formate numbers to work with WC
-                    $due_date = date("Y/m/d", strtotime($due_str));
+                    $due_date = date("Y/m/d", strtotime($due));
 
                     $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
 
@@ -1156,6 +1168,105 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                 }
 
+            } elseif ($_POST['type'] == 'REFUNDPAYMENT'){
+                $layup_payment_id = $_POST['body']['paymentId'];
+                
+                $headers = array(
+                    'accept' => 'application/json',
+                    'apikey' => $this->api_key,
+                );
+
+                $order_args = array(
+                    'headers' => $headers,
+                );
+                $order_response = wp_remote_get($this->api_url . '/' . $layup_order_id . '?populate=plans,plans.payments', $order_args);
+
+                if (!is_wp_error($order_response)) {
+                    $body = json_decode($order_response['body'], true);
+                    $refundPayment = [];
+                    $pp = 0;
+                    foreach ($body['plans'] as $plans)
+                {
+
+                    update_post_meta($order->get_id() , 'layup_pp_id_' . $pp, $plans['_id']);
+
+                    update_post_meta($order->get_id() , 'layup_pp_freq_' . $pp, strtolower($plans['frequency']));
+
+                    update_post_meta($order->get_id() , 'layup_pp_quant_' . $pp, $plans['quantity']);
+
+                    //get monthly amount
+                    $due = '';
+
+                    foreach ($plans['payments'] as $payment)
+                    {
+                        if($payment['_id'] == $layup_payment_id){
+                            $refundPayment = $payment;
+                        }
+
+                        if ($payment['paid'] == false && $payment['amount'] > 0)
+                        {
+
+                            $due = $payment['due'];
+                            $monthly = $payment['amount'];
+
+                            break;
+                        }
+                    }
+
+                    $paid = 0;
+
+                    foreach ($plans['payments'] as $payment)
+                    {
+
+                        if ($payment['paid'] == true)
+                        {
+
+                            $paid += $payment['amount'];
+                        }
+                    }
+
+                    //convert cents to rands
+                    
+
+                    $monthly_rands = $monthly / 100;
+
+                    $outstanding = $plans['amountDue'] + $plans['depositDue'] - $paid;
+
+                    $outstanding_rands = $outstanding / 100;
+
+                    //formate numbers to work with WC
+                    $due_date = date("Y/m/d", strtotime($due));
+
+                    $outstanding_foramted = number_format($outstanding_rands, 2, '.', '');
+
+                    $monthly_payment = number_format($monthly_rands, 2, '.', '');
+
+                    update_post_meta($order->get_id() , 'layup_pp_due_date_' . $pp, $due_date);
+
+                    update_post_meta($order->get_id() , 'layup_pp_outstanding_' . $pp, $outstanding_foramted);
+
+                    update_post_meta($order->get_id() , 'layup_pp_monthly_' . $pp, $monthly_payment);
+
+                    $pp++;
+                }
+                    
+                    $order_id = $order->get_id();
+                    $reason = "Refund processed on LayUp";
+                    $amount = $refundPayment['amount'] / 100 * -1;
+                    $refund = false;
+                    $restock = false;
+
+                    // This is a little verbose, but doing it this way to show source of values. 
+                    $args = array(
+                        'amount' => $amount,
+                        'reason' => $reason,
+                        'order_id' => $order_id,
+                        'refund_payment' => $refund,
+                        'restock_items' => $restock,
+                    );
+                    $result = wc_create_refund($args);
+                    file_put_contents("test_refund.txt", $layup_payment_id . ' '. json_encode($refundPayment) . ' '. $amount);
+                }
             }
             else
             {
