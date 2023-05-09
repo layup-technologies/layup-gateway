@@ -938,7 +938,7 @@ function create_use_layup_custom_product_type_field()
 
     $args = array(
 
-        'id' => 'use_layup_custom_product_type',
+        'id' => 'layup_use_custom_product_type',
 
         'label' => __('Use custom product type for this product', 'layup-gateway') ,
 
