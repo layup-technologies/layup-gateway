@@ -932,6 +932,63 @@ function create_layup_custom_learn_more_popup_field()
 
 add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_learn_more_popup_field');
 
+
+
+function create_layup_custom_product_type_field()
+{
+
+    $args = array(
+
+        'id' => 'layup_custom_product_type',
+
+        'label' => __('Learn more popup style', 'layup-gateway') ,
+
+        'options' => array(
+            'layby' => 'Layby',
+            'subscription' => 'Subscription',
+            'pre-order' => 'Pre-order'
+        ) ,
+
+        'class' => 'lu-custom-product-type',
+
+        'desc_tip' => false,
+
+        'description' => __('Change between a Layby, Subscription or Pre-order depending on your product offering', 'layup-gateway') ,
+
+        'default' => 'layby'
+    );
+
+    woocommerce_wp_select($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_product_type_field');
+
+
+function create_use_layup_custom_product_type_field()
+{
+
+    $args = array(
+
+        'id' => 'use_layup_custom_product_type',
+
+        'label' => __('Use custom product type for this product', 'layup-gateway') ,
+
+        'class' => 'lu-use-custom-product-type',
+
+        'desc_tip' => true,
+
+        'description' => __('Check this box if you want this product to use its own product type on the product page.', 'layup-gateway') ,
+
+    );
+
+    woocommerce_wp_checkbox($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_use_layup_custom_product_type_field');
+
+
 /**
  * Save the LayUp product fields
  */
@@ -965,6 +1022,9 @@ function save_layup_disable_field($post_id)
     $layup_custom_payment_plan = isset($_POST['layup_custom_payment_plan']) ? sanitize_text_field($_POST['layup_custom_payment_plan']) : '';
     $layup_custom_learn_more = isset($_POST['layup_custom_learn_more']) ? sanitize_text_field($_POST['layup_custom_learn_more']) : '';
 
+    $layup_custom_product_type = isset($_POST['layup_custom_product_type']) ? sanitize_text_field($_POST['layup_custom_product_type']) : '';
+    $layup_use_custom_product_type = isset($_POST['layup_use_custom_product_type']) ? sanitize_text_field($_POST['layup_use_custom_product_type']) : '';
+
     settype($layup_custom_months_max, 'int');
     $product->update_meta_data('layup_disable', $layup_disable);
     $product->update_meta_data('layup_custom_deposit', $layup_custom_deposit);
@@ -980,6 +1040,9 @@ function save_layup_disable_field($post_id)
 
     $product->update_meta_data('layup_custom_payment_plan', $layup_custom_payment_plan);
     $product->update_meta_data('layup_custom_learn_more', $layup_custom_learn_more);
+
+    $product->update_meta_data('layup_custom_product_type', $layup_custom_product_type);
+    $product->update_meta_data('layup_use_custom_product_type', $layup_use_custom_product_type);
 
     $price = (float)$product->get_price() * 100;
 
@@ -1063,6 +1126,9 @@ function layup_display_icon()
             $layup_custom_learn_more = $product->get_meta('layup_custom_learn_more');
             $layup_custom_learn_more_popup = $product->get_meta('layup_custom_learn_more_popup');
 
+            $layup_use_custom_product_type = $product->get_meta('layup_use_custom_product_type');
+            $layup_custom_product_type = $product->get_meta('layup_custom_product_type');
+
             if ($layup_custom_deposit == 'yes' && $layup_custom_deposit_type != "" && $layup_custom_deposit_amount != ""){
                 $layup_preview_deposit_type = $layup_custom_deposit_type;
                 $layup_preview_deposit_amount = $layup_custom_deposit_amount;
@@ -1089,6 +1155,12 @@ function layup_display_icon()
                 $layup_preview_learn_more_popup = $layup_custom_learn_more_popup;
             } else {
                 $layup_preview_learn_more_popup = $gateway->learn_more_style;
+            }
+
+            if ($layup_use_custom_product_type == 'yes' && $layup_custom_product_type != ""){
+                $layup_preview_product_type = $layup_custom_product_type;
+            } else {
+                $layup_preview_product_type = $gateway->product_type;
             }
 
 
@@ -1138,6 +1210,15 @@ function layup_display_icon()
                     $learn_more_url = "https://layup.co.za/learn-more-popup-layby/";
                 }
 
+                if ($layup_preview_product_type == 'pre-order')
+                {
+                    $button_text = "PRE-ORDER WITH";
+                } elseif($layup_preview_product_type == 'subscription') {
+                    $button_text = "SUBSCRIBE WITH";
+                } else {
+                    $button_text = "PAY IT OFF WITH";
+                }
+                
                 $finalString = "";
 
                 if ($layup_preview_payment_plan_template == "") {
@@ -1169,7 +1250,7 @@ function layup_display_icon()
 			<div style="display: flex;font-family:Quicksand,Arial, Helvetica, sans-serif ;padding: 10px 30px 10px 30px;margin-top: 15px;color: #ffffff;text-align: center;align-items: center;background-color: #0C4152;box-sizing: border-box;justify-content: center;border-radius:3px;"
 				class="btn-layup">
 		
-				<div class="btn-layup-text">PAY IT OFF WITH</div>
+				<div class="btn-layup-text">'.esc_attr($button_text).'</div>
 		
 				<div class="btn-layup-logo"><img style="top: 0 !important; vertical-align: middle; border-style: none"
 					src="' . plugin_dir_url(dirname(__FILE__)) . 'img/layup-logo-light.svg">

@@ -79,6 +79,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
         $this->dynamic_deposit = 'yes' === $this->get_option('dynamic_deposit');
         $this->popup_warning = 'yes' === $this->get_option('popup_warning');
         $this->learn_more_style = $this->get_option('learn_more_style');
+        $this->product_type = $this->get_option('product_type');
 
         $this->api_key_error = $this->get_option('api_key_error');
         $this->payment_plan_template = $this->get_option('payment_plan_template');
@@ -337,6 +338,24 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
                 'options' => array(
                     'layby' => 'Layby',
                     'subscription' => 'Subscription'
+                ) ,
+
+                'default' => 'layby'
+
+            ) , 
+
+            'product_type' => array(
+
+                'title' => 'Global product type',
+
+                'type' => 'select',
+
+                'description' => 'Change between a Layby, Subscription or Pre-order depending on your product offering',
+
+                'options' => array(
+                    'layby' => 'Layby',
+                    'subscription' => 'Subscription',
+                    'pre-order' => 'Pre-order'
                 ) ,
 
                 'default' => 'layby'
