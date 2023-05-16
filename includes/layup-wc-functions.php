@@ -963,7 +963,7 @@ function create_layup_custom_product_type_field()
 
         'id' => 'layup_custom_product_type',
 
-        'label' => __('Learn more popup style', 'layup-gateway') ,
+        'label' => __('Product type', 'layup-gateway') ,
 
         'options' => array(
             'layby' => 'Layby',
