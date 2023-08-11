@@ -201,6 +201,7 @@ Yes, sure you can amend your payment plan. Send through the required and approve
 
 = v1.9.4 =
 
+* added product type field
 * Updated payment plan preview design.
 
 = v1.9.3 =
