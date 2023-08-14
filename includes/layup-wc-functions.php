@@ -933,6 +933,28 @@ function create_layup_custom_learn_more_popup_field()
 add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_learn_more_popup_field');
 
 
+function create_use_layup_custom_product_type_field()
+{
+
+    $args = array(
+
+        'id' => 'layup_use_custom_product_type',
+
+        'label' => __('Use custom product type for this product', 'layup-gateway') ,
+
+        'class' => 'lu-use-custom-product-type',
+
+        'desc_tip' => true,
+
+        'description' => __('Check this box if you want this product to use its own product type on the product page.', 'layup-gateway') ,
+
+    );
+
+    woocommerce_wp_checkbox($args);
+
+}
+
+add_action('woocommerce_product_options_inventory_product_data', 'create_use_layup_custom_product_type_field');
 
 function create_layup_custom_product_type_field()
 {
@@ -941,7 +963,7 @@ function create_layup_custom_product_type_field()
 
         'id' => 'layup_custom_product_type',
 
-        'label' => __('Learn more popup style', 'layup-gateway') ,
+        'label' => __('Product type', 'layup-gateway') ,
 
         'options' => array(
             'layby' => 'Layby',
@@ -963,30 +985,6 @@ function create_layup_custom_product_type_field()
 }
 
 add_action('woocommerce_product_options_inventory_product_data', 'create_layup_custom_product_type_field');
-
-
-function create_use_layup_custom_product_type_field()
-{
-
-    $args = array(
-
-        'id' => 'use_layup_custom_product_type',
-
-        'label' => __('Use custom product type for this product', 'layup-gateway') ,
-
-        'class' => 'lu-use-custom-product-type',
-
-        'desc_tip' => true,
-
-        'description' => __('Check this box if you want this product to use its own product type on the product page.', 'layup-gateway') ,
-
-    );
-
-    woocommerce_wp_checkbox($args);
-
-}
-
-add_action('woocommerce_product_options_inventory_product_data', 'create_use_layup_custom_product_type_field');
 
 
 /**

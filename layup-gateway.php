@@ -59,6 +59,8 @@ require_once (plugin_basename('includes/layup-cron.php'));
 
 require_once (plugin_basename('includes/layup-wc-functions.php'));
 
+require_once (plugin_basename('includes/layup-is-live-check.php'));
+
 /*
 
  * This action hook registers our PHP class as a WooCommerce payment gateway
@@ -94,7 +96,7 @@ function layup_init_gateway_class()
 
     }
 
-    define('WC_GATEWAY_LAYUP_VERSION', '1.9.5');
+    define('WC_GATEWAY_LAYUP_VERSION', '1.9.6');
 
     if (!wp_next_scheduled('layup_canceled_order_check'))
     {
