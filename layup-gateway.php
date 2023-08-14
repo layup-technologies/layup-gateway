@@ -59,6 +59,8 @@ require_once (plugin_basename('includes/layup-cron.php'));
 
 require_once (plugin_basename('includes/layup-wc-functions.php'));
 
+require_once (plugin_basename('includes/layup-is-live-check.php'));
+
 /*
 
  * This action hook registers our PHP class as a WooCommerce payment gateway
