@@ -695,7 +695,7 @@ class WC_Layup_Gateway extends WC_Payment_Gateway
 
                     $min_date = date('c', strtotime("+" . $this->lu_min_end_date . " months", strtotime($curr_date)));
 
-                    $max_date = date('c', strtotime($date_sel));
+                    $max_date = date('c', strtotime("-1 months", strtotime($date_sel)));
 
                 }
                 else
