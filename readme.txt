@@ -1,7 +1,7 @@
 === LayUp payment gateway plugin for woocommerce ===
 
 
-Contributors: dylanweb980505, zanderrootman
+Contributors: dylanweb980505, zanderrootman, FrancoisLayup
 Author URI: https://layup.co.za/
 Author: LayUp Dev Team
 Tags: woocommerce, payment gateway, South Africa, LayUp
